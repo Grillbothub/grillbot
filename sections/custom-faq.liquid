@@ -1,0 +1,310 @@
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+#shopify-section-{{ section.id }} {
+  {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+    {%- assign heading_color = settings.heading_color -%}
+    {%- assign text_color = settings.text_color -%}
+  {%- else -%}
+    {%- assign heading_color = section.settings.text_color -%}
+    {%- assign text_color = section.settings.text_color -%}
+  {%- endif -%}
+
+  {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+    {%- assign section_background = settings.background -%}
+    {%- assign secondary_background = settings.secondary_background -%}
+  {%- else -%}
+    {%- assign section_background = section.settings.background -%}
+    {%- assign secondary_background = section.settings.background | color_mix: text_color, 85 -%}
+  {%- endif -%}
+
+  --secondary-background: {{ secondary_background.red }}, {{ secondary_background.green }}, {{ secondary_background.blue }};
+  --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+  --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+
+  --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+}
+
+@media only screen and (min-width: 1000px) {
+  .shopify-section--{{ section.id }}.custom-faq-theme-duplicate .faq__wrapper {
+    width: 100% !important;
+    {% if section.settings.content_width == 'small' %}
+    max-width: 668px;
+    {% elsif section.settings.content_width == 'medium' %}
+    max-width: 900px;
+    {% elsif section.settings.content_width == 'large' %}
+    max-width: 100%;
+    {% endif %}
+  }
+  .shopify-section--{{ section.id }}.custom-faq-theme-duplicate .content__alignment {
+    max-width: 100%;
+    text-align: {% if section.settings.text_alignment == 'left' %}left;
+               {% elsif section.settings.text_alignment == 'center' %}center;
+               {% elsif section.settings.text_alignment == 'right' %}right;{% endif %}
+  }
+}
+  
+</style>
+
+{%- assign categories = section.blocks | where: 'type', 'category' -%}
+
+<section class="{{ section.settings.css_class }} section{% if template.name == 'page' and template.suffix contains 'faq' %} section--tight{% endif %}{% unless blends_with_background %} section--flush{% endunless %} shopify-section--{{ section.id }} custom-faq-theme-duplicate">
+  <div class="section__color-wrapper">
+    <div class="container">
+      <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
+        {%- if section.settings.title != blank or section.settings.content != blank -%}
+          <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-container content__alignment">
+            {%- if section.settings.title != blank -%}
+              <h1 class="heading h2 content__alignment">{{ section.settings.title | escape }}</h1>
+            {%- endif -%}
+
+            {%- if section.settings.content -%}
+              {{- section.settings.content -}}
+            {%- endif -%}
+
+            {%- if section.settings.image != blank -%}
+              <img src="{{ section.settings.image | image_url }}" class="desktop-view">
+            {%- endif -%}
+
+          </header>
+        {%- endif -%}
+
+        <div class="faq">
+          {%- if section.settings.show_navigation and categories.size > 0 -%}
+            <div class="faq-navigation hidden-pocket">
+              <scroll-spy class="scroll-spy">
+                <ul class="scroll-spy__list list--unstyled">
+                  {%- for category in categories -%}
+                    <li class="scroll-spy__item">
+                      <a class="scroll-spy__anchor heading heading--small" href="#category-{{ section.id }}-{{ category.id }}" data-smooth-scroll>{{ category.settings.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </scroll-spy>
+            </div>
+          {%- endif -%}
+
+          <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'category' -%}
+                  <h2 id="category-{{ section.id }}-{{ block.id }}" class="faq__category heading h6 anchor" {{ block.shopify_attributes }}>
+                    {{- block.settings.title |  escape -}}
+                  </h2>
+
+                {%- when 'question' -%}
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                      {{- block.settings.title -}}
+                      {% comment %} <span class="animated-plus faq--chevron-down"><img src="https://cdn.shopify.com/s/files/1/0337/8629/files/Vector_1.svg?v=1682493527"/></span> {% endcomment %}
+                      <span class="faq-arrows">
+                        <span class="icon-plus">{% render 'icon-plus' %}</span>
+                        <span class="icon-minus">{% render 'icon-minus' %}</span>
+                      </span>
+                    </button>
+
+                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                      <div class="collapsible__content text-container" itemprop="text">
+                        {{ block.settings.answer }}
+                      </div>
+                    </collapsible-content>
+                  </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if section.settings.button_text != blank -%}
+            <a href="{{ section.settings.button_url }}" class="bottom-btn button button--primary">{{ section.settings.button_text }}</a>
+          {%- endif -%}
+        </div>
+        <img src="{{ section.settings.image | image_url }}" class="mobile-view">
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom FAQ",
+  "class": "shopify-section--faq",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "css_class",
+      "label": "CSS Class"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "FAQ"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Content Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content Width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Category"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+          "default": "About your shop"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Write content to help your customers to better understand your products or policies.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Faq",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "How long will it take to get my order?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Other"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "Any question?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

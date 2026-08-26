@@ -1,0 +1,494 @@
+{%- assign fbt_products = nil -%}
+{%- assign fbt_count = 0 -%}
+{%- assign fbt_source = 'none' -%}
+
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- comment -%} 1) Metafield products {%- endcomment -%}
+  {%- assign _mf_key = section.settings.metafield_key | default: 'custom.grillbot_frequently_bought_together' -%}
+  {%- assign _mf_parts = _mf_key | split: '.' -%}
+  {%- assign _mf_ns = _mf_parts[0] | default: 'custom' -%}
+  {%- assign _mf_name = _mf_parts[1] | default: 'grillbot_frequently_bought_together' -%}
+
+  {%- if product.metafields[_mf_ns][_mf_name].value != blank -%}
+    {%- assign fbt_products = product.metafields[_mf_ns][_mf_name].value -%}
+  {%- elsif product.metafields.custom.grillbot_frequently_bought_together.value != blank -%}
+    {%- assign fbt_products = product.metafields.custom.grillbot_frequently_bought_together.value -%}
+  {%- elsif product.metafields.custom.frequently_bought_together.value != blank -%}
+    {%- assign fbt_products = product.metafields.custom.frequently_bought_together.value -%}
+  {%- endif -%}
+
+  {%- if fbt_products != blank -%}
+    {%- for p in fbt_products -%}
+      {%- if p != blank and p.title != blank -%}
+        {%- assign fbt_count = fbt_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if fbt_count > 0 -%}
+      {%- assign fbt_source = 'metafield' -%}
+    {%- else -%}
+      {%- assign fbt_products = nil -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} 2) Fallback: same-collection related products (no AJAX) {%- endcomment -%}
+  {%- if fbt_count == 0 -%}
+    {%- assign fbt_limit = section.settings.recommendations_count | default: 8 -%}
+    {%- assign fbt_related_ids = '|' -%}
+    {%- capture fbt_related_slides -%}
+      {%- for collection in product.collections -%}
+        {%- if fbt_count >= fbt_limit -%}
+          {%- break -%}
+        {%- endif -%}
+        {%- for p in collection.products -%}
+          {%- if fbt_count >= fbt_limit -%}
+            {%- break -%}
+          {%- endif -%}
+          {%- if p.id != product.id and p.title != 'Route Package Protection' -%}
+            {%- assign fbt_id_token = p.id | prepend: '|' | append: '|' -%}
+            {%- unless fbt_related_ids contains fbt_id_token -%}
+              {%- render 'hb-fbt-product-card', product: p -%}
+              {%- assign fbt_related_ids = fbt_related_ids | append: p.id | append: '|' -%}
+              {%- assign fbt_count = fbt_count | plus: 1 -%}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+
+      {%- if fbt_count == 0 -%}
+        {%- for p in collections.all.products -%}
+          {%- if fbt_count >= fbt_limit -%}
+            {%- break -%}
+          {%- endif -%}
+          {%- if p.id != product.id and p.title != 'Route Package Protection' -%}
+            {%- render 'hb-fbt-product-card', product: p -%}
+            {%- assign fbt_count = fbt_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- if fbt_count > 0 -%}
+      {%- assign fbt_source = 'related' -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if request.page_type == 'product' and product != blank and fbt_count > 0 -%}
+  {% style %}
+    #shopify-section-{{ section.id }} .hb-fbt {
+      background: {{ section.settings.background }};
+      padding: {{ section.settings.padding_desktop }}px 0;
+      overflow: hidden;
+      color: {{ section.settings.text_color }};
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__inner {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__title {
+      font-size: 52px;
+      line-height: 60px;
+      font-weight: 400;
+      letter-spacing: -0.8px;
+      text-transform: uppercase;
+      font-family: Anton !important;
+      color: {{ section.settings.text_color }};
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__slider-bleed{
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__slider-inner{
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__nav {
+      position: absolute;
+      right: 0;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__btn[disabled] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__btn svg {
+      width: 52px;
+      height: 52px;
+      display: block;
+      pointer-events: none;
+      color: #fff;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__btn.prev {
+      transform: rotate(180deg);
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-swiper .swiper-wrapper {
+      align-items: stretch;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__product-item {
+      height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt__product-item .product-item__image-wrapper {
+      height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card{
+      background: {{ section.settings.card_bg }};
+      border-radius: 12px;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__media{
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__badge-top{
+      position: absolute;
+      top: 17px;
+      left: 21px;
+      background: #F8E4E4;
+      color: #C14126;
+      font-size: 14px;
+      line-height: 22px;
+      padding: 1px 12px;
+      border-radius: 999px;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .hb-product-media{
+      max-width: 323px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      overflow: hidden;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .hb-product-media img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__content{
+      padding: 0 10px 12px;
+      text-align: center;
+      flex: 1 1 auto;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__title{
+      margin: 0;
+      font-size: 22px;
+      line-height: 34px;
+      font-weight: 700;
+      color: {{ section.settings.card_text_color }};
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      white-space: normal;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__desc{
+      margin: 0 auto 0;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 400;
+      color: {{ section.settings.card_text_color }};
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      white-space: normal;
+      max-width: 290px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__prices{
+      padding: 0 10px 20px;
+      text-align: center;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__compare{
+      color: {{ section.settings.card_muted_text_color }};
+      font-size: 16px;
+      line-height: 22px;
+      text-decoration: line-through;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__discount{
+      background: #FDE7B0;
+      color: #080808;
+      font-size: 16px;
+      line-height: 22px;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__price{
+      color: {{ section.settings.card_text_color }};
+      font-size: 18px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .hb-fbt-card__link{
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .hb-fbt {
+        padding: {{ section.settings.padding_mobile }}px 0;
+      }
+    }
+
+    @media screen and (max-width: 767px){
+      #shopify-section-{{ section.id }} .hb-fbt__title {
+        font-size: 38px;
+        line-height: 44px;
+        padding-right: 88px;
+      }
+      #shopify-section-{{ section.id }} .hb-fbt__slider-bleed .container{
+        padding-right: 0 !important;
+      }
+      #shopify-section-{{ section.id }} .hb-fbt__btn svg {
+        width: 40px;
+        height: 40px;
+      }
+      #shopify-section-{{ section.id }} .hb-fbt-card__title{
+        font-size: 18px;
+        line-height: 30px;
+      }
+    }
+  {% endstyle %}
+
+  <section class="hb-fbt" aria-label="Frequently bought together" data-fbt-source="{{ fbt_source }}">
+    <div class="container">
+      <div class="hb-fbt__inner">
+        <div class="hb-fbt__nav" aria-hidden="false">
+          <button class="hb-fbt__btn prev" type="button" aria-label="Previous">
+            {{ 'swiper-arrows.svg' | inline_asset_content }}
+          </button>
+          <button class="hb-fbt__btn next" type="button" aria-label="Next">
+            {{ 'swiper-arrows.svg' | inline_asset_content }}
+          </button>
+        </div>
+
+        <h2 class="hb-fbt__title">{{ section.settings.heading | escape }}</h2>
+      </div>
+    </div>
+
+    <div class="hb-fbt__slider-bleed">
+      <div class="container">
+        <div class="hb-fbt__slider-inner">
+          <div class="hb-fbt__carousel-wrapper">
+            <div class="hb-fbt__carousel">
+              <div class="swiper hb-fbt-swiper" data-hb-fbt-swiper>
+                <div class="swiper-wrapper">
+                  {%- if fbt_source == 'metafield' -%}
+                    {%- render 'hb-fbt-product-slides', products: fbt_products -%}
+                  {%- else -%}
+                    {{- fbt_related_slides -}}
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var el = root.querySelector('[data-hb-fbt-swiper]');
+      if (!el || el.dataset.hbFbtReady === '1') return;
+      el.dataset.hbFbtReady = '1';
+
+      function init() {
+        if (!window.Swiper) return false;
+        if (el.swiper) return true;
+
+        var prevBtn = root.querySelector('.hb-fbt__btn.prev');
+        var nextBtn = root.querySelector('.hb-fbt__btn.next');
+
+        var swiper = new window.Swiper(el, {
+          loop: false,
+          rewind: false,
+          slidesPerView: 3,
+          spaceBetween: 9,
+          speed: 400,
+          watchOverflow: true,
+          allowTouchMove: true,
+          breakpoints: {
+            0: { slidesPerView: 1.4 },
+            600: { slidesPerView: 2.5 },
+            768: { slidesPerView: 3 }
+          }
+        });
+
+        function updateNav() {
+          if (!prevBtn || !nextBtn) return;
+          var atStart = swiper.isBeginning;
+          var atEnd = swiper.isEnd;
+          prevBtn.disabled = atStart;
+          nextBtn.disabled = atEnd;
+          prevBtn.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+          nextBtn.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (prevBtn.disabled || swiper.isBeginning) return;
+            swiper.slidePrev();
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (nextBtn.disabled || swiper.isEnd) return;
+            swiper.slideNext();
+          });
+        }
+
+        swiper.on('slideChange', updateNav);
+        swiper.on('reachBeginning', updateNav);
+        swiper.on('reachEnd', updateNav);
+        swiper.on('resize', updateNav);
+        swiper.on('update', updateNav);
+        updateNav();
+
+        return true;
+      }
+
+      function tryInit(attempts) {
+        if (init()) return;
+        if (attempts <= 0) return;
+        setTimeout(function () { tryInit(attempts - 1); }, 250);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { tryInit(12); });
+      } else {
+        tryInit(12);
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GB - FBT",
+  "class": "shopify-section--grillbot-fbt",
+  "disabled_on": {
+    "templates": ["password"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FREQUENTLY BOUGHT TOGETHER"
+    },
+    {
+      "type": "paragraph",
+      "content": "Uses FBT metafield when set. If empty, shows related products from the same collection (or catalog)."
+    },
+    {
+      "type": "range",
+      "id": "recommendations_count",
+      "label": "Related products count (fallback)",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#0d0d0d"
+    },
+    {
+      "type": "color",
+      "id": "card_muted_text_color",
+      "label": "Card muted text color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "label": "Padding desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Padding mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "GB - FBT",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

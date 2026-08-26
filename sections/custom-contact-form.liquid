@@ -1,0 +1,191 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+<section class="section {% if section.settings.background_overlap == 'both' and is_boxed == false %}section--flush{% endif %} custom-contact-influencer">
+  <div class="custom-contact-fluencer-section">
+    <div {% if is_boxed %}class="container"{% endif %}>
+      {% if section.settings.enable_left_sticks and section.settings.left_sticks != blank %}
+        <div class="enable_left_sticks" data-aos="fade-right"><img src="{{ section.settings.left_sticks | img_url: '' }}"></div>
+      {% endif %}
+      <div class="image-with-text__wrapper">
+        <div class="image-with-text__content-wrapper">
+          {% if section.settings.enable_left_sticks and section.settings.left_sticks != blank %}
+            <div class="enable_left_sticks mobile-sticks_left" data-aos="fade-right"><img src="{{ section.settings.left_sticks | img_url: '' }}"></div>
+          {% endif %}
+          {%- if section.settings.content != blank -%}
+            {{- section.settings.content -}}
+          {%- endif -%}
+          {%- if section.settings.contact_title != blank -%}
+          <div class="heading_area">
+            <h3 class="heading h3">
+              {{- section.settings.contact_title -}}
+            </h3>
+          </div>
+          {%- endif -%}
+          <div class="contact_area">
+            {%- if section.settings.contact_phone != blank -%}
+              <div class="contact_area_phone">
+                <img src="https://cdn.shopify.com/s/files/1/0337/8629/files/Vector_2363f832-677b-49b5-9342-51aa50c1b87f.svg?v=1681879870"> <span>{{ section.settings.contact_phone }}</span>
+              </div>
+            {% endif %}
+            {%- if section.settings.contact_email != blank -%}
+              <div class="contact_area_email">
+                <img src="https://cdn.shopify.com/s/files/1/0337/8629/files/Vector_d570a10b-452b-47ac-9985-6f896736d93e.svg?v=1681879939"> <span>{{ section.settings.contact_email }}</span>
+              </div>
+            {% endif %}
+          </div>
+          {%- if section.settings.social_media_title != blank -%}
+          <div class="heading_area">
+            <h3 class="heading h3">
+              {{- section.settings.social_media_title -}}
+            </h3>
+          </div>
+          {%- endif -%}
+          {%- render 'social-media' -%}
+          {% if section.settings.enable_right_sticks and section.settings.right_sticks != blank %}
+            <div class="enable_right_sticks mobile-sticks_right" data-aos="fade-left"><img src="{{ section.settings.right_sticks | img_url: '' }}"></div>
+          {% endif %}
+        </div>
+        <div class="image-with-text__image-wrapper">
+          {%- form 'contact', class: 'contact__form form' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="banner banner--success form__banner">
+                  <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
+                  <p class="banner__content">{{ 'contact.form.successfully_sent' | t }}</p>
+                </div>
+              {%- endif -%}
+  
+              {%- if form.errors -%}
+                <div class="form__banner banner banner--error">
+                  <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+  
+                  <div class="banner__content">
+                    {{- form.errors | default_errors -}}
+                  </div>
+                </div>
+              {%- endif -%}
+  
+              <div class="field">
+                <div class="input">
+                  <input id="contact-form-name" type="text" class="input__field {% if customer.name != blank %}is-filled{% endif %}" name="contact[name]" aria-label="{{ 'contact.form.name' | t }}" required {% if customer %}value="{{ customer.name }}"{% endif %}>
+                  <label for="contact-form-name" class="input__label">{{ 'contact.form.name' | t }}<span class="astrick">*</span></label>
+                </div>
+                <div class="input">
+                  <input id="contact-form-lastname" type="text" class="input__field {% if customer.name != blank %}is-filled{% endif %}" name="contact[lastname]" aria-label="{{ 'contact.form.lastname' | t }}" required {% if customer %}value="{{ customer.name }}"{% endif %}>
+                  <label for="contact-form-lastname" class="input__label">{{ 'contact.form.lastname' | t }}<span class="astrick">*</span></label>
+                </div>
+              </div>
+  
+              <div class="field">
+                <div class="input">
+                  <input id="contact-form-email" type="email" class="input__field {% if customer.email != blank %}is-filled{% endif %}" name="contact[email]" aria-label="{{ 'contact.form.email' | t }}" required {% if customer %}value="{{ customer.email }}"{% endif %}>
+                  <label for="contact-form-email" class="input__label">{{ 'contact.form.email' | t }}<span class="astrick">*</span></label>
+                </div>
+                <div class="input">
+                  <input id="contact-form-phone" type="tel" class="input__field {% if customer.tel != blank %}is-filled{% endif %}" name="contact[phone]" aria-label="{{ 'contact.form.phone' | t }}" required {% if customer %}value="{{ customer.phone }}"{% endif %}>
+                  <label for="contact-form-phone" class="input__label">{{ 'contact.form.phone' | t }}</label>
+                </div>
+              </div>
+             <div class="input outside-field">
+                <input id="contact-form-order-id" type="text" class="input__field" name="contact[Order ID]" aria-label="Order ID">
+                <label for="contact-form-company" class="input__label">Order ID</label>
+              </div>
+  
+              
+  
+              <div class="input outside-field">
+                <textarea id="contact-form-message" name="contact[body]" rows="4" class="input__field input__field--textarea" aria-label="{{ 'contact.form.message' | t }}" required></textarea>
+                <label for="contact-form-message" class="input__label">{{ 'contact.form.message' | t }}</label>
+              </div>
+  
+              <button is="loader-button" type="submit" class="form__submit button button--primary button--full">{{ 'contact.form.submit' | t }}</button>
+            {%- endform -%}
+        </div>
+      </div>
+      {% if section.settings.enable_right_sticks and section.settings.right_sticks != blank %}
+        <div class="enable_right_sticks" data-aos="fade-left"><img src="{{ section.settings.right_sticks | img_url: '' }}"></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Custom Contact",
+  "class": "shopify-section--custom-contact",
+  "settings": [
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Heading",
+      "default": "CONTACT"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone Number"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "social_media_title",
+      "label": "Social Media Heading",
+      "default": "FOLLOW US"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_left_sticks",
+      "label": "Enable Left Sticks",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "left_sticks",
+      "label": "Left Sticks"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_right_sticks",
+      "label": "Enable Right Sticks",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "right_sticks",
+      "label": "Right Sticks"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Contact",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

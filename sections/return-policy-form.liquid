@@ -1,0 +1,183 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+<section class="section{% unless is_boxed %} section--flush{% endunless %} share-story-form-section return-policy-powr--form"
+         style="background: {{ section.settings.bg_color_all }};
+                padding-top: {{ section.settings.padding_top }}px;
+                padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div {% if is_boxed %}class="container"{% endif %}>
+    {% if section.settings.enable_left_sticks %}
+      <div class="enable_left_sticks" data-aos="fade-right">
+        {% if section.settings.left_sticks != blank %}
+          <img src="{{ section.settings.left_sticks | img_url: 'original' }}"/>
+        {% else %}
+          {{ section.settings.svg_icon_left }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.enable_left_sticks_bottom %}
+      <div class="enable_left_sticks_bottom" data-aos="fade-right">
+        {% if section.settings.left_sticks_bottom != blank %}
+          <img src="{{ section.settings.left_sticks_bottom | img_url: 'original' }}"/>
+        {% else %}
+          {{ section.settings.svg_icon_left_bottom }}
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="form-share-story">
+      <div class="custom-form-content">
+        {% if section.settings.form_heading != blank %}
+          <div class="form-heading"><h2 class="heading h2" style="color: {{ section.settings.text_color }};">{{ section.settings.form_heading }}</h2></div>
+        {% endif %}
+        
+        {% if section.settings.form_content != blank %}
+          <div class="form-content" style="color: {{ section.settings.text_color }};">{{ section.settings.form_content }}</div>
+        {% endif %}
+      </div>
+      <div class="powr-form-builder" id="9209afda_1682505864"></div><script src="https://www.powr.io/powr.js?platform=shopify"></script>
+    </div>
+  </div>
+  {% if section.settings.enable_right_sticks %}
+    <div class="enable_right_sticks" data-aos="fade-left">
+      {% if section.settings.right_sticks != blank %}
+        <img src="{{ section.settings.right_sticks | img_url: 'original' }}"/>
+      {% else %}
+        {{ section.settings.svg_icon_right }}
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+  {
+    "name": "Return Policy Form",
+    "settings": [
+      {
+        "type": "text",
+        "id": "form_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "form_content",
+        "label": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_left_sticks",
+        "label": "Enable Left Sticks",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "left_sticks",
+        "label": "Left Sticks"
+      },
+      {
+        "type": "html",
+        "id": "svg_icon_left",
+        "label": "Svg Icon"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_left_sticks_bottom",
+        "label": "Enable Left Bottom Sticks",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "left_sticks_bottom",
+        "label": "Left Bottom Sticks"
+      },
+      {
+        "type": "html",
+        "id": "svg_icon_left_bottom",
+        "label": "Svg Icon"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_right_sticks",
+        "label": "Enable Right Sticks",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "right_sticks",
+        "label": "Right Sticks"
+      },
+      {
+        "type": "html",
+        "id": "svg_icon_right",
+        "label": "Svg Icon"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "background_type",
+        "label": "Background",
+        "options": [
+          {
+            "value": "full_width",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "full_width"
+      },
+      {
+        "type": "color",
+        "id": "bg_color_all",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Heading Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding Top",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding Bottom",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      }
+    ],
+    "presets": [
+      {
+        "name": "Return Policy Form"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+

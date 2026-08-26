@@ -1,0 +1,141 @@
+<section class="home-useful-tips-section section shopify--section-{{ section.id }}" data-section="{{ section.id }}">
+  <div class="container">
+    <div class="home-useful-tips-section">
+      {% if section.settings.heading != blank %}
+      <header class="section__header container text-container">
+        <h3 class="heading h2">{{ section.settings.heading }}</h3>
+        {% if section.settings.enable_right_sticks and section.settings.right_sticks != blank %}
+        <div class="enable_right_sticks"><img src="{{ section.settings.right_sticks | img_url:'original' }}"></div>
+        {% endif %}
+      </header>
+      {% endif %}
+      <article-list stagger-apparition class="article-list article-list--section article-list--scrollable became-visible">
+        {% for block in section.blocks %}
+            <div reveal class="article-item">
+              {% if block.settings.image != blank and block.settings.link != blank  %}
+                 <a href="{{ block.settings.link }}" class="article-item__image-container">
+                    <img src="{{ block.settings.image | img_url : 'master' }}">
+                 </a>
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <a href="{{ block.settings.link }}">
+                <div class="article-item__content">
+                  <h3 class="article-item__title heading h4" style="color: {{ block.settings.text_color }}">{{ block.settings.title }} </h3>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="11" viewBox="0 0 24 11" fill="none">
+                    <path d="M0.5 5.50012H22.5M22.5 5.50012L18.5 1.50012M22.5 5.50012L18.5 9.50012" stroke="{{ block.settings.text_color }}" stroke-width="2"/>
+                  </svg>
+                </div>
+                </a>
+              {% endif %}
+            </div>
+          {%- endfor -%}
+      </article-list>
+      {% if section.settings.button_text != blank and section.settings.button_link != blank  %}
+      <div class="button-wrapper text--center">
+        <a href="{{ section.settings.button_link }}" class="button button--primary">{{ section.settings.button_text }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+@media only screen and (max-width: 767px) {
+  {% if section.settings.hide_on_mobile %}
+    .shopify--section-{{ section.id }} {
+      display: none !important;
+    }
+  {% endif %}
+}
+</style>
+{% schema %}
+  {
+    "name": "Home - Useful Tips",
+    "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+           "type": "checkbox",
+           "id": "enable_right_sticks",
+           "label": "Enable Right Sticks",
+           "default": true
+         },
+         {
+           "type": "image_picker",
+           "id": "right_sticks",
+           "label": "Right Sticks"
+         },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": true
+        }
+    ],
+    "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "link"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+    ],
+    "presets": [
+    {
+    "name": "Home - Useful Tips",
+    "settings": {},
+    "blocks": [
+    {
+    "type": "item"
+    },
+    {
+    "type": "item"
+    },
+    {
+    "type": "item"
+    }
+    ]
+    }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

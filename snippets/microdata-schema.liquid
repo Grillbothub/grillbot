@@ -1,0 +1,360 @@
+{%- comment -%}
+This snippet structures the micro-data using JSON-LD specification. Please note that for Product especially,
+the schema often changes. We try to output as much info as possible, but Google may add new requirements over time,
+or change the format of some info
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' -%}
+  {%- assign days_product_price_valid_until = 10 | times: 86400 -%}
+  {%- assign product_url = request.origin | append: product.url -%}
+  {%- assign schema_product_name = product.seo.title | default: product.title -%}
+  {%- capture schema_description -%}
+    {%- if product.seo.description != blank -%}
+      {{- product.seo.description | strip -}}
+    {%- elsif product.metafields.custom.description != blank -%}
+      {{- product.metafields.custom.description | metafield_tag | strip_html | strip -}}
+    {%- else -%}
+      {{- product.description | strip_html | strip -}}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- assign rating_mf = product.metafields.reviews.rating.value -%}
+  {%- assign review_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+  {%- assign has_aggregate_rating = false -%}
+  {%- if rating_mf != blank and review_count > 0 -%}
+    {%- assign has_aggregate_rating = true -%}
+    {%- assign rating_value = rating_mf.rating -%}
+    {%- assign rating_min = rating_mf.scale_min | default: 1 -%}
+    {%- assign rating_max = rating_mf.scale_max | default: 5 -%}
+  {%- endif -%}
+
+  {%- capture review_schema_items -%}
+    {%- assign review_schema_first = true -%}
+
+    {%- assign schema_reviews_list = product.metafields.custom.grillbot_reviews.value
+      | default: product.metafields.custom.grillbot_reviews
+      | default: product.metafields.custom.product_reviews.value
+      | default: product.metafields.custom.product_reviews
+    -%}
+    {%- if schema_reviews_list != blank -%}
+      {%- for rev in schema_reviews_list -%}
+        {%- assign rev_body = rev.review.value | default: rev.review | default: rev.content.value | default: rev.content | default: rev.text.value | default: rev.text -%}
+        {%- assign rev_author = rev.auth_name.value | default: rev.auth_name | default: rev.name.value | default: rev.name | default: rev.author.value | default: rev.author -%}
+        {%- assign rev_rating = rev.rating.value | default: rev.rating | default: rev.stars.value | default: rev.stars | default: rev.star_rating.value | default: rev.star_rating -%}
+        {%- if rev_body != blank -%}
+          {%- capture rev_body_plain -%}{{ rev_body | metafield_tag | default: rev_body | strip_html | strip }}{%- endcapture -%}
+          {%- if rev_body_plain != blank -%}
+            {%- unless review_schema_first -%},{%- endunless -%}
+            {%- assign review_schema_first = false -%}
+            {
+              "@type": "Review",
+              "author": {
+                "@type": "Person",
+                "name": {{ rev_author | default: 'Customer' | json }}
+              },
+              "reviewBody": {{ rev_body_plain | json }}
+              {%- if rev_rating != blank -%}
+                {%- assign rev_rating_num = rev_rating | plus: 0 -%}
+                {%- if rev_rating_num > 0 -%}
+                  ,"reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": {{ rev_rating_num | json }},
+                    "bestRating": {{ rating_max | default: 5 | json }},
+                    "worstRating": {{ rating_min | default: 1 | json }}
+                  }
+                {%- endif -%}
+              {%- endif -%}
+            }
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- assign schema_review_mo = product.metafields.custom.grillbot_review_section.value
+      | default: product.metafields.custom.grillbot_review.value
+      | default: product.metafields.custom.main_review.value
+    -%}
+    {%- if schema_review_mo != blank -%}
+      {%- assign rev_body = schema_review_mo.review.value | default: schema_review_mo.review | default: schema_review_mo.content.value | default: schema_review_mo.content -%}
+      {%- assign rev_author = schema_review_mo.auth_name.value | default: schema_review_mo.auth_name | default: schema_review_mo.name.value | default: schema_review_mo.name -%}
+      {%- assign rev_rating = schema_review_mo.rating.value | default: schema_review_mo.rating | default: schema_review_mo.star_rating.value | default: schema_review_mo.star_rating -%}
+      {%- if rev_body != blank -%}
+        {%- capture rev_body_plain -%}{{ rev_body | metafield_tag | default: rev_body | strip_html | strip }}{%- endcapture -%}
+        {%- if rev_body_plain != blank -%}
+          {%- unless review_schema_first -%},{%- endunless -%}
+          {%- assign review_schema_first = false -%}
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": {{ rev_author | default: 'Customer' | json }}
+            },
+            "reviewBody": {{ rev_body_plain | json }}
+            {%- if rev_rating != blank -%}
+              {%- assign rev_rating_num = rev_rating | plus: 0 -%}
+              {%- if rev_rating_num > 0 -%}
+                ,"reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": {{ rev_rating_num | json }},
+                  "bestRating": {{ rating_max | default: 5 | json }},
+                  "worstRating": {{ rating_min | default: 1 | json }}
+                }
+              {%- elsif has_aggregate_rating -%}
+                ,"reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": {{ rating_value | json }},
+                  "bestRating": {{ rating_max | json }},
+                  "worstRating": {{ rating_min | json }}
+                }
+              {%- endif -%}
+            {%- elsif has_aggregate_rating -%}
+              ,"reviewRating": {
+                "@type": "Rating",
+                "ratingValue": {{ rating_value | json }},
+                "bestRating": {{ rating_max | json }},
+                "worstRating": {{ rating_min | json }}
+              }
+            {%- endif -%}
+          }
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture main_entity_microdata -%}
+    "@type": "Product",
+    "@id": {{ product_url | json }},
+    "productID": {{ product.id | json }},
+    "name": {{ schema_product_name | json }},
+    "description": {{ schema_description | strip | json }},
+    "url": {{ product_url | json }},
+    "sku": {{ product.selected_or_first_available_variant.sku | json }},
+    "category": {{ product.type | json }},
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | json }}
+    },
+    "image": [
+      {%- assign image_first = true -%}
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          {%- unless image_first -%},{%- endunless -%}
+          {%- assign image_first = false -%}
+          {
+            "@type": "ImageObject",
+            "url": "https:{{ media | image_url: width: 1200 }}",
+            "contentUrl": "https:{{ media | image_url: width: 1200 }}",
+            "name": {{ media.alt | default: schema_product_name | json }},
+            "width": {{ media.width | default: 1200 | json }},
+            "height": {{ media.height | default: 1200 | json }}
+          }
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if image_first and product.featured_image != blank -%}
+        {
+          "@type": "ImageObject",
+          "url": "https:{{ product.featured_image | image_url: width: 1200 }}",
+          "contentUrl": "https:{{ product.featured_image | image_url: width: 1200 }}",
+          "name": {{ product.featured_image.alt | default: schema_product_name | json }},
+          "width": {{ product.featured_image.width | default: 1200 | json }},
+          "height": {{ product.featured_image.height | default: 1200 | json }}
+        }
+      {%- elsif image_first and page_image != blank -%}
+        {
+          "@type": "ImageObject",
+          "url": "https:{{ page_image | image_url: width: 1200 }}",
+          "contentUrl": "https:{{ page_image | image_url: width: 1200 }}",
+          "name": {{ page_image.alt | default: schema_product_name | json }},
+          "width": {{ page_image.width | default: 1200 | json }},
+          "height": {{ page_image.height | default: 1200 | json }}
+        }
+      {%- endif -%}
+    ],
+    "offers": [
+      {%- for variant in product.variants -%}
+        {%- assign is_barcode_available = false -%}
+        {%- assign is_valid_gtin_length = false -%}
+        {%- assign gtin_option = 'gtin' -%}
+        {%- if variant.barcode != blank -%}
+          {%- assign is_barcode_available = true -%}
+          {%- assign gtin_string_length = variant.barcode | size -%}
+          {%- if gtin_string_length == 8 or gtin_string_length == 12 or gtin_string_length == 13 or gtin_string_length == 14 -%}
+            {%- assign is_valid_gtin_length = true -%}
+            {%- assign gtin_option = gtin_option | append: gtin_string_length -%}
+          {%- endif -%}
+        {%- endif -%}
+        {
+          "@type": "Offer",
+          "name": {{ variant.title | json }},
+          "sku": {{ variant.sku | json }},
+          "price": {{ variant.price | divided_by: 100.0 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "availability": {%- if variant.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
+          "itemCondition": "https://schema.org/NewCondition",
+          "priceValidUntil": "{{ 'now' | date: '%s' | plus: days_product_price_valid_until | date: '%Y-%m-%d' }}",
+          {%- if is_barcode_available and is_valid_gtin_length -%}
+            "{{ gtin_option }}": {{ variant.barcode | json }},
+          {%- elsif is_barcode_available -%}
+            "mpn": {{ variant.barcode | json }},
+          {%- endif -%}
+          "url": {{ product_url | append: '?variant=' | append: variant.id | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+    {%- if has_aggregate_rating -%}
+      ,"aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ rating_value | json }},
+        "reviewCount": {{ review_count | json }},
+        "bestRating": {{ rating_max | json }},
+        "worstRating": {{ rating_min | json }}
+      }
+    {%- endif -%}
+    {%- if review_schema_items != blank -%}
+      ,"review": [{{ review_schema_items }}]
+    {%- endif -%}
+  {%- endcapture -%}
+{%- elsif request.page_type == 'article' -%}
+  {%- capture main_entity_microdata -%}
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "{{ article.url }}",
+    "articleSection": {{ blog.title | json }},
+    "keywords": "{{ article.tags | join: ', ' }}",
+    "headline": {{ article.title | json }},
+    "description": {{ article.excerpt_or_content | strip_html | truncatewords: 25 | json }},
+    "dateCreated": "{{ article.created_at | date: '%Y-%m-%dT%T' }}",
+    "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%T' }}",
+    "dateModified": "{{ article.published_at | date: '%Y-%m-%dT%T' }}",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:{{ page_image | image_url: width: 1024 }}",
+      "image": "https:{{ page_image | image_url: width: 1024 }}",
+      "name": {{ page_image.alt | json }},
+      "width": "1024",
+      "height": "1024"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "{{ article.user.first_name | escape }} {{ article.user.last_name | escape }}",
+      "givenName": {{ article.user.first_name | json }},
+      "familyName": {{ article.user.last_name | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }}
+    },
+    "commentCount": {{ article.comments_count }},
+    "comment": [
+      {%- for comment in article.comments limit: 5 -%}
+        {
+          "@type": "Comment",
+          "author": {{ comment.author | json }},
+          "datePublished": "{{ comment.created_at | date: '%Y-%m-%dT%T' }}",
+          "text": {{ comment.content | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  {%- endcapture -%}
+{%- endif -%}
+
+{%- capture breadcrumb_entity_microdata -%}
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ 'general.breadcrumb.home' | t | json }},
+      "item": "{{ shop.url }}"
+    }
+
+    {%- if request.page_type == 'product' -%}
+      {%- if collection -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": "{{ shop.url }}{{ collection.url }}"
+        }, {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ product.title | json }},
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+      {%- else -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ product.title | json }},
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+      {%- endif -%}
+    {%- elsif request.page_type == 'collection' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ collection.title | json }},
+          "item": "{{ shop.url }}{{ collection.url }}"
+        }
+    {%- elsif request.page_type == 'blog' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ blog.title | json }},
+          "item": "{{ shop.url }}{{ blog.url }}"
+        }
+    {%- elsif request.page_type == 'article' -%}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ blog.title | json }},
+          "item": "{{ shop.url }}{{ blog.url }}"
+        }, {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ blog.title | json }},
+          "item": "{{ shop.url }}{{ article.url }}"
+        }
+    {%- elsif request.page_type == 'page' -%}
+       ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page.title | json }},
+          "item": "{{ shop.url }}{{ page.url }}"
+        }
+    {%- endif -%}
+  ]
+{%- endcapture -%}
+
+{% if main_entity_microdata != blank %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    {{ main_entity_microdata }}
+  }
+  </script>
+{% endif %}
+
+{% if breadcrumb_entity_microdata != blank %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    {{ breadcrumb_entity_microdata }}
+  }
+  </script>
+{% endif %}
+
+{%- if request.page_type == 'index' -%}
+  {%- assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | append: page.url | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+{%- endif -%}

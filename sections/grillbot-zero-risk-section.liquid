@@ -1,0 +1,263 @@
+{%- comment -%}
+  Grillbot — Zero Risk Section (metaobject driven)
+
+  Product metafield (namespace: custom):
+  - grillbot_zero_risk_section (Metaobject - single)
+
+  Metaobject fields expected:
+  - main_image (File/Image)
+  - mobile_image (File/Image)
+  - subheading (Single line text)
+  - heading (Single line text)
+  - content (Multi-line text)
+  - warenty_icon (File/Image) / warranty_icon (File/Image)
+  - warenty_text (Single line text) / warranty_text (Single line text)
+{%- endcomment -%}
+
+{%- assign zr_mo = product.metafields.custom.grillbot_zero_risk_section.value
+  | default: product.metafields.custom.grillbot_zero_risk_section
+-%}
+ 
+{%- if request.page_type == 'product' and product != blank and zr_mo != blank -%}
+  {%- assign zr_main_image = zr_mo.main_image.value | default: zr_mo.main_image -%}
+  {%- assign zr_mobile_image = zr_mo.mobile_image.value | default: zr_mo.mobile_image -%}
+  {%- assign zr_subheading = zr_mo.subheading.value | default: zr_mo.subheading -%}
+  {%- assign zr_heading = zr_mo.heading.value | default: zr_mo.heading -%}
+  {%- assign zr_content = zr_mo.content.value | default: zr_mo.content -%}
+  {%- assign zr_w_icon = zr_mo.warenty_icon.value
+    | default: zr_mo.warenty_icon
+    | default: zr_mo.warranty_icon.value
+    | default: zr_mo.warranty_icon
+  -%}
+  {%- assign zr_w_text = zr_mo.warenty_text.value
+    | default: zr_mo.warenty_text
+    | default: zr_mo.warranty_text.value
+    | default: zr_mo.warranty_text
+  -%}
+
+  {%- if zr_mobile_image == blank -%}
+    {%- assign zr_mobile_image = zr_main_image -%}
+  {%- endif -%}
+
+  {%- assign zr_main_render = zr_main_image -%}
+  {%- if zr_main_image != blank and zr_main_image.preview_image != blank -%}
+    {%- assign zr_main_render = zr_main_image.preview_image -%}
+  {%- endif -%}
+
+  {%- assign zr_mobile_render = zr_mobile_image -%}
+  {%- if zr_mobile_image != blank and zr_mobile_image.preview_image != blank -%}
+    {%- assign zr_mobile_render = zr_mobile_image.preview_image -%}
+  {%- endif -%}
+
+  {%- assign zr_w_icon_render = zr_w_icon -%}
+  {%- if zr_w_icon != blank and zr_w_icon.preview_image != blank -%}
+    {%- assign zr_w_icon_render = zr_w_icon.preview_image -%}
+  {%- endif -%} 
+
+  {%- if zr_main_render != blank or zr_heading != blank or zr_subheading != blank or zr_content != blank -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .hb-zero-risk {
+        background: {{ section.settings.background }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__card {
+        position: relative;
+        border-radius: 0;
+        overflow: hidden;
+        background: {{ section.settings.card_background }};
+        border: 0;
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__media {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1440 / 548;
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__media img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center; 
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__overlay {
+        position: absolute;
+        inset: 0;
+        padding-top: {{ section.settings.padding_desktop_top }}px;
+        padding-bottom: {{ section.settings.padding_desktop_bottom }}px;
+        box-sizing: border-box;
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__content {
+        text-align: center;
+        max-width: 980px;
+        margin: 0 auto;
+        color: {{ section.settings.text_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__subheading {
+        display: inline-block;
+        margin: 0 0 16px;
+        padding: 3px 21px;
+        border-radius: 4px;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 550;
+        background: {{ section.settings.subheading_bg }};
+        color: {{ section.settings.subheading_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__heading {
+        margin: 0 0 8px;
+        font-family: Anton, sans-serif !important;
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 60px;
+        text-transform: uppercase;
+        color: {{ section.settings.heading_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__lead {
+        margin: 0 0 16px;
+        font-size: 20px;
+        line-height: 28px;
+        color: {{ section.settings.text_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__warranty {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 22px; 
+        line-height: 26px;
+        font-weight: 700;
+        color: {{ section.settings.warranty_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__warranty img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .hb-zero-risk__mobile {
+        display: none;
+      }
+
+      @media screen and (max-width: 991px) {
+        #shopify-section-{{ section.id }} .hb-zero-risk__overlay {
+          padding-top: {{ section.settings.padding_mobile_top }}px;
+          padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-zero-risk__media {
+          display: none;
+        }
+        #shopify-section-{{ section.id }} .hb-zero-risk__mobile {
+          display: block;
+          aspect-ratio: 991 / 566;
+          max-height: 566px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-zero-risk__heading {
+          font-size: 36px;
+          line-height: 44px;
+
+        }
+        #shopify-section-{{ section.id }} .hb-zero-risk__lead {
+          margin: 0 0 12px;
+        }
+        #shopify-section-{{ section.id }} .hb-zero-risk__subheading {
+          margin: 0 0 12px;
+        }
+        #shopify-section-{{ section.id }} .hb-zero-risk__warranty {
+          font-size: 20px;
+        }
+        #shopify-section-{{ section.id }} .hb-zero-risk__warranty img {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      @media screen and (max-width: 425px){
+        #shopify-section-{{ section.id }} .hb-zero-risk__warranty {
+          font-size: 18px;
+        }
+      }
+    {% endstyle %}
+
+    <section class="hb-zero-risk shopify-section--{{ section.id }}" aria-label="Zero risk">
+      <div class="hb-zero-risk__card">
+        <div class="hb-zero-risk__media" aria-hidden="true">
+          {%- if zr_main_render != blank -%}
+            {{ zr_main_render | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '800,1200,1440,1920,2400', sizes: '100vw', alt: 'Zero Risk Image' }}
+          {%- endif -%}
+        </div>
+        <div class="hb-zero-risk__overlay">
+          <div class="container">
+            <div class="hb-zero-risk__content">
+              {%- if zr_subheading != blank -%}
+                <div class="hb-zero-risk__subheading">{{ zr_subheading | escape }}</div>
+              {%- endif -%}
+              {%- if zr_heading != blank -%}
+                <h2 class="hb-zero-risk__heading">{{ zr_heading | escape }}</h2>
+              {%- endif -%}
+              {%- if zr_content != blank -%}
+                <p class="hb-zero-risk__lead">{{ zr_content | escape | newline_to_br }}</p>
+              {%- endif -%}
+              {%- if zr_w_text != blank or zr_w_icon_render != blank -%}
+                <div class="hb-zero-risk__warranty">
+                  {%- if zr_w_icon_render != blank -%}
+                    {{ zr_w_icon_render | image_url: width: 48 | image_tag: loading: 'lazy', widths: '16,24,32,48', sizes: '16px', alt: '' }}
+                  {%- endif -%}
+                  {%- if zr_w_text != blank -%}
+                    <span>{{ zr_w_text | escape }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+        {%- if zr_mobile_render != blank -%}
+          <div class="hb-zero-risk__mobile" aria-hidden="true">
+            {{ zr_mobile_render | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600,800,1000,1400', sizes: '100vw', alt: '' }}
+          </div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GB - Zero risk",
+  "class": "shopify-section--grillbot-zero-risk",
+  "disabled_on": { "templates": ["password"] },
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 1, "step": 0.1, "default": 0.4 },
+
+    { "type": "color", "id": "subheading_bg", "label": "Subheading background", "default": "#B6D22F" },
+    { "type": "color", "id": "subheading_color", "label": "Subheading text color", "default": "#080808" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Content text color", "default": "#ffffff" },
+    { "type": "color", "id": "warranty_color", "label": "Warranty text color", "default": "#B6D22F" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_desktop_top", "label": "Padding top (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_desktop_bottom", "label": "Padding bottom (desktop)", "min": 0, "max": 240, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_mobile_top", "label": "Padding top (mobile)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_mobile_bottom", "label": "Padding bottom (mobile)", "min": 0, "max": 180, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [
+    { "name": "GB - Zero risk", "category": "Custom" }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,407 @@
+
+<div class="section video-with-text-overlay">
+  <div class="{% if section.settings.section-width == 'full_width' %}contain{% endif %} {% if section.settings.section-width == 'page-width' %}page-width{% endif %} {% if section.settings.section-width == 'container' %}container{% endif %}">
+    <div class="video_section">
+      <div class="video_block">
+        {% if section.settings.video_type == 'video' %}
+          <video class="mob_height" autoplay loop muted width="100%" style="height: {{ section.settings.youtube_height }}px;">
+            <source type="video/mp4" src="{{ section.settings.video }}">
+          </video>
+        {% endif %}
+        {% if section.settings.video_type == 'youtube' %}
+          <iframe class="mob_height" width="100%" height="{{ section.settings.youtube_height }}" src="{{ section.settings.iframe }}" allow="autoplay" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen allowtransparency></iframe>
+        {% endif %}
+      </div>
+      {% if section.settings.show_text %}
+      <div class="text_section">
+        <div class="{% if section.settings.overlay %}inner_background{% endif %} under_bg">
+          <h2 class="pp-heading-wrap">{{ section.settings.text }}</h2>
+          <div class="pp-content-wrap">{{ section.settings.content }}</div>
+          <div class="button-wrap_text">
+            {% if section.settings.button_text != blank %}
+              <a class="pp-button-wrap" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+            {% endif %}
+            {% if section.settings.button_text2 != blank %}
+              <a class="pp-button-wrap" href="{{ section.settings.button_link2 }}">{{ section.settings.button_text2 }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .contain {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .section.video-with-text-overlay {
+    margin: 0;
+  }
+  .video_block video {
+    object-fit: cover;
+    display: block;
+  }
+  .text_section h2 {
+    text-transform: uppercase;
+    font-size: 40px;
+    line-height: 50px;
+  }
+  .text_section div {
+    font-size: 18px;
+    line-height: 25px;
+  }
+  .video_section {
+    position: relative;
+  }
+  .under_bg {
+    padding: 100px 50px;
+  }
+  {% if section.settings.over_color == 'white' %}
+    .inner_background {
+      background: #ffffff80;
+    }
+    .color_over {
+      color: #000 !important;
+    }
+  {% endif %}
+  {% if section.settings.over_color == 'black' %}
+    .inner_background {
+      background: #00000080;
+    }
+    .color_over {
+      color: #fff !important;
+    }
+  {% endif %}
+
+  .text_section {
+    position: absolute;
+    text-align: center;
+
+    {% if section.settings.section-width == 'full_width' %}
+      width: 50%;
+    {% endif %}
+    {% if section.settings.section-width == 'page-width' %}
+      width: 50%;
+    {% endif %}
+    {% if section.settings.section-width == 'container' %}
+      width: 45%;
+    {% endif %}
+
+    {% if section.settings.text_position == 'center' %}
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      left: 50%;
+    {% endif %}
+    {% if section.settings.text_position == 'top_left' %}
+      top: 0;
+      transform: none;
+      left: 0;
+    {% endif %}
+    {% if section.settings.text_position == 'top_center' %}
+      top: 0;
+      transform: translateX(-50%);
+      left: 50%;
+    {% endif %}
+    {% if section.settings.text_position == 'top_right' %}
+      top: 0;
+      transform: none;
+      right: 0;
+    {% endif %}
+    {% if section.settings.text_position == 'bottom_left' %}
+      bottom: 0;
+      transform: none;
+      left: 0;
+    {% endif %}
+    {% if section.settings.text_position == 'bottom_center' %}
+      bottom: 0;
+      transform: translateX(-50%);
+      left: 50%;
+    {% endif %}
+    {% if section.settings.text_position == 'bottom_right' %}
+      bottom: 0;
+      transform: none;
+      right: 0;
+    {% endif %}
+  }
+  .pp-content-wrap p {
+    font-size: 30px;
+    line-height: 1;
+    color: {{ section.settings.content_color }};
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .pp-heading-wrap {
+    color: {{ section.settings.heading_color }};
+  }
+  .pp-button-wrap {
+    color: {{ section.settings.button_color }};
+  }
+  .button-wrap_text {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+  a.pp-button-wrap {
+    border: 2px solid #fff;
+    font-size: 30px;
+    padding: 15px 30px;
+    text-decoration: none;
+    display: block;
+    max-width: fit-content;
+  }
+  .text_section h2.pp-heading-wrap {
+    text-transform: uppercase;
+    font-size: 50px;
+    line-height: 50px;
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+  @media only screen and (max-width: 1200px) {
+    .mob_height {
+      height: 800px !important;
+    }
+    .text_section {
+      width: 75%;
+    }
+    .under_bg {
+      padding: 60px 25px;
+    }
+    .pp-content-wrap p {
+      font-size: 25px;
+    }
+    a.pp-button-wrap {
+      font-size: 22px;
+      padding: 10px 22px;
+    }
+    .text_section h2.pp-heading-wrap {
+      font-size: 40px;
+    }
+  
+  }
+  @media only screen and (max-width: 767px) {
+    .text_section {
+      width: 100%;
+      max-width: 50rem;
+      transform: translateY(-50%) translateX(-50%);
+      top: 50%;
+      left: 50%;
+    }
+    .under_bg {
+      padding: 30px 25px;
+    }
+    .mob_height {
+      height: 500px !important;
+    }
+    .pp-content-wrap p {
+      font-size: 18px;
+    }
+    .text_section h2.pp-heading-wrap {
+      font-size: 30px;
+      line-height: 40px;
+      margin-bottom: 20px;
+    }
+    a.pp-button-wrap {
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "Video With Text",
+    "settings": [
+      {
+        "type": "select",
+        "id": "video_type",
+        "options": [
+          {
+            "value": "video",
+            "label": "Video"
+          },
+          {
+            "value": "youtube",
+            "label": "Iframe Link"
+          }
+        ],
+        "default": "video",
+        "label": "Video Type"
+      },
+      {
+        "type": "text",
+        "id": "video",
+        "label": "Video Url"
+      },
+      {
+        "type": "text",
+        "id": "iframe",
+        "label": "Iframe Link",
+        "info": "Add link youtube iframe or vimeo iframe here"
+      },
+      {
+        "type": "range",
+        "id": "youtube_height",
+        "label": "Video Height",
+        "min": 500,
+        "max": 1200,
+        "default": 800,
+        "step": 50,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Add Text"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Add Content"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+      },
+      {
+        "type": "text",
+        "id": "button_text2",
+        "label": "Second Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_link2",
+        "label": "Second Button Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_text",
+        "label": "Show Text",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "options": [
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "top_left",
+            "label": "Top Left"
+          },
+          {
+            "value": "top_center",
+            "label": "Top Center"
+          },
+          {
+            "value": "top_right",
+            "label": "Top Right"
+          },
+          {
+            "value": "bottom_left",
+            "label": "Bottom Left"
+          },
+          {
+            "value": "bottom_center",
+            "label": "Bottom Center"
+          },
+          {
+            "value": "bottom_right",
+            "label": "Bottom Right"
+          }
+        ],
+        "default": "center",
+        "label": "Text Box Position"
+      },
+      {
+        "type": "checkbox",
+        "id": "overlay",
+        "label": "Text Background Overlay",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "over_color",
+        "options": [
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "black",
+            "label": "Black"
+          }
+        ],
+        "default": "white",
+        "label": "Overlay Color"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "Content Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "button_color",
+        "label": "Button Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "select",
+        "id": "section-width",
+        "options": [
+          {
+            "value": "full_width",
+            "label": "Full Width"
+          },
+          {
+            "value": "page-width",
+            "label": "Page Width"
+          },
+          {
+            "value": "container",
+            "label": "Container"
+          }
+        ],
+        "default": "full_width",
+        "label": "Section Width",
+        "info": "You can adjust section width by yourself"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video With Text"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,9 @@
+{%- comment -%}
+  Renders FBT product slides. Accepts: products (array of product objects)
+{%- endcomment -%}
+{%- for p in products -%}
+    {%- if p != blank -%}
+      {%- render 'hb-fbt-product-card', product: p -%}
+    {%- endif -%}
+  {%- endfor -%}
+  

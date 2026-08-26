@@ -1,0 +1,642 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-accent-background: {{ section.settings.accent_background.red }} {{ section.settings.accent_background.green }} {{ section.settings.accent_background.blue }} / {{ section.settings.accent_background.alpha }};
+    --section-autoplay-duration: {{ section.settings.cycle_speed }}s;
+    --section-animation-play-state: paused;
+  }
+
+  {%- if section.settings.background_overlap != 'both' -%}
+    /* We have to remove some extra spacing adding in non-overlap mode */
+    @media screen and (max-width: 999px) {
+      {%- if section.settings.background_overlap == 'image' -%}
+        {%- unless is_boxed -%}
+          #shopify-section-{{ section.id }} .section {
+            margin-top: 0;
+          }
+
+          #shopify-section-{{ section.id }} .image-with-text {
+            margin-bottom: calc(-1 * var(--vertical-breather)) !important;
+          }
+        {%- else -%}
+          #shopify-section-{{ section.id }} .image-with-text {
+            margin-bottom: calc(-1 * var(--container-gutter)) !important;
+          }
+        {%- endunless -%}
+      {%- elsif section.settings.background_overlap == 'text' -%}
+        {%- unless is_boxed -%}
+          #shopify-section-{{ section.id }} .section {
+            margin-bottom: 0;
+          }
+
+          #shopify-section-{{ section.id }} .image-with-text {
+            margin-top: calc(-1 * var(--vertical-breather)) !important;
+          }
+        {%- else -%}
+          #shopify-section-{{ section.id }} .image-with-text {
+            margin-top: calc(-1 * var(--container-gutter)) !important;
+          }
+        {%- endunless -%}
+      {%- endif -%}
+    }
+  {%- endif -%}
+
+{% if section.settings.bg_image != blank %}
+  #shopify-section-{{ section.id }} .home-image-with-text image-with-text
+  {
+    background:url('{{section.settings.bg_image | img_url:'original'}}');
+  }
+{% endif %}
+</style>
+
+<section class="home-image-with-text section{% if section.settings.background_overlap == 'both' and is_boxed == false %} section--flush{% endif %} shopify-section--{{ section.id }}">
+  <div {% if is_boxed %}class="container"{% endif %}>
+    {%- assign first_block = section.blocks.first -%}
+
+    <image-with-text {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="image-with-text {% if is_boxed %}image-with-text--boxed{% endif %} {% if section.settings.image_position == 'right' %}image-with-text--reverse{% elsif section.settings.image_position == 'left' %}image-with-text--undo-reverse{% endif %} image-with-text--overlap-{{ section.settings.background_overlap }}" style="--image-aspect-ratio: {{ first_block.settings.image.aspect_ratio | default: 1 }}; --image-max-height: {{ first_block.settings.image.height }}px">
+      <div class="{% unless is_boxed %}container{% endunless %}">
+        <div class="image-with-text__wrapper">
+          {%- assign first_image_aspect_ratio = first_block.settings.image.aspect_ratio | default: 1 -%}
+          {%- assign image_count = 0 -%}
+
+          <div class="image-with-text__image-wrapper">
+            {%- for block in section.blocks -%}
+              {%- if block.settings.image != blank -%}
+                {%- capture id_attribute -%}block-{{ block.id }}-{{ block.settings.image.id }}{%- endcapture -%}
+                {%- assign is_hidden = true -%}
+
+                {%- if image_count == 0 -%}
+                  {%- assign is_hidden = false -%}
+                {%- endif -%}
+
+                <div class="block-image_inner">
+                {% if block.settings.media_type == 'image' %}
+                  {%- if section.settings.reveal_on_scroll -%}
+                    {%- if is_hidden -%}
+                      {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: id: id_attribute, loading: 'lazy', sizes: '(max-width: 740px) calc(100vw - 96px), (max-width: 999px) calc(100vw - 160px), 600px', widths: '600,700,800,1000,1200,1400', reveal-visibility: true, hidden: true, class: 'image-with-text__image' -}}
+                    {%- else -%}
+                      {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: id: id_attribute, loading: 'lazy', sizes: '(max-width: 740px) calc(100vw - 96px), (max-width: 999px) calc(100vw - 160px), 600px', widths: '600,700,800,1000,1200,1400', reveal-visibility: true, class: 'image-with-text__image' -}}
+                    {%- endif -%}
+                  {%- else -%}
+                    {%- if is_hidden -%}
+                      {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: id: id_attribute, loading: 'lazy', sizes: '(max-width: 740px) calc(100vw - 96px), (max-width: 999px) calc(100vw - 160px), 600px', widths: '600,700,800,1000,1200,1400', hidden: true, class: 'image-with-text__image' -}}
+                    {%- else -%}
+                      {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: id: id_attribute, loading: 'lazy', sizes: '(max-width: 740px) calc(100vw - 96px), (max-width: 999px) calc(100vw - 160px), 600px', widths: '600,700,800,1000,1200,1400', class: 'image-with-text__image' -}}
+                    {%- endif -%}
+                  {%- endif -%}
+                {% elsif block.settings.media_type == 'video' %}
+                  <video autobuffer autoplay loop muted playsinline style="width: 100%">
+                    <source src="{{ block.settings.video }}" type="video/mp4">
+                  </video>
+                {% endif %}
+                </div>
+                
+                {% if block.settings.content_below_image != blank %}
+                <div class="content_below_image" style="color: {{ block.settings.content_below_color }}">
+                {{ block.settings.content_below_image }}
+                </div>
+                {% endif %}
+                
+                {%- if block.settings.button_text_1 != blank -%}
+                <div class="button_below_image">
+                  <div class="button-wrapper">
+                  <a href="{{ block.settings.button_link_1 }}" class="button button--primary" style="background: {{ block.settings.btn_bg_color }}; color: {{ block.settings.btn_txt_color }};">{{ block.settings.button_text_1 }}</a>
+                  </div>
+                </div>
+                {%- endif -%}
+
+                {%- assign image_count = image_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if image_count == 0 -%}
+              {%- if section.settings.reveal_on_scroll -%}
+                {{- 'image' | placeholder_svg_tag: 'image-with-text__image placeholder-background' | replace: '<svg', '<svg reveal-visibility' -}}
+              {%- else -%}
+                {{- 'image' | placeholder_svg_tag: 'image-with-text__image placeholder-background' -}}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          <div class="image-with-text__content-wrapper">
+            <div class="image-with-text__content-list">
+              {%- for block in section.blocks -%}
+                <image-with-text-item {% if block.settings.image != blank and image_count > 1 %}attached-image="block-{{ block.id }}-{{ block.settings.image.id }}"{% endif %} {% unless forloop.first %}hidden{% endunless %} class="image-with-text__content text-container text--{{ section.settings.text_alignment }}" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="heading h3" 
+                        style="color: {{ block.settings.heading_color }}; 
+                               text-align: {% if block.settings.text_alignment_heading == 'left' %}left
+                                           {% elsif block.settings.text_alignment_heading == 'center' %}center
+                                           {% elsif block.settings.text_alignment_heading == 'right' %}right{% endif %}">
+                      {{ block.settings.title  }}
+                    </h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.subheading != blank -%}
+                    <h2 class="heading heading--small"
+                        style="color: {{ block.settings.heading_color }}; 
+                               text-align: {% if block.settings.text_alignment_heading == 'left' %}left
+                                           {% elsif block.settings.text_alignment_heading == 'center' %}center
+                                           {% elsif block.settings.text_alignment_heading == 'right' %}right{% endif %}">
+                      <split-lines {% if section.settings.reveal_on_scroll or forloop.first != true %}reveal{% endif %}>{{ block.settings.subheading | escape }}</split-lines>
+                    </h2>
+                  {%- endif -%}
+
+                  <div class="image-with-text__text-wrapper" {% if section.settings.reveal_on_scroll or forloop.first != true %}reveal{% endif %}>
+                    {%- if block.settings.content != blank -%}
+                      {{- block.settings.content -}}
+                    {%- endif -%}
+
+                    {%- if block.settings.button_text != blank -%}
+                      <div class="button-wrapper">
+                        <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_text }}</a>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </image-with-text-item>
+
+              
+              {% capture social-gift-icons %}{% if block.settings.enable_block_icons %}
+              <div class="social-gift-icons">
+                {% for i in (1..4) %}
+                  {% assign svg_icon_key = "svg_icon_" | append:i %}
+                  {% assign svg_text_key = "svg_text_" | append:i %}
+                  {% assign svg_link_key = "svg_link_" | append:i %}
+                  {% if block.settings[svg_icon_key] != blank and block.settings[svg_text_key] != blank %}
+                    <div class="single_icon_area">
+                      {% if block.settings[svg_link_key] != blank %}<a href="{{ block.settings[svg_link_key]}}">{% endif %}
+                        <span><img src="{{ block.settings[svg_icon_key] | img_url:'original' }}"></span>
+                      <span>{{ block.settings[svg_text_key]}}</span>
+                      {% if block.settings[svg_link_key] != blank %}</a>{% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              {% endif %}{% endcapture %}
+              
+                
+              {%- endfor -%}
+            </div>
+
+            {{ social-gift-icons }}
+
+            {%- comment -%}If we have two blocks we show the navigation{%- endcomment -%}
+            {%- if section.blocks.size > 1 -%}
+              <page-dots animation-timer class="image-with-text__navigation">
+                {%- for block in section.blocks -%}
+                  <button type="button" class="image-with-text__navigation-item" {% if forloop.first %}aria-current="true"{% endif %}>
+                    <span class="heading heading--small">{{- block.settings.tab_label | escape -}}</span>
+                  </button>
+                {%- endfor -%}
+              </page-dots>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </image-with-text>
+  </div>
+  {% if section.settings.animation_fire != blank %}
+    <div class="effect-fire-box"><img src="{{ section.settings.animation_fire | img_url: '' }}"/></div>
+  {% endif %}
+  
+  {% if section.settings.animation_smoke != blank %}
+    <div class="effect-smoke-box"><img src="{{ section.settings.animation_smoke | img_url: '' }}"/></div>
+  {% endif %}
+</section>
+
+<style>
+.shopify-section--{{ section.id }}.home-image-with-text {
+    position: relative;
+}
+.shopify-section--{{ section.id }} .effect-smoke-box img,
+.shopify-section--{{ section.id }} .effect-fire-box img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.shopify-section--{{ section.id }} .effect-smoke-box {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 50%;
+    width: 100%;
+    transform: rotate(180deg);
+}
+.shopify-section--{{ section.id }} .effect-fire-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 25%;
+    -webkit-box-reflect: right;
+    height: 100%;
+}
+@media only screen and (max-width: 740px) {
+  .shopify-section--{{ section.id }} .effect-fire-box {
+    max-width: 100%;
+    -webkit-box-reflect: unset;
+    height: auto;
+  }
+  .shopify-section--{{ section.id }} .effect-smoke-box {
+    bottom: 50%;
+    max-width: 100%;
+  }
+}
+</style>
+{% schema %}
+{
+  "name": "Home - Image with text",
+  "class": "shopify-section--image-with-text",
+  "max_blocks": 2,
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal_on_scroll",
+      "label": "Reveal on scroll",
+      "info": "Show animation when section becomes visible.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "background_overlap",
+      "label": "Background overlap",
+      "info": "Add an accent background color below.",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "both",
+          "label": "Both"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Desktop image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "label": "Change text every",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "accent_background",
+      "label": "Accent background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "image_picker",
+      "id": "animation_smoke",
+      "label": "Animation Smoke Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "animation_fire",
+      "label": "Animation Fire Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1400 x 1400px .jpg recommended"
+        },
+        {
+          "type": "text",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type":"header",
+          "content":"Content Below Image"
+        },
+        {
+          "type": "textarea",
+          "id": "content_below_image",
+          "label": "Content"
+        },
+        {
+          "type": "color",
+          "id": "content_below_color",
+          "label": "Content Color",
+          "default": "#ffffff"
+        },
+        {
+          "type":"header",
+          "content":"Button Below Image"
+        },
+        {
+          "type": "text",
+          "id": "button_text_1",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "btn_txt_color",
+          "label": "Button Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "btn_bg_color",
+          "label": "Button Background",
+          "default": "#000000"
+        },
+        {
+          "type":"header",
+          "content":"Other Side"
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "info": "Only shown if 2 text blocks are set",
+          "default": "Item"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "html",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image with text"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment_heading",
+          "label": "Heading Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Use image with text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type":"header",
+          "content":"Block Icons"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_block_icons",
+          "label": "Enable Block Icons",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "svg_icon_1",
+          "label": "SVG Icon 1",
+          "info": "48 x 48px .svg recommended"
+        },
+        {
+          "type": "text",
+          "id": "svg_text_1",
+          "label": "SVG Text 1"
+        },
+        {
+          "type":"url",
+          "id":"svg_link_1",
+          "label":"Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "svg_icon_2",
+          "label": "SVG Icon 2",
+          "info": "48 x 48px .svg recommended"
+        },
+        {
+          "type": "text",
+          "id": "svg_text_2",
+          "label": "SVG Text 2"
+        },
+        {
+          "type":"url",
+          "id":"svg_link_2",
+          "label":"Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "svg_icon_3",
+          "label": "SVG Icon 3",
+          "info": "48 x 48px .svg recommended"
+        },
+        {
+          "type": "text",
+          "id": "svg_text_3",
+          "label": "SVG Text 3"
+        },
+        {
+          "type":"url",
+          "id":"svg_link_3",
+          "label":"Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "svg_icon_4",
+          "label": "SVG Icon 4",
+          "info": "48 x 48px .svg recommended"
+        },
+        {
+          "type": "text",
+          "id": "svg_text_4",
+          "label": "SVG Text 4"
+        },
+        {
+          "type":"url",
+          "id":"svg_link_4",
+          "label":"Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home - Image with text",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,304 @@
+
+
+<section class="icon-bar" style="
+  --pt-desktop: {{ section.settings.padding_top_desktop }}px;
+  --pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  --pt-mobile: {{ section.settings.padding_top_mobile }}px;
+  --pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+">
+  <div class="icon-bar__inner">
+    {% for block in section.blocks %}
+      <div class="icon-bar__item" {{ block.shopify_attributes }}>
+        {% if block.settings.icon != blank %}
+          <div class="icon-bar__icon">
+            <img
+              src="{{ block.settings.icon | image_url: width: 80 }}"
+              alt="{{ block.settings.heading }}"
+              width="40"
+              height="40"
+              loading="lazy"
+            >
+          </div>
+        {% else %}
+          <div class="icon-bar__icon icon-bar__icon--placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+        {% endif %}
+
+        <div class="icon-bar__text">
+          {% if block.settings.heading != blank %}
+            <p class="icon-bar__heading">{{ block.settings.heading }}</p>
+          {% endif %}
+          {% if block.settings.subtext != blank %}
+            <p class="icon-bar__subtext">{{ block.settings.subtext }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+    
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .icon-bar {
+    background: #080808;
+    padding-top: var(--pt-desktop);
+    padding-bottom: var(--pb-desktop);
+    width: 100%;
+  }
+
+  .icon-bar__inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+    gap: 32px;
+  }
+
+  /* Each feature item */
+  .icon-bar__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+ 
+  /* Icon */
+  .icon-bar__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-bar__icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    /* Lime green tint for uploaded icons */
+  }
+
+  /* Placeholder SVG icon color */
+  .icon-bar__icon--placeholder svg {
+    color: #AAFF00;
+    stroke: #AAFF00;
+  }
+
+  /* Text block */
+  .icon-bar__text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .icon-bar__heading {
+  color: var(--white, #FFF);
+font-family: Rubik;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 31px; /* 170% */
+margin-bottom:2px;
+  }
+
+  .icon-bar__subtext {
+   color: var(--white, #FFF);
+font-family: Rubik;
+font-size: 15px;
+font-style: normal;
+font-weight: 400;
+line-height: 22px; /* 146.667% */
+margin:0px;
+  }
+
+  /* Vertical divider between items */
+  .icon-bar__divider {
+    width: 1px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 768px) {
+    .icon-bar {
+      padding-top: var(--pt-mobile);
+      padding-bottom: var(--pb-mobile);
+    }
+
+    .icon-bar__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 8px;
+}
+.icon-bar__icon img {
+    width: 32px;
+}
+
+.icon-bar__heading {
+    font-size: 13px;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    text-transform: capitalize;
+}
+.icon-bar__subtext {
+    font-size: 11px;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+.icon-bar__item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+    
+}
+
+.icon-bar__inner {
+  
+    padding: 0 16px;
+  
+}
+
+   
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Icon Bar",
+  "tag": "section",
+  "class": "icon-bar-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Press. Start. Relax."
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext",
+          "default": "Cleaning begins instantly"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Bar",
+      "blocks": [
+        {
+          "type": "feature_item",
+          "settings": {
+            "heading": "Press. Start. Relax.",
+            "subtext": "Cleaning begins instantly"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "heading": "Relax While It Cleans",
+            "subtext": "Enjoy your time, not the mess"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "heading": "Universal Fit",
+            "subtext": "Works on any grill type"
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "heading": "Forget Scrubbing Forever",
+            "subtext": "Hands-free cleaning, every time"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8
+}
+{% endschema %}

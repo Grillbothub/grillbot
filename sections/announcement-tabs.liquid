@@ -1,0 +1,156 @@
+<style>
+{% if section.settings.sticky_on_contact %}
+  body.contact-us .shopify-section-group-header-group {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+{% endif %}
+</style>
+
+<div class="custom-announcement-bar">
+  <div class="anouncement-tabs">
+    <div class="announce-slide{% if section.settings.enable_slider %} announce_slider{% endif %}">
+      {% for block in section.blocks %}
+      <div class="slide_tab">
+        <div class="inner-tab" style="background: {{ block.settings.bg_color_tab }}">
+          <div class="icon">
+            {% if block.settings.icon_img != blank %}
+              <img src="{{ block.settings.icon_img | img_url: '' }}"/>
+            {% else %}
+              {{ block.settings.svg_icon }}
+            {% endif %}
+          </div>
+          {% if block.settings.slide_text != blank %}
+            <p style="color: {{ block.settings.bg_color_text }}">{{ block.settings.slide_text }}</p>
+          {% endif %}
+          {% if block.settings.url_link != blank %}
+            <a href="{{ block.settings.url_link }}"></a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% if section.settings.enable_slider %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof jQuery === 'undefined' || !jQuery.fn.slick) return;
+    jQuery('.announce_slider').slick({
+      slidesToShow: {{ section.settings.slide_show }},
+      adaptiveHeight: false,
+      {% if section.settings.autoplay %}
+        autoplay: true,
+      {% else %}
+        autoplay: false,
+      {% endif %}
+      autoplaySpeed: {{ section.settings.speed | times: 1000 }},
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 740,
+          settings: {
+            slidesToShow: 1
+          }
+        }
+      ]
+    });
+  });
+</script>
+{% endif %}
+{% schema %}
+  {
+    "name": "Announcement Tabs",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "sticky_on_contact",
+        "label": "Make Sticky on contact page",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_slider",
+        "label": "Enable Slider",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Slider Autoplay",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "slide_show",
+        "label": "Show Slides",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "speed",
+        "label": "Slide Speed",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 2
+      }
+    ],
+    "blocks": [
+      {
+        "type": "block",
+        "name": "Tab",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "icon_img",
+            "label": "Icon Image"
+          },
+          {
+            "type": "html",
+            "id": "svg_icon",
+            "label": "Svg Icon"
+          },
+          {
+            "type": "text",
+            "id": "slide_text",
+            "label": "Add Text"
+          },
+          {
+            "type": "url",
+            "id": "url_link",
+            "label": "Link"
+          },
+          {
+            "type": "color",
+            "id": "bg_color_tab",
+            "label": "Tab Background Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "bg_color_text",
+            "label": "Text Color"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Announcement Tabs"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

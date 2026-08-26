@@ -1,0 +1,379 @@
+<section class="home-custom-reviews-section section shopify--section-{{ section.id }}" data-section="{{ section.id }}">
+  <div class="grillbot-guarantee-section">
+    
+      <div class="grillbot-moving-review-image">
+        <div class="grillbot-animate-images">
+          {% if section.settings.curves_image != blank %}
+          <div class="below-curves-image">
+            <img src="{{ section.settings.curves_image | img_url: '' }}"/>
+          </div>
+          {% endif %}
+        
+          {% if section.settings.scroll_image != blank %}
+          <div class="scrolling-grillbot-image" 
+               data-aos="fade-right">
+            <img src="{{ section.settings.scroll_image | img_url: '' }}"/>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+    <div class="reviws-bottom-content-area">
+      <div class="grillbot-review-heading-content">
+        <div class="container">
+          <div class="grillbot-contentArea">
+            <div class="grillbot-left-content">
+              {%- if section.settings.badge_text != blank -%}
+                <div class="heading-badge">
+                  <img src="https://cdn.shopify.com/s/files/1/0337/8629/files/Subtract.png?v=1681283887"/>
+                  <p class="text-color">{{ section.settings.badge_text }}</p>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.heading != blank -%}
+                <div class="heading_area">
+                  <h3 class="heading h3 text-color">
+                    {{ section.settings.heading }}
+                  </h3>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.subheading != blank -%}
+                <div class="subheading_area">
+                  <h2 class="heading heading--small text-color">{{ section.settings.subheading | escape }}</h2>
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="grillbot-right-content">
+              <div class="upper-heading-image">
+                {% if section.settings.upper_image != blank %}
+                  <img src="{{ section.settings.upper_image | img_url: '' }}" />
+                {% else %}
+                  {{ section.settings.svg_code_image }}
+                {% endif %}
+              </div>
+      
+              {%- if section.settings.right_heading != blank -%}
+                <div class="right_heading_area">
+                  <h3 class="heading h3 text-color">
+                    {{ section.settings.right_heading }}
+                  </h3>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="grillbot-reviews">
+        <div class="container">
+          <div class="custom-reviews-slider">
+          {% for block in section.blocks %}
+            <div class="slide-review-tab" style="background: {{ block.settings.bg_tab_color }};">
+              <div class="review-tab-inner">
+                <div class="slide-upper-part">
+                  <span class="capital_word">{{ block.settings.capital_word }}</span>
+                  <div class="name-date-content">
+                    <span>{{ block.settings.name }}</span>
+                    <span>{{ block.settings.date }}</span>
+                  </div>
+                  {% if block.settings.show_stars %}
+                  <div class="stars">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                      <path d="M11 0L14.1682 6.6394L21.4616 7.60081L16.1262 12.6656L17.4656 19.8992L11 16.39L4.53436 19.8992L5.87381 12.6656L0.538379 7.60081L7.83184 6.6394L11 0Z" fill="{{ block.settings.star_color }}"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                      <path d="M11 0L14.1682 6.6394L21.4616 7.60081L16.1262 12.6656L17.4656 19.8992L11 16.39L4.53436 19.8992L5.87381 12.6656L0.538379 7.60081L7.83184 6.6394L11 0Z" fill="{{ block.settings.star_color }}"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                      <path d="M11 0L14.1682 6.6394L21.4616 7.60081L16.1262 12.6656L17.4656 19.8992L11 16.39L4.53436 19.8992L5.87381 12.6656L0.538379 7.60081L7.83184 6.6394L11 0Z" fill="{{ block.settings.star_color }}"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                      <path d="M11 0L14.1682 6.6394L21.4616 7.60081L16.1262 12.6656L17.4656 19.8992L11 16.39L4.53436 19.8992L5.87381 12.6656L0.538379 7.60081L7.83184 6.6394L11 0Z" fill="{{ block.settings.star_color }}"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+                      <path d="M11 0L14.1682 6.6394L21.4616 7.60081L16.1262 12.6656L17.4656 19.8992L11 16.39L4.53436 19.8992L5.87381 12.6656L0.538379 7.60081L7.83184 6.6394L11 0Z" fill="{{ block.settings.star_color }}"/>
+                    </svg>
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="slide-below-part">
+                  <h2 class="heading">{{ block.settings.heading }}</h2>
+                  <div class="content">{{ block.settings.content }}</div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if section.settings.animation_smoke != blank %}
+    <div class="effect-smoke-box"><img src="{{ section.settings.animation_smoke | img_url: '' }}"/></div>
+  {% endif %}
+
+  {% if section.settings.animation_fire != blank %}
+    <div class="effect-fire-box"><img src="{{ section.settings.animation_fire | img_url: '' }}"/></div>
+  {% endif %}
+</section>
+
+<style>
+.shopify--section-{{ section.id }} .grillbot-left-content {
+    text-align: {% if section.settings.left_content_alignment == 'left' %}left
+                {% elsif section.settings.left_content_alignment == 'center' %}center
+                {% elsif section.settings.left_content_alignment == 'right' %}right{% endif %}
+}
+.shopify--section-{{ section.id }} .grillbot-right-content {
+    text-align: {% if section.settings.right_content_alignment == 'left' %}left
+                {% elsif section.settings.right_content_alignment == 'center' %}center
+                {% elsif section.settings.right_content_alignment == 'right' %}right{% endif %}
+}
+.shopify--section-{{ section.id }} .grillbot-review-heading-content {
+/*     background: {{ section.settings.bg_color_full }}; */
+}
+.shopify--section-{{ section.id }} .text-color {
+    color: {{ section.settings.content_color }};
+}
+.shopify--section-{{ section.id }} .grillbot-animate-images {
+    background: linear-gradient( to bottom, transparent 0%, transparent 50%, {{ section.settings.bg_color_full }} 50%, {{ section.settings.bg_color_full }} 100% );
+}
+.shopify--section-{{ section.id }} .reviws-bottom-content-area {
+  {% if section.settings.background_image != blank %}
+    background-image: url({{ section.settings.background_image | img_url: '' }});
+    background-size: cover;
+    background-repeat: no-repeat;
+  {% endif %}
+}
+.home-custom-reviews-section.shopify--section-{{ section.id }} {
+    position: relative;
+}
+.shopify--section-{{ section.id }} .effect-smoke-box img,
+.shopify--section-{{ section.id }} .effect-fire-box img {
+    display: block;
+    width: 100%;
+}
+.shopify--section-{{ section.id }} .effect-smoke-box {
+    position: absolute;
+    bottom: 0;
+    max-width: 75%;
+    width: 100%;
+}
+.shopify--section-{{ section.id }} .effect-fire-box {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+@media only screen and (max-width: 740px) {
+  .shopify--section-{{ section.id }} .reviws-bottom-content-area {
+    {% if section.settings.background_image_mobile != blank %}
+      background-image: url({{ section.settings.background_image_mobile | img_url: '' }});
+      background-size: cover;
+    {% endif %}
+  }
+  .shopify--section-{{ section.id }} .effect-smoke-box {
+    bottom: 50%;
+    max-width: 100%;
+  }
+}
+</style>
+
+{% schema %}
+  {
+    "name": "Home - Custom Reviews",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Curve Scroll Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "curves_image",
+        "label": "Choose Image"
+      },
+      {
+        "type": "header",
+        "content": "Scrolling Grillbot Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "scroll_image",
+        "label": "Choose Image"
+      },
+      {
+        "type": "header",
+        "content": "Left Content"
+      },
+      {
+        "type": "text",
+        "id": "badge_text",
+        "label": "Badge Text"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "select",
+        "id": "left_content_alignment",
+        "label": "Text Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Right Content"
+      },
+      {
+        "type": "image_picker",
+        "id": "upper_image",
+        "label": "Colon Icon"
+      },
+      {
+        "type": "html",
+        "id": "svg_code_image",
+        "label": "Svg Code Image"
+      },
+      {
+        "type": "text",
+        "id": "right_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "right_content_alignment",
+        "label": "Text Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "right"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "Text Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "bg_color_full",
+        "label": "Background Color",
+        "default": "#1C1C1C"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile",
+        "label": "Mobile Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "animation_smoke",
+        "label": "Animation Smoke Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "animation_fire",
+        "label": "Animation Fire Image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "reviews",
+        "name": "Reviews",
+        "settings": [
+          {
+            "type": "text",
+            "id": "capital_word",
+            "label": "Capital Word"
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Author Name"
+          },
+          {
+            "type": "text",
+            "id": "date",
+            "label": "Time/Date"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Review Heading"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Review"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_stars",
+            "label": "Show Stars",
+            "default": false
+          },
+          {
+            "type": "color",
+            "id": "star_color",
+            "label": "Star Color",
+            "default": "#FDC942"
+          },
+          {
+            "type": "color",
+            "id": "bg_tab_color",
+            "label": "Background Color",
+            "default": "#ffffff"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home - Custom Reviews"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

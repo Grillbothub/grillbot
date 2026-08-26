@@ -1,0 +1,1110 @@
+{%- comment -%}
+  See it in action
+  - Product metafield: custom.see_in_action (list of metaobjects)
+  - Metaobject type: see_in_action
+  - Recommended fields (fast + best UX):
+    - image (File / Image)   -> thumbnail shown first
+    - video (File / Video)   -> loaded only when clicked
+  - YouTube / SEO (hidden JSON-LD + transcripts):
+    - youtube_url or youtube_link (URL) OR youtube_id (11-char id)
+    - title (optional), description (optional)
+    - transcript or video_transcript (multi-line text)
+    - duration (optional, e.g. PT1M30S or 90)
+    - upload_date / uploaded_at / published_at (optional date for VideoObject uploadDate)
+{%- endcomment -%}
+
+{%- assign sia_items = nil -%}
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign sia_items = product.metafields.custom.see_in_action.value -%}
+{%- endif -%}
+
+{%- assign hb_sia_renderable_count = 0 -%}
+{%- if request.page_type == 'product' and product != blank and sia_items != blank -%}
+  {%- for item in sia_items -%}
+    {%- if item != blank -%}
+      {%- assign item_video = item.video.value | default: item.video -%}
+      {%- assign item_media = item.media.value | default: item.media -%}
+      {%- assign item_image = item.image.value | default: item.image -%}
+      {%- if item_image == blank -%}{%- assign item_image = item.thumbnail.value | default: item.thumbnail -%}{%- endif -%}
+      {%- assign item_yt_raw = item.youtube_url.value | default: item.youtube_url | default: item.youtube_link.value | default: item.youtube_link | default: item.youtube_id.value | default: item.youtube_id -%}
+      {%- assign item_yt_id = '' -%}
+      {%- if item_yt_raw != blank -%}
+        {%- if item_yt_raw contains 'youtu.be/' -%}
+          {%- assign item_yt_id = item_yt_raw | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+        {%- elsif item_yt_raw contains 'youtube.com/embed/' -%}
+          {%- assign item_yt_id = item_yt_raw | split: 'youtube.com/embed/' | last | split: '?' | first | split: '&' | first -%}
+        {%- elsif item_yt_raw contains 'v=' -%}
+          {%- assign item_yt_id = item_yt_raw | split: 'v=' | last | split: '&' | first -%}
+        {%- else -%}
+          {%- assign item_yt_id = item_yt_raw | strip -%}
+        {%- endif -%}
+      {%- elsif item_media != blank and item_media.media_type == 'external_video' and item_media.host == 'youtube' -%}
+        {%- assign item_yt_id = item_media.external_id -%}
+      {%- endif -%}
+
+      {%- if item_image != blank or item_video != blank or item_media != blank or item_yt_id != blank -%}
+        {%- assign hb_sia_renderable_count = hb_sia_renderable_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if request.page_type == 'product' and product != blank and sia_items != blank and hb_sia_renderable_count > 0 -%}
+ {% style %}
+    #shopify-section-{{ section.id }} .hb-see-in-action {
+      background: {{ section.settings.background }};
+      padding: {{ section.settings.padding-top-desktop }}px 0 {{ section.settings.padding-bottom-desktop }}px;
+      overflow: hidden;
+      color: {{ section.settings.text_color }};
+    }
+    /* Header stays inside normal theme container */
+
+    /* Slider bleeds to the right edge, but keeps left gutter */
+    #shopify-section-{{ section.id }} .hb-see-in-action__slider-bleed{
+      margin-left: auto;
+      padding-left: max(calc((100vw - 1440px) / 2 + 32px), 32px);
+      padding-right: 0;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__inner {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__title {
+      font-size: 52px;
+      line-height: 60px;
+      font-weight: 400;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      font-family: Anton !important;
+      letter-spacing: -0.8px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__carousel {
+      display: block;
+    }
+
+    /*
+     * Native strip (no Swiper): Swiper + slidesPerView:auto + bleed = flaky index / video.
+     * Browser scroll + scroll-snap = predictable first slide, arrows, mute.
+     */
+    #shopify-section-{{ section.id }} .hb-sia-strip {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip__track {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 20px;
+      width: max-content;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip__slide {
+      flex: 0 0 275px;
+      width: 275px;
+      max-width: 275px;
+      box-sizing: border-box;
+    }
+
+    /* Design spec: 275px x 400px cards */
+    #shopify-section-{{ section.id }} .hb-see-in-action__card { height: 400px; }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__card img,
+    #shopify-section-{{ section.id }} .hb-see-in-action__card video,
+    #shopify-section-{{ section.id }} .hb-see-in-action__card iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border: 0;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #shopify-section-{{ section.id }} .hb-see-in-action__nav {
+      position: absolute;
+      top: 2px;
+      right: 0;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn[disabled] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn svg {
+      width: 52px;
+      height: 52px;
+      display: block;
+      pointer-events: none;
+      color: #B6D22F;
+    }
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn.prev {
+      transform: rotate(180deg);
+    }
+
+      #shopify-section-{{ section.id }} .hb-see-in-action__card button.hb-see-in-action__tap {
+      position: absolute;
+      inset: 0;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    #shopify-section-{{ section.id }} .hb-sia-seo-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .hb-see-in-action {
+        padding: {{ section.settings.padding_top-mobile }}px 0 {{ section.settings.padding_bottom-mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__slider-bleed{
+        padding-left: max(calc((100vw - 1440px) / 2 + 16px), 16px);
+      }
+    }
+    @media screen and (max-width: 767px){
+      #shopify-section-{{ section.id }} .hb-see-in-action__inner {
+        margin-bottom: 16px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__title {
+        font-size: 36px;
+        line-height: 44px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__btn svg {
+        width: 40px;
+        height: 40px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__card {
+        height: 324px;
+      }
+      #shopify-section-{{ section.id }} .hb-sia-strip__track {
+        gap: 8px;
+      }
+      #shopify-section-{{ section.id }} .hb-sia-strip__slide {
+        flex-basis: 184px;
+        width: 184px;
+        max-width: 184px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__card {
+        height: 324px;
+      }
+    }
+  {% endstyle %}
+
+  <section class="hb-see-in-action" aria-label="See it in action">
+    <div class="container">
+      <div class="hb-see-in-action__inner">
+        <div class="hb-see-in-action__nav" aria-hidden="false">
+          <button class="hb-see-in-action__btn prev" type="button" aria-label="Previous">
+            {{ 'swiper-arrows.svg' | inline_asset_content }}
+          </button>
+          <button class="hb-see-in-action__btn next" type="button" aria-label="Next">
+            {{ 'swiper-arrows.svg' | inline_asset_content }}
+          </button>
+        </div>
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="hb-see-in-action__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hb-see-in-action__slider-bleed">
+      <div class="hb-see-in-action__carousel-wrapper">
+        <div class="hb-see-in-action__carousel">
+          <div class="hb-sia-strip" data-hb-sia-strip tabindex="-1" aria-label="{{ section.settings.heading | default: 'See it in action' | escape }}">
+            <div class="hb-sia-strip__track">
+              {%- for item in sia_items -%}
+                {%- if item != blank -%}
+                  {%- assign item_video = item.video.value | default: item.video -%}
+                  {%- assign item_media = item.media.value | default: item.media -%}
+                  {%- assign item_image = item.image.value | default: item.image -%}
+                  {%- if item_image == blank -%}{%- assign item_image = item.thumbnail.value | default: item.thumbnail -%}{%- endif -%}
+                  {%- assign item_yt_id = '' -%}
+                  {%- assign item_yt_raw = item.youtube_url.value | default: item.youtube_url | default: item.youtube_link.value | default: item.youtube_link | default: item.youtube_id.value | default: item.youtube_id -%}
+                  {%- if item_yt_raw != blank -%}
+                    {%- if item_yt_raw contains 'youtu.be/' -%}
+                      {%- assign item_yt_id = item_yt_raw | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+                    {%- elsif item_yt_raw contains 'youtube.com/embed/' -%}
+                      {%- assign item_yt_id = item_yt_raw | split: 'youtube.com/embed/' | last | split: '?' | first | split: '&' | first -%}
+                    {%- elsif item_yt_raw contains 'v=' -%}
+                      {%- assign item_yt_id = item_yt_raw | split: 'v=' | last | split: '&' | first -%}
+                    {%- else -%}
+                      {%- assign item_yt_id = item_yt_raw | strip -%}
+                    {%- endif -%}
+                  {%- elsif item_media != blank and item_media.media_type == 'external_video' and item_media.host == 'youtube' -%}
+                    {%- assign item_yt_id = item_media.external_id -%}
+                  {%- endif -%}
+
+                  {%- assign has_video = false -%}
+                  {%- if item_video != blank -%}
+                    {%- assign has_video = true -%}
+                  {%- elsif item_media != blank and item_media.media_type == 'video' -%}
+                    {%- assign has_video = true -%}
+                  {%- elsif item_yt_id != blank -%}
+                    {%- assign has_video = true -%}
+                  {%- endif -%}
+
+                  <div class="hb-sia-strip__slide">
+                    <div class="hb-see-in-action__card">
+                      {%- assign card_image_alt = item_image.alt | default: item.title.value | default: item.title -%}
+                      {%- if card_image_alt == blank -%}
+                        {%- assign card_image_alt = product.title | append: ' demo video' -%}
+                      {%- endif -%}
+
+                      {%- if item_image != blank -%}
+                        {{- item_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,450,600,750,900', sizes: '(max-width: 740px) 75vw, 320px', alt: card_image_alt -}}
+                      {%- elsif item_media != blank and item_media.preview_image != blank -%}
+                        {{- item_media.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,450,600,750,900', sizes: '(max-width: 740px) 75vw, 320px', alt: card_image_alt -}}
+                      {%- elsif item_yt_id != blank -%}
+                        <img
+                          src="https://i.ytimg.com/vi/{{ item_yt_id }}/hqdefault.jpg"
+                          alt="{{ card_image_alt | escape }}"
+                          width="480"
+                          height="360"
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      {%- endif -%}
+
+                      {%- if has_video -%}
+                        <span class="hb-see-in-action__play" aria-hidden="true">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M20.9436 31.8667L31.3846 25.1641C31.8051 24.8939 32.0154 24.5075 32.0154 24.005C32.0154 23.5025 31.8051 23.1128 31.3846 22.8359L20.9436 16.1333C20.4547 15.812 19.9692 15.7881 19.4872 16.0619C19.0051 16.3356 18.7641 16.7475 18.7641 17.2974V30.7026C18.7641 31.2525 19.0051 31.6644 19.4872 31.9381C19.9692 32.2119 20.4547 32.188 20.9436 31.8667ZM24.0089 48C20.7004 48 17.5939 47.3702 14.6893 46.1107C11.7848 44.8512 9.24073 43.1307 7.05727 40.9493C4.87384 38.7678 3.15178 36.2262 1.89107 33.3244C0.630355 30.4226 0 27.3174 0 24.0089C0 20.6901 0.629756 17.5699 1.88927 14.6483C3.14882 11.7266 4.86931 9.18518 7.05073 7.02393C9.23216 4.86273 11.7738 3.15178 14.6756 1.89107C17.5774 0.630357 20.6826 0 23.9911 0C27.3099 0 30.4301 0.629755 33.3517 1.88927C36.2734 3.14882 38.8148 4.8582 40.9761 7.0174C43.1373 9.1766 44.8482 11.7156 46.1089 14.6345C47.3696 17.5535 48 20.6723 48 23.9911C48 27.2996 47.3702 30.4061 46.1107 33.3107C44.8512 36.2152 43.1418 38.7593 40.9826 40.9427C38.8234 43.1262 36.2844 44.8482 33.3655 46.1089C30.4465 47.3696 27.3277 48 24.0089 48Z" fill="white"/>
+                          </svg>
+                        </span>
+                        <button class="hb-see-in-action__tap" type="button" data-hb-sia-play aria-label="Play video"></button>
+                        <template class="hb-sia-video-template">
+                          {%- if item_video != blank -%}
+                            {{- item_video | video_tag: controls: true, muted: true, autoplay: true, loop: false -}}
+                          {%- elsif item_media != blank and item_media.media_type == 'video' -%}
+                            {{- item_media | video_tag: controls: true, muted: true, autoplay: true, loop: false -}}
+                          {%- elsif item_yt_id != blank -%}
+                            <iframe
+                              src="https://www.youtube.com/embed/{{ item_yt_id }}?autoplay=1&rel=0&modestbranding=1"
+                              title="{{ card_image_alt | escape }}"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowfullscreen
+                              loading="lazy"
+                            ></iframe>
+                          {%- endif -%}
+                        </template>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var strip = root.querySelector('[data-hb-sia-strip]');
+      var track = root.querySelector('.hb-sia-strip__track');
+      var prevBtn = root.querySelector('.hb-see-in-action__btn.prev');
+      var nextBtn = root.querySelector('.hb-see-in-action__btn.next');
+      if (!strip || !track) return;
+
+      function getSlides() {
+        return track.querySelectorAll('.hb-sia-strip__slide');
+      }
+
+      /* offsetLeft ≠ scroll coords (flex / parent); rects = reliable prev/next */
+      function currentIndex() {
+        var slides = getSlides();
+        if (!slides.length) return 0;
+        var edge = strip.getBoundingClientRect().left + 8;
+        var idx = 0;
+        for (var i = 0; i < slides.length; i++) {
+          if (slides[i].getBoundingClientRect().left <= edge) idx = i;
+        }
+        return idx;
+      }
+
+      function goToIndex(i, smooth) {
+        var slides = getSlides();
+        if (!slides.length) return;
+        if (i < 0) i = 0;
+        if (i > slides.length - 1) i = slides.length - 1;
+        var slide = slides[i];
+        var sr = strip.getBoundingClientRect();
+        var tr = slide.getBoundingClientRect();
+        var delta = tr.left - sr.left;
+        var target = strip.scrollLeft + delta;
+        var max = Math.max(0, strip.scrollWidth - strip.clientWidth);
+        if (target < 0) target = 0;
+        if (target > max) target = max;
+        strip.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+      }
+
+      function updateNavDisabled() {
+        if (!prevBtn || !nextBtn) return;
+        var max = strip.scrollWidth - strip.clientWidth;
+        if (max <= 2) {
+          prevBtn.disabled = true;
+          nextBtn.disabled = true;
+          return;
+        }
+        var left = strip.scrollLeft;
+        var eps = 6;
+        prevBtn.disabled = left <= eps;
+        nextBtn.disabled = left >= max - eps;
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToIndex(currentIndex() - 1, true);
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToIndex(currentIndex() + 1, true);
+        });
+      }
+
+      strip.addEventListener('scroll', updateNavDisabled, { passive: true });
+      window.addEventListener('resize', updateNavDisabled);
+      if (typeof ResizeObserver !== 'undefined') {
+        try {
+          new ResizeObserver(updateNavDisabled).observe(strip);
+        } catch (e) {}
+      }
+      updateNavDisabled();
+      setTimeout(updateNavDisabled, 100);
+      setTimeout(updateNavDisabled, 400);
+
+      root.addEventListener('click', function (e) {
+        var playBtn = e.target && e.target.closest && e.target.closest('[data-hb-sia-play]');
+        if (!playBtn) return;
+        var card = playBtn.closest('.hb-see-in-action__card');
+        if (!card) return;
+        if (card.querySelector('video')) return;
+
+        var tpl = card.querySelector('template.hb-sia-video-template');
+        if (!tpl) return;
+        var clone = tpl.content.cloneNode(true);
+        card.innerHTML = '';
+        card.appendChild(clone);
+
+        var vid = card.querySelector('video');
+        if (vid && vid.play) {
+          try {
+            vid.play();
+          } catch (err) {}
+        }
+        updateNavDisabled();
+      });
+    })();
+  </script>
+
+  {%- if section.settings.enable_video_structured_data -%}
+    {%- capture sia_video_schema_graph -%}
+      {%- assign sia_schema_first = true -%}
+      {%- for item in sia_items -%}
+        {%- if item != blank -%}
+          {%- assign item_video = item.video.value | default: item.video -%}
+          {%- assign item_media = item.media.value | default: item.media -%}
+          {%- assign item_image = item.image.value | default: item.image -%}
+          {%- if item_image == blank -%}{%- assign item_image = item.thumbnail.value | default: item.thumbnail -%}{%- endif -%}
+          {%- assign sia_video_title = item.title.value | default: item.title | default: item.name.value | default: item.name | default: product.title -%}
+          {%- assign sia_video_desc = item.description.value | default: item.description | default: section.settings.heading | default: product.title -%}
+          {%- assign sia_transcript = item.transcript.value | default: item.transcript | default: item.video_transcript.value | default: item.video_transcript -%}
+          {%- capture sia_transcript_plain -%}{{ sia_transcript | metafield_tag | default: sia_transcript | strip_html | strip }}{%- endcapture -%}
+          {%- assign sia_duration = item.duration.value | default: item.duration | default: item.video_duration.value | default: item.video_duration -%}
+          {%- assign sia_upload_raw = item.upload_date.value
+            | default: item.upload_date
+            | default: item.uploaded_at.value
+            | default: item.uploaded_at
+            | default: item.published_at.value
+            | default: item.published_at
+            | default: item.system.created_at
+            | default: product.published_at
+            | default: product.created_at
+            | default: 'now'
+          -%}
+          {%- assign sia_upload_date = sia_upload_raw | date: '%Y-%m-%dT%H:%M:%SZ' -%}
+          {%- assign yt_id = '' -%}
+          {%- assign yt_raw = item.youtube_url.value | default: item.youtube_url | default: item.youtube_link.value | default: item.youtube_link | default: item.youtube_id.value | default: item.youtube_id -%}
+          {%- if yt_raw != blank -%}
+            {%- if yt_raw contains 'youtu.be/' -%}
+              {%- assign yt_id = yt_raw | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+            {%- elsif yt_raw contains 'youtube.com/embed/' -%}
+              {%- assign yt_id = yt_raw | split: 'youtube.com/embed/' | last | split: '?' | first | split: '&' | first -%}
+            {%- elsif yt_raw contains 'v=' -%}
+              {%- assign yt_id = yt_raw | split: 'v=' | last | split: '&' | first -%}
+            {%- else -%}
+              {%- assign yt_id = yt_raw | strip -%}
+            {%- endif -%}
+          {%- elsif item_media != blank and item_media.media_type == 'external_video' and item_media.host == 'youtube' -%}
+            {%- assign yt_id = item_media.external_id -%}
+          {%- endif -%}
+
+          {%- assign sia_thumb_url = '' -%}
+          {%- if item_image != blank -%}
+            {%- assign sia_thumb_url = item_image | image_url: width: 1280 -%}
+          {%- elsif yt_id != blank -%}
+            {%- assign sia_thumb_url = 'https://i.ytimg.com/vi/' | append: yt_id | append: '/hqdefault.jpg' -%}
+          {%- elsif item_media != blank and item_media.preview_image != blank -%}
+            {%- assign sia_thumb_url = item_media.preview_image | image_url: width: 1280 -%}
+          {%- endif -%}
+
+          {%- assign sia_content_url = '' -%}
+          {%- assign sia_embed_url = '' -%}
+          {%- if yt_id != blank -%} 
+            {%- assign sia_content_url = 'https://www.youtube.com/watch?v=' | append: yt_id -%}
+            {%- assign sia_embed_url = 'https://www.youtube.com/embed/' | append: yt_id -%}
+          {%- elsif item_video != blank -%}
+            {%- assign sia_content_url = item_video.sources.first.url | default: item_video -%}
+          {%- elsif item_media != blank and item_media.media_type == 'video' -%}
+            {%- assign sia_content_url = item_media.sources.first.url | default: '' -%}
+          {%- endif -%}
+ 
+          {%- if sia_content_url != blank or sia_embed_url != blank -%}
+            {%- unless sia_schema_first -%},{%- endunless -%}
+            {%- assign sia_schema_first = false -%}
+            {
+              "@type": "VideoObject",
+              "name": {{ sia_video_title | strip_html | strip | json }},
+              "description": {{ sia_video_desc | strip_html | strip | json }},
+              "uploadDate": {{ sia_upload_date | json }}
+              {%- if sia_thumb_url != blank -%}
+                ,"thumbnailUrl": [{{ sia_thumb_url | json }}]  
+              {%- endif -%}
+              {%- if sia_content_url != blank -%}
+                ,"contentUrl": {{ sia_content_url | json }}  
+              {%- endif -%}
+              {%- if sia_embed_url != blank -%}
+                ,"embedUrl": {{ sia_embed_url | json }} 
+              {%- endif -%}
+              {%- if sia_duration != blank -%} 
+                {%- assign sia_duration_str = sia_duration | strip -%}
+                {%- unless sia_duration_str contains 'PT' -%}
+                  {%- assign sia_duration_str = 'PT' | append: sia_duration_str | append: 'S' -%}
+                {%- endunless -%}
+                ,"duration": {{ sia_duration_str | json }}
+              {%- endif -%} 
+              {%- if sia_transcript_plain != blank -%}
+                ,"transcript": {{ sia_transcript_plain | json }}
+              {%- endif -%}
+            }
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%} 
+
+    {%- if sia_video_schema_graph != blank -%}
+      <script type="application/ld+json">
+        { 
+          "@context": "https://schema.org",
+          "@graph": [{{ sia_video_schema_graph }}] 
+        }
+      </script>
+    {%- endif -%}
+
+    <div class="hb-sia-seo-hidden" aria-hidden="true">
+      {%- for item in sia_items -%}
+        {%- if item != blank -%}
+          {%- assign sia_transcript = item.transcript.value | default: item.transcript | default: item.video_transcript.value | default: item.video_transcript -%}
+          {%- if sia_transcript != blank -%}
+            {%- assign sia_transcript_title = item.title.value | default: item.title | default: item.name.value | default: item.name | default: section.settings.heading | default: product.title -%}
+            {%- capture sia_transcript_plain -%}{{ sia_transcript | metafield_tag | default: sia_transcript | strip_html | strip }}{%- endcapture -%}
+            {%- if sia_transcript_plain != blank -%}
+              <article id="hb-sia-transcript-{{ section.id }}-{{ forloop.index }}">
+                <h3>{{ sia_transcript_title | escape }}</h3> 
+                <p>{{ sia_transcript_plain | escape | newline_to_br }}</p>
+              </article>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+{% else %}
+
+{%- assign hb_sia_customizer_renderable_count = 0 -%}
+{%- for item in section.blocks -%}
+  {%- if item != blank -%}
+    {%- assign item_video = item.settings.video -%}
+    {%- assign item_image = item.settings.image -%}
+    {%- assign item_yt_raw = item.settings.youtube_url -%}
+    {%- assign item_yt_id = '' -%}
+    {%- if item_yt_raw != blank -%}
+      {%- if item_yt_raw contains 'youtu.be/' -%}
+        {%- assign item_yt_id = item_yt_raw | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+      {%- elsif item_yt_raw contains 'youtube.com/embed/' -%}
+        {%- assign item_yt_id = item_yt_raw | split: 'youtube.com/embed/' | last | split: '?' | first | split: '&' | first -%}
+      {%- elsif item_yt_raw contains 'v=' -%}
+        {%- assign item_yt_id = item_yt_raw | split: 'v=' | last | split: '&' | first -%}
+      {%- else -%}
+        {%- assign item_yt_id = item_yt_raw | strip -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if item_image != blank or item_video != blank or item_yt_id != blank -%}
+      {%- assign hb_sia_customizer_renderable_count = hb_sia_customizer_renderable_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if hb_sia_customizer_renderable_count > 0 -%}
+
+{% style %}
+    #shopify-section-{{ section.id }} .hb-see-in-action {
+      background: {{ section.settings.background }};
+      padding: {{ section.settings.padding-top-desktop }}px 0 {{ section.settings.padding-bottom-desktop }}px;
+      overflow: hidden;
+      color: {{ section.settings.text_color }};
+    }
+    /* Header stays inside normal theme container */
+
+    /* Slider bleeds to the right edge, but keeps left gutter */
+    #shopify-section-{{ section.id }} .hb-see-in-action__slider-bleed{
+      margin-left: auto;
+      padding-left: max(calc((100vw - 1440px) / 2 + 32px), 32px);
+      padding-right: 0;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__inner {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__title {
+      font-size: 52px;
+      line-height: 60px;
+      font-weight: 400;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      font-family: Anton !important;
+      letter-spacing: -0.8px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__carousel {
+      display: block;
+    }
+
+    /*
+     * Native strip (no Swiper): Swiper + slidesPerView:auto + bleed = flaky index / video.
+     * Browser scroll + scroll-snap = predictable first slide, arrows, mute.
+     */
+    #shopify-section-{{ section.id }} .hb-sia-strip {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip__track {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 20px;
+      width: max-content;
+    }
+    #shopify-section-{{ section.id }} .hb-sia-strip__slide {
+      flex: 0 0 275px;
+      width: 275px;
+      max-width: 275px;
+      box-sizing: border-box;
+    }
+
+    /* Design spec: 275px x 400px cards */
+    #shopify-section-{{ section.id }} .hb-see-in-action__card { height: 400px; }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__card img,
+    #shopify-section-{{ section.id }} .hb-see-in-action__card video,
+    #shopify-section-{{ section.id }} .hb-see-in-action__card iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border: 0;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #shopify-section-{{ section.id }} .hb-see-in-action__nav {
+      position: absolute;
+      top: 2px;
+      right: 0;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn[disabled] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn svg {
+      width: 52px;
+      height: 52px;
+      display: block;
+      pointer-events: none;
+      color: #B6D22F;
+    }
+    #shopify-section-{{ section.id }} .hb-see-in-action__btn.prev {
+      transform: rotate(180deg);
+    }
+
+      #shopify-section-{{ section.id }} .hb-see-in-action__card button.hb-see-in-action__tap {
+      position: absolute;
+      inset: 0;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    #shopify-section-{{ section.id }} .hb-sia-seo-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .hb-see-in-action {
+        padding: {{ section.settings.padding_top-mobile }}px 0 {{ section.settings.padding_bottom-mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__slider-bleed{
+        padding-left: max(calc((100vw - 1440px) / 2 + 16px), 16px);
+      }
+    }
+    @media screen and (max-width: 767px){
+      #shopify-section-{{ section.id }} .hb-see-in-action__inner {
+        margin-bottom: 16px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__title {
+        font-size: 36px;
+        line-height: 44px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__btn svg {
+        width: 40px;
+        height: 40px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__card {
+        height: 324px;
+      }
+      #shopify-section-{{ section.id }} .hb-sia-strip__track {
+        gap: 8px;
+      }
+      #shopify-section-{{ section.id }} .hb-sia-strip__slide {
+        flex-basis: 184px;
+        width: 184px;
+        max-width: 184px;
+      }
+      #shopify-section-{{ section.id }} .hb-see-in-action__card {
+        height: 324px;
+      }
+    }
+  {% endstyle %}
+
+
+
+{%- assign sia_items = section.blocks -%}
+
+<section class="hb-see-in-action" id="see-it--in-action" aria-label="See it in action">
+  <div class="container">
+    <div class="hb-see-in-action__inner">
+      <div class="hb-see-in-action__nav" aria-hidden="false">
+        <button class="hb-see-in-action__btn prev" type="button" aria-label="Previous">
+          {{ 'swiper-arrows.svg' | inline_asset_content }}
+        </button>
+        <button class="hb-see-in-action__btn next" type="button" aria-label="Next">
+          {{ 'swiper-arrows.svg' | inline_asset_content }}
+        </button>
+      </div>
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="hb-see-in-action__title">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="hb-see-in-action__slider-bleed">
+    <div class="hb-see-in-action__carousel-wrapper">
+      <div class="hb-see-in-action__carousel">
+        <div class="hb-sia-strip" data-hb-sia-strip tabindex="-1" aria-label="{{ section.settings.heading | default: 'See it in action' | escape }}">
+          <div class="hb-sia-strip__track">
+            {%- for item in sia_items -%}
+              {%- if item != blank -%}
+                {%- assign item_video = item.settings.video -%}
+                {%- assign item_image = item.settings.image -%}
+                {%- assign item_yt_raw = item.settings.youtube_url -%}
+                {%- assign item_media = blank -%}
+
+                {%- assign item_yt_id = '' -%}
+                {%- if item_yt_raw != blank -%}
+                  {%- if item_yt_raw contains 'youtu.be/' -%}
+                    {%- assign item_yt_id = item_yt_raw | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+                  {%- elsif item_yt_raw contains 'youtube.com/embed/' -%}
+                    {%- assign item_yt_id = item_yt_raw | split: 'youtube.com/embed/' | last | split: '?' | first | split: '&' | first -%}
+                  {%- elsif item_yt_raw contains 'v=' -%}
+                    {%- assign item_yt_id = item_yt_raw | split: 'v=' | last | split: '&' | first -%}
+                  {%- else -%}
+                    {%- assign item_yt_id = item_yt_raw | strip -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- assign has_video = false -%}
+                {%- if item_video != blank -%}
+                  {%- assign has_video = true -%}
+                {%- elsif item_yt_id != blank -%}
+                  {%- assign has_video = true -%}
+                {%- endif -%}
+
+                <div class="hb-sia-strip__slide">
+                  <div class="hb-see-in-action__card">
+                    {%- assign card_image_alt = item_image.alt | default: item.settings.title -%}
+                    {%- if card_image_alt == blank -%}
+                      {%- assign card_image_alt = product.title | append: ' demo video' -%}
+                    {%- endif -%}
+
+                    {%- if item_image != blank -%}
+                      {{- item_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,450,600,750,900', sizes: '(max-width: 740px) 75vw, 320px', alt: card_image_alt -}}
+                    {%- elsif item_yt_id != blank -%}
+                      <img
+                        src="https://i.ytimg.com/vi/{{ item_yt_id }}/hqdefault.jpg"
+                        alt="{{ card_image_alt | escape }}"
+                        width="480"
+                        height="360"
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    {%- endif -%}
+
+                    {%- if has_video -%}
+                      <span class="hb-see-in-action__play" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                          <path d="M20.9436 31.8667L31.3846 25.1641C31.8051 24.8939 32.0154 24.5075 32.0154 24.005C32.0154 23.5025 31.8051 23.1128 31.3846 22.8359L20.9436 16.1333C20.4547 15.812 19.9692 15.7881 19.4872 16.0619C19.0051 16.3356 18.7641 16.7475 18.7641 17.2974V30.7026C18.7641 31.2525 19.0051 31.6644 19.4872 31.9381C19.9692 32.2119 20.4547 32.188 20.9436 31.8667ZM24.0089 48C20.7004 48 17.5939 47.3702 14.6893 46.1107C11.7848 44.8512 9.24073 43.1307 7.05727 40.9493C4.87384 38.7678 3.15178 36.2262 1.89107 33.3244C0.630355 30.4226 0 27.3174 0 24.0089C0 20.6901 0.629756 17.5699 1.88927 14.6483C3.14882 11.7266 4.86931 9.18518 7.05073 7.02393C9.23216 4.86273 11.7738 3.15178 14.6756 1.89107C17.5774 0.630357 20.6826 0 23.9911 0C27.3099 0 30.4301 0.629755 33.3517 1.88927C36.2734 3.14882 38.8148 4.8582 40.9761 7.0174C43.1373 9.1766 44.8482 11.7156 46.1089 14.6345C47.3696 17.5535 48 20.6723 48 23.9911C48 27.2996 47.3702 30.4061 46.1107 33.3107C44.8512 36.2152 43.1418 38.7593 40.9826 40.9427C38.8234 43.1262 36.2844 44.8482 33.3655 46.1089C30.4465 47.3696 27.3277 48 24.0089 48Z" fill="white"/>
+                        </svg>
+                      </span>
+                      <button class="hb-see-in-action__tap" type="button" data-hb-sia-play aria-label="Play video"></button>
+                      <template class="hb-sia-video-template">
+                        {%- if item_video != blank -%}
+                          {{- item_video | video_tag: controls: true, muted: true, autoplay: true, loop: false -}}
+                        {%- elsif item_yt_id != blank -%}
+                          <iframe
+                            src="https://www.youtube.com/embed/{{ item_yt_id }}?autoplay=1&rel=0&modestbranding=1"
+                            title="{{ card_image_alt | escape }}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            loading="lazy"
+                          ></iframe>
+                        {%- endif -%}
+                      </template>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+ <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var strip = root.querySelector('[data-hb-sia-strip]');
+      var track = root.querySelector('.hb-sia-strip__track');
+      var prevBtn = root.querySelector('.hb-see-in-action__btn.prev');
+      var nextBtn = root.querySelector('.hb-see-in-action__btn.next');
+      if (!strip || !track) return;
+
+      function getSlides() {
+        return track.querySelectorAll('.hb-sia-strip__slide');
+      }
+
+      /* offsetLeft ≠ scroll coords (flex / parent); rects = reliable prev/next */
+      function currentIndex() {
+        var slides = getSlides();
+        if (!slides.length) return 0;
+        var edge = strip.getBoundingClientRect().left + 8;
+        var idx = 0;
+        for (var i = 0; i < slides.length; i++) {
+          if (slides[i].getBoundingClientRect().left <= edge) idx = i;
+        }
+        return idx;
+      }
+
+      function goToIndex(i, smooth) {
+        var slides = getSlides();
+        if (!slides.length) return;
+        if (i < 0) i = 0;
+        if (i > slides.length - 1) i = slides.length - 1;
+        var slide = slides[i];
+        var sr = strip.getBoundingClientRect();
+        var tr = slide.getBoundingClientRect();
+        var delta = tr.left - sr.left;
+        var target = strip.scrollLeft + delta;
+        var max = Math.max(0, strip.scrollWidth - strip.clientWidth);
+        if (target < 0) target = 0;
+        if (target > max) target = max;
+        strip.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+      }
+
+      function updateNavDisabled() {
+        if (!prevBtn || !nextBtn) return;
+        var max = strip.scrollWidth - strip.clientWidth;
+        if (max <= 2) {
+          prevBtn.disabled = true;
+          nextBtn.disabled = true;
+          return;
+        }
+        var left = strip.scrollLeft;
+        var eps = 6;
+        prevBtn.disabled = left <= eps;
+        nextBtn.disabled = left >= max - eps;
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToIndex(currentIndex() - 1, true);
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          goToIndex(currentIndex() + 1, true);
+        });
+      }
+
+      strip.addEventListener('scroll', updateNavDisabled, { passive: true });
+      window.addEventListener('resize', updateNavDisabled);
+      if (typeof ResizeObserver !== 'undefined') {
+        try {
+          new ResizeObserver(updateNavDisabled).observe(strip);
+        } catch (e) {}
+      }
+      updateNavDisabled();
+      setTimeout(updateNavDisabled, 100);
+      setTimeout(updateNavDisabled, 400);
+
+      root.addEventListener('click', function (e) {
+        var playBtn = e.target && e.target.closest && e.target.closest('[data-hb-sia-play]');
+        if (!playBtn) return;
+        var card = playBtn.closest('.hb-see-in-action__card');
+        if (!card) return;
+        if (card.querySelector('video')) return;
+
+        var tpl = card.querySelector('template.hb-sia-video-template');
+        if (!tpl) return;
+        var clone = tpl.content.cloneNode(true);
+        card.innerHTML = '';
+        card.appendChild(clone);
+
+        var vid = card.querySelector('video');
+        if (vid && vid.play) {
+          try {
+            vid.play();
+          } catch (err) {}
+        }
+        updateNavDisabled();
+      });
+    })();
+  </script>
+
+{%- endif -%}
+{% endif %}
+
+{% schema %}
+{
+  "name": "See it in action",
+  "class": "shopify-section--see-in-action",
+  "disabled_on": {
+    "templates": ["password"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_structured_data",
+      "label": "Enable video schema & hidden transcripts (JSON-LD)",
+      "default": true,
+      "info": "Outputs VideoObject markup for YouTube demo URLs/IDs and transcript text from metaobjects. Not visible on the storefront carousel."
+    },
+    {
+      "type": "range",
+      "id": "padding-top-desktop",
+      "label": "Padding Top Desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-bottom-desktop",
+      "label": "Padding Bottom Desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top-mobile",
+      "label": "Padding Top Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom-mobile",
+      "label": "Padding Bottom Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+   "blocks": [
+    {
+      "type": "video_card",
+      "name": "Video Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "info": "Used as image alt text if no alt is set on the image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumbnail Image",
+          "info": "Used as the card thumbnail. If left blank and a YouTube URL is provided, the YouTube thumbnail will be used automatically."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (Shopify-hosted)",
+          "info": "Upload an MP4 directly to Shopify. Takes priority over YouTube URL."
+        },
+        {
+          "type": "text",
+          "id": "youtube_url",
+          "label": "YouTube URL",
+          "info": "Supports youtu.be, youtube.com/watch?v=, and youtube.com/embed/ formats. Used if no Shopify-hosted video is set."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "See it in action",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+

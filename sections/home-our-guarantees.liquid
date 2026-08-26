@@ -1,0 +1,574 @@
+<section class="home-our-guarantees-section section shopify-section--{{ section.id }}" data-section="{{ section.id }}">
+  {% for block in section.blocks %}
+    {% if block.type == 'our_guarantees' %}
+      <div class="start_grilling_section" data-block-id="block-{{ block.id }}">
+        {% if block.settings.enable_left_sticks and block.settings.left_sticks != blank %}
+          <div class="enable_left_sticks" data-aos="fade-right"><img src="{{ block.settings.left_sticks | img_url:'original' }}"></div>
+        {% endif %}
+        <div class="container">
+          {%- if block.settings.heading != blank -%}
+            <div class="heading_area">
+              <h3 class="heading h3">
+                {{ block.settings.heading }}
+              </h3>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.subheading != blank -%}
+            <div class="subheading_area">
+              <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
+            </div>
+          {%- endif -%}
+          {% if block.settings.enable_block_icons %}
+            <div class="social-gift-icons">
+              {% for i in (1..4) %}
+                {% assign svg_icon_key = 'svg_icon_' | append: i %}
+                {% assign svg_text_key = 'svg_text_' | append: i %}
+                {% if block.settings[svg_icon_key] != blank and block.settings[svg_text_key] != blank %}
+                  <div class="single_icon_area">
+                    <span><img src="{{ block.settings[svg_icon_key] | img_url:'original' }}"></span>
+                    <span>{{ block.settings[svg_text_key] }}</span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="content_buttons_area">
+            <style>
+              .shopify-section--{{ section.id }} .content_buttons_area {
+              {% if block.settings.button_position == 'left' %}
+                justify-content: left;
+              {% elsif block.settings.button_position == 'center' %}
+                justify-content: center;
+              {% elsif block.settings.button_position == 'right' %}
+                justify-content: right;
+              {% elsif block.settings.button_position == 'spaceBetween' %}
+                justify-content: space-between;
+              {% endif %}
+              }
+            </style>
+            {%- if block.settings.button_text_1 != blank -%}
+            <a href="{{ block.settings.button_link_1 }}" class="button button--primary button--primary-bg{% if block.settings.button_type1 %} outlined--button-primary{% endif %}">
+              {{ block.settings.button_text_1 }}
+              {% if block.settings.button_type1 %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="11" viewBox="0 0 24 11" fill="none">
+                  <path d="M0.5 5.50012H22.5M22.5 5.50012L18.5 1.50012M22.5 5.50012L18.5 9.50012" stroke="{{ block.settings.first_button_color }}" stroke-width="2"/>
+                </svg>
+              {% endif %}
+            </a>
+              <style>
+                .shopify-section--{{ section.id }} .button--primary-bg {
+                  display: flex;
+                  color: {{ block.settings.first_button_color }};
+                  background: {{ block.settings.first_button_bg }};
+                  font-weight: 700;
+                  font-size: 14px;
+                  line-height: 51px;
+                  letter-spacing: 0.04em;
+                  padding: 0;
+                }
+                .shopify-section--{{ section.id }} .outlined--button-primary {
+                  background: transparent;
+                  border-bottom: 2px solid #b6d22f;
+                  justify-content: space-between !important;
+                }
+                .content_buttons_area a.button {
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  min-width: 200px;
+                  white-space: nowrap;
+                  max-width: 300px;
+                  align-items: center;
+                }
+                .content_buttons_area a.button img {
+                  display: flex;
+                  max-width: 25px;
+                  height: auto;
+                  align-items: center;
+                }
+                @media only screen and (max-width: 740px) {
+                  .shopify-section--{{ section.id }} .content_buttons_area a.button {
+                    max-width: 450px;
+                  }
+                  .shopify-section--{{ section.id }} .content_buttons_area {
+                    align-items: start;
+                  }
+                  .shopify-section--{{ section.id }} .outlined--button-primary {
+                    justify-content: center !important;
+                  }
+                }
+              </style>
+            {%- endif -%}
+  
+            {%- if block.settings.button_text_2 != blank -%}
+            <a href="{{ block.settings.button_link_2 }}" class="button button--secondary button--secondary-bg{% if block.settings.button_type2 %} outlined--button-secondary{% endif %}">
+              {{ block.settings.button_text_2 }}
+              {% if block.settings.button_type2 %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="11" viewBox="0 0 24 11" fill="none">
+                  <path d="M0.5 5.50012H22.5M22.5 5.50012L18.5 1.50012M22.5 5.50012L18.5 9.50012" stroke="{{ block.settings.second_button_color }}" stroke-width="2"/>
+                </svg>
+              {% endif %}
+            </a>
+              <style>
+                .shopify-section--{{ section.id }} .button--secondary-bg {
+                  display: flex;
+                  color: {{ block.settings.second_button_color }};
+                  background: {{ block.settings.second_button_bg }};
+                  font-weight: 700;
+                  font-size: 14px;
+                  line-height: 31px;
+                  letter-spacing: 0.04em;
+                  padding: 0;
+                }
+                .shopify-section--{{ section.id }} .outlined--button-secondary {
+                  background: transparent;
+                  border-bottom: 2px solid {{ block.settings.second_button_bg }};
+                  justify-content: space-between !important;
+                }
+                .content_buttons_area a.button {
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  min-width: 200px;
+                  white-space: nowrap;
+                  max-width: 300px;
+                  align-items: center;
+                }
+                .content_buttons_area a.button img {
+                  display: flex;
+                  max-width: 25px;
+                  height: auto;
+                  align-items: center;
+                }
+                @media only screen and (max-width: 740px) {
+                  .shopify-section--{{ section.id }} .outlined--button-secondary {
+                    justify-content: center !important;
+                  }
+                }
+              </style>
+            {%- endif -%}
+          </div>
+        </div>
+        {% if block.settings.enable_right_sticks and block.settings.right_sticks != blank %}
+          <div class="enable_right_sticks" data-aos="fade-left"><img src="{{ block.settings.right_sticks | img_url:'original' }}"></div>
+        {% endif %}
+      </div>
+     <style>
+       {% if block.settings.bg_color != blank %}
+         .start_grilling_section[data-block-id="block-{{ block.id }}"]
+         {
+           background:{{block.settings.bg_color}};
+         }
+      {% endif %}
+     </style>
+    {% endif %}
+    {% if block.type == 'personalise_grillbot' %}
+      <div class="personalise_grillbot_area" data-block-id="block-{{ block.id }}">
+        <div class="header--area">
+        <div class="container">
+          {%- if block.settings.heading != blank -%}
+          <div class="heading_area">
+          <h3 class="heading h3">
+          {{ block.settings.heading }}
+          </h3>
+          </div>
+          {%- endif -%}
+          {%- if block.settings.subheading != blank -%}
+          <div class="subheading_area">
+          <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
+          </div>
+          {%- endif -%}
+          <div class="content_buttons_area">
+          {%- if block.settings.button_text != blank -%}
+          <a href="{{ block.settings.button_link }}" class="button button--primary">
+          {{- block.settings.button_text -}}
+          </a>
+          {%- endif -%}
+          </div>
+        {% if block.settings.enable_vertical_sticks and block.settings.vertical_sticks != blank %}
+          <div class="enable_vertical_sticks"><img src="{{ block.settings.vertical_sticks | img_url:'original' }}"></div>
+        {% endif %}
+        </div>
+        </div>
+        <div class="banner-area image--grillbot-style" data-aos="fade-left">
+        {% if block.settings.image != blank %}
+          <img class="even_image" src="{{ block.settings.image | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image2 != blank %}
+          <img class="odd_image" src="{{ block.settings.image2 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image3 != blank %}
+          <img class="even_image" src="{{ block.settings.image3 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image4 != blank %}
+          <img class="odd_image" src="{{ block.settings.image4 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image5 != blank %}
+          <img class="even_image" src="{{ block.settings.image5 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image6 != blank %}
+          <img class="odd_image" src="{{ block.settings.image6 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image7 != blank %}
+          <img class="even_image" src="{{ block.settings.image7 | img_url: '' }}">
+        {% endif %}
+        {% if block.settings.image8 != blank %}
+          <img class="odd_image" src="{{ block.settings.image8 | img_url: '' }}">
+        {% endif %}
+        </div>
+        {% if section.settings.animation_smoke != blank %}
+          <div class="effect-smoke-box"><img src="{{ section.settings.animation_smoke | img_url: '' }}"/></div>
+        {% endif %}
+      </div>
+      <style>
+        {% if block.settings.bg_image != blank %}
+        .personalise_grillbot_area[data-block-id="block-{{ block.id }}"] {
+          background:url('{{ block.settings.bg_image | img_url:'original' }}');
+        }
+        {% endif %}
+      </style>
+    {% endif %}
+  {% endfor %}
+
+</section>
+
+<style>
+.home-our-guarantees-section.shopify-section--{{ section.id }} .personalise_grillbot_area {
+    position: relative;
+}
+.shopify-section--{{ section.id }} .effect-smoke-box img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.shopify-section--{{ section.id }} .effect-smoke-box {
+    position: absolute;
+    bottom: 10%;
+    right: 0;
+    max-width: 80%;
+    width: 100%;
+    transform: rotate(180deg);
+}
+@media only screen and (max-width: 740px) {
+  .shopify-section--{{ section.id }} .effect-smoke-box {
+    bottom: -20%;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+  }
+  .shopify-section--{{ section.id }} .effect-smoke-box img {
+    object-fit: cover;
+  }
+}
+</style>
+{% schema %}
+  {
+    "name": "Home - Our Guarantees",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "animation_smoke",
+        "label": "Animation Smoke Image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "our_guarantees",
+        "name": "Our Guarantees",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color",
+            "default": "#b6d22f"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_left_sticks",
+            "label": "Enable Left Sticks",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "left_sticks",
+            "label": "Left Sticks"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_right_sticks",
+            "label": "Enable Right Sticks",
+          "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "right_sticks",
+            "label": "Right Sticks"
+          },
+          {
+            "type":"html",
+            "id":"heading",
+            "label":"Heading",
+            "default":"Main<br>Benefits<br>of Grillbot"
+          },
+          {
+            "type":"text",
+            "id":"subheading",
+            "label":"Subheading",
+            "default":"Grillbot is powerful, convenient, and easy to use."
+          },
+          {
+            "type":"header",
+            "content":"Block Icons"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_block_icons",
+            "label": "Enable Block Icons",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_1",
+            "label": "SVG Icon 1",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_1",
+            "label": "SVG Text 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_2",
+            "label": "SVG Icon 2",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_2",
+            "label": "SVG Text 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_3",
+            "label": "SVG Icon 3",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_3",
+            "label": "SVG Text 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_4",
+            "label": "SVG Icon 4",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_4",
+            "label": "SVG Text 4"
+          },
+          {
+            "type":"header",
+            "content":"Buttons"
+          },
+          {
+            "type": "select",
+            "id": "button_position",
+            "label": "Buttons Position",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "spaceBetween",
+                "label": "Space Between"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "text",
+            "id": "button_text_1",
+            "label": "Button text 1"
+          },
+          {
+            "type": "url",
+            "id": "button_link_1",
+            "label": "Button link 1"
+          },
+          {
+            "type": "color",
+            "id": "first_button_color",
+            "label": "Button Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "first_button_bg",
+            "label": "Button Background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_type1",
+            "label":"Outlined Button",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "button_text_2",
+            "label": "Button text 2"
+          },
+          {
+            "type": "url",
+            "id": "button_link_2",
+            "label": "Button link 2"
+          },
+          {
+            "type": "color",
+            "id": "second_button_color",
+            "label": "Button Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "second_button_bg",
+            "label": "Button Background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_type2",
+            "label":"Outlined Button",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "personalise_grillbot",
+        "name": "Personalise Grillbot",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image"
+          },
+          {
+            "type":"html",
+            "id":"heading",
+            "label":"Heading",
+            "default":"Main<br>Benefits<br>of Grillbot"
+          },
+          {
+            "type":"text",
+            "id":"subheading",
+            "label":"Subheading",
+            "default":"Grillbot is powerful, convenient, and easy to use."
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_vertical_sticks",
+            "label": "Enable Vertical Sticks",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "vertical_sticks",
+            "label": "Vertical Sticks"
+          },
+          {
+            "type":"header",
+            "content":"Buttons"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text"
+          },
+          {
+            "type": "url",
+            "id": "button_link_1",
+            "label": "Button link 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image5",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image6",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image7",
+            "label": "Grillbot Design Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image8",
+            "label": "Grillbot Design Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home - Our Guarantees",
+        "settings": {},
+        "blocks": [
+          {
+            "type": "our_guarantees",
+            "settings": {}
+          },
+          {
+            "type": "personalise_grillbot",
+            "settings": {}
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

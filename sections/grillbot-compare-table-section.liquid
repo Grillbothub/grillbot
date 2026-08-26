@@ -1,0 +1,462 @@
+{%- comment -%}
+  Grillbot - Compare Table (metaobject driven)
+
+  Recommended "simple" structure (2 metaobject types + product metafields):
+
+  1) Metaobject type: grillbot_compare_table_column
+     - title (Single line text)
+     - image (Image/File)
+
+  2) Metaobject type: grillbot_compare_table_row
+     - label (Single line text)
+     - kinds (List of single line text) -> per column value: tick/cross/text (any case ok)
+     - texts (List of multi-line text)  -> per column value (only when kind=text, otherwise blank)
+
+  Product metafields (recommended):
+  - custom.grillbot_compare_table_heading (Single line text)
+  - custom.grillbot_compare_table_columns (List of metaobjects -> grillbot_compare_table_column)
+  - custom.grillbot_compare_table_rows (List of metaobjects -> grillbot_compare_table_row)
+
+  Fallback supported (older approach):
+  - product.metafields.custom.grillbot_compare_table_section.value (metaobject that has heading/columns/rows)
+{%- endcomment -%}
+
+{%- assign mo = product.metafields.custom.grillbot_compare_table_section.value
+  | default: product.metafields.custom.grillbot_compare_table_sections.value
+  | default: product.metafields.custom.grillbot_compare_table.value
+-%}
+
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign heading = product.metafields.custom.grillbot_compare_table_heading.value
+    | default: product.metafields.custom.grillbot_compare_table_heading
+    | default: mo.heading.value
+    | default: mo.heading
+  -%}
+  {%- assign columns = product.metafields.custom.grillbot_compare_table_columns.value
+    | default: product.metafields.custom.grillbot_compare_table_columns
+    | default: mo.columns.value
+    | default: mo.columns
+  -%}
+  {%- assign rows = product.metafields.custom.grillbot_compare_table_rows.value
+    | default: product.metafields.custom.grillbot_compare_table_rows
+    | default: mo.rows.value
+    | default: mo.rows
+  -%}
+
+  {%- if columns != blank and rows != blank -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .hb-compare-table {
+        background: {{ section.settings.background }};
+        padding-top: {{ section.settings.padding_desktop_top }}px;
+        padding-bottom: {{ section.settings.padding_desktop_bottom }}px;
+        color: {{ section.settings.text_color }};
+      }
+      #shopify-section-{{ section.id }} .hb-compare-table__heading {
+        margin: 0 0 32px;
+        text-align: center;
+        font-family: Anton !important;
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 52px;
+        line-height: 60px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-table__card {
+        overflow: auto;
+        border: 0;
+        padding-bottom: 16px;
+      }
+
+      /* Custom scrollbar (mobile only - injected by JS below) */
+      #shopify-section-{{ section.id }} .hb-compare-table__scroll {
+        position: relative;
+      }
+      #shopify-section-{{ section.id }} .hb-compare-table__bar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} table.hb-compare-table__table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-table__table th,
+      #shopify-section-{{ section.id }} .hb-compare-table__table td {
+        border-bottom: 1px solid #CCCCCC;
+        padding: 12px 16px;
+        vertical-align: middle;
+        box-sizing: border-box;
+      }
+      /* Column sizing via TH/TD classes (no col/colgroup) */
+      #shopify-section-{{ section.id }} .hb-col-label {
+        width: clamp(240px, 22vw, 322px);
+        max-width: 322px;
+      }
+
+      /* Product columns: responsive but capped to match design */
+      #shopify-section-{{ section.id }} .hb-col-1 { width: clamp(220px, 20vw, 275px); max-width: 275px; }
+      #shopify-section-{{ section.id }} .hb-col-2 { width: clamp(200px, 18vw, 274px); max-width: 274px; }
+      #shopify-section-{{ section.id }} .hb-col-3 { width: clamp(190px, 17vw, 246px); max-width: 246px; }
+      #shopify-section-{{ section.id }} .hb-col-4 { width: clamp(195px, 17vw, 251px); max-width: 251px; }
+
+      /* Highlight the 2nd column (body text only) */
+      #shopify-section-{{ section.id }} .hb-compare-table__table tbody td:nth-child(2) {
+        color: {{ section.settings.highlight_column_text_color }};
+        font-weight: 500;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-col {
+        text-align: center;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-col__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        height: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-col__image {
+        display: block;
+        margin: 0 auto;
+        max-height: 116px;
+        object-fit: contain;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-col__title {
+        font-size: 18px;
+        line-height: 1.13;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-row__label {
+        font-size: 18px;
+        line-height: 1.30;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-cell {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.30;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-table__table tbody td {
+        height: 58px;
+      }
+
+      /* First body row label style */
+      #shopify-section-{{ section.id }} .hb-compare-table__table tbody tr:first-child .hb-compare-row__label {
+        font-size: 18px;
+        line-height: 1.13;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-icon svg {
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .hb-compare-icon--tick { color: {{ section.settings.tick_color }}; }
+      #shopify-section-{{ section.id }} .hb-compare-icon--cross { color: {{ section.settings.cross_color }}; }
+
+      @media screen and (max-width: 991px) {
+        #shopify-section-{{ section.id }} .hb-compare-table {
+          padding-top: {{ section.settings.padding_mobile_top }}px;
+          padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .hb-compare-table__heading {
+          font-size: 36px;
+          line-height: 44px;
+        }
+      }
+
+      @media screen and (max-width: 767px) {
+        #shopify-section-{{ section.id }} .hb-compare-table .container {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        #shopify-section-{{ section.id }} .hb-col-label {
+        width: clamp(145px, 22vw, 322px);
+      }
+
+      /* Product columns: responsive but capped to match design */
+      #shopify-section-{{ section.id }} .hb-col-1 { width: clamp(140px, 20vw, 275px); max-width: 275px; }
+      #shopify-section-{{ section.id }} .hb-col-2 { width: clamp(140px, 18vw, 274px); max-width: 274px; }
+      #shopify-section-{{ section.id }} .hb-col-3 { width: clamp(160px, 17vw, 246px); max-width: 246px; }
+      #shopify-section-{{ section.id }} .hb-col-4 { width: clamp(145px, 17vw, 251px); max-width: 251px; }
+        #shopify-section-{{ section.id }} .hb-compare-table__table th,
+        #shopify-section-{{ section.id }} .hb-compare-table__table td {
+          padding: 10px 10px;
+        }
+        #shopify-section-{{ section.id }} .hb-compare-table__card {
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding-bottom: 0;
+          scrollbar-width: none;            /* Firefox */
+          -ms-overflow-style: none;         /* IE 10+ */
+        }
+        #shopify-section-{{ section.id }} .hb-compare-table__card::-webkit-scrollbar {
+          display: none;                    /* Chrome/Safari */
+          height: 0;
+          width: 0;
+        }
+
+        /* Fake permanent scrollbar (full-width track + thumb) */
+        #shopify-section-{{ section.id }} .hb-compare-table__bar {
+          display: block;
+          position: relative;
+          height: 2px;
+          width: 100%;
+          margin-top: 33px;
+          background: #B6D22F33;
+          border-radius: 999px;
+          overflow: hidden;
+        }
+        #shopify-section-{{ section.id }} .hb-compare-table__bar-thumb {
+          position: absolute;
+          inset: 0 auto 0 0;
+          height: 100%;
+          width: 25%;
+          background: #B6D22F;
+          border-radius: 999px;
+          transform: translateX(0);
+          transition: transform 0.05s linear, width 0.05s linear;
+        }
+
+        #shopify-section-{{ section.id }} .hb-compare-table__table {
+          min-width: 805px;
+        }
+      }
+    {% endstyle %}
+
+    <section class="hb-compare-table shopify-section--{{ section.id }}" aria-label="Compare table">
+      <div class="container">
+        {%- if heading != blank -%}
+          <h2 class="hb-compare-table__heading">{{ heading | escape }}</h2>
+        {%- endif -%}
+
+        <div class="hb-compare-table__scroll" data-hb-compare-scroll>
+          <div class="hb-compare-table__card" data-hb-compare-card>
+            <table class="hb-compare-table__table">
+            <thead>
+              <tr>
+                <th scope="col" class="hb-th hb-th--label hb-col-label"></th>
+                {%- for col in columns -%}
+                  {%- if col != blank -%}
+                    {%- assign col_title = col.title.value | default: col.title -%}
+                    {%- assign col_image = col.image.value | default: col.image -%}
+                    <th scope="col" class="hb-th hb-th--col hb-compare-col hb-col hb-col-{{ forloop.index }}">
+                      <div class="hb-compare-col__inner">
+                        {%- if col_image != blank -%}
+                          {{
+                            col_image
+                            | image_url: width: 177
+                            | image_tag: loading: 'lazy', class: 'hb-compare-col__image', sizes: '177px', alt: 'Table Image'
+                          }}
+                        {%- endif -%}
+                        {%- if col_title != blank -%}
+                          <div class="hb-compare-col__title">{{ col_title | escape }}</div>
+                        {%- endif -%}
+                      </div>
+                    </th>
+                  {%- endif -%}
+                {%- endfor -%}
+              </tr>
+            </thead>
+            <tbody>
+              {%- for row in rows -%}
+                {%- if row != blank -%}
+                  {%- assign row_label = row.label.value | default: row.label -%}
+                  {%- assign row_cells = row.cells.value | default: row.cells -%}
+                  {%- assign row_kinds = row.kinds.value | default: row.kinds -%}
+                  {%- assign row_texts = row.texts.value | default: row.texts -%}
+                  <tr>
+                    <td class="hb-td hb-td--label hb-compare-row__label hb-col-label">{{ row_label | escape }}</td>
+                    {%- for col in columns -%}
+                      {%- assign col_index0 = forloop.index0 -%}
+                      {%- assign cell_for_col = null -%}
+                      {%- if row_cells != blank -%}
+                        {%- for cell in row_cells -%}
+                          {%- if cell != blank -%}
+                            {%- assign cell_col = cell.column.value | default: cell.column -%}
+                            {%- if cell_col != blank and cell_col.id == col.id -%}
+                              {%- assign cell_for_col = cell -%}
+                              {%- break -%}
+                            {%- endif -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+
+                      {%- if cell_for_col != blank -%}
+                        {%- assign kind_raw = cell_for_col.kind.value | default: cell_for_col.kind -%}
+                        {%- assign kind = kind_raw | default: '' | strip | downcase -%}
+                        {%- assign txt = cell_for_col.text.value | default: cell_for_col.text -%}
+                        <td class="hb-td hb-td--col hb-compare-cell hb-col hb-col-{{ forloop.index }}">
+                          {%- if kind == 'tick' -%}
+                            <span class="hb-compare-icon hb-compare-icon--tick" aria-label="Yes">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M11.076 21.2696C11.0123 21.2696 10.9493 21.2564 10.891 21.2309C10.8327 21.2054 10.7803 21.1681 10.737 21.1213L1.59918 11.2368C1.53827 11.1709 1.49788 11.0887 1.48298 11.0002C1.46807 10.9117 1.47928 10.8208 1.51524 10.7385C1.55121 10.6563 1.61036 10.5864 1.68546 10.5372C1.76056 10.4881 1.84835 10.462 1.93809 10.462H6.33655C6.40259 10.462 6.46786 10.4761 6.52796 10.5035C6.58805 10.5309 6.64158 10.5708 6.68492 10.6207L9.73883 14.1341C10.0689 13.4286 10.7078 12.2539 11.829 10.8225C13.4864 8.70631 16.5694 5.59411 21.8441 2.78463C21.946 2.73034 22.0646 2.71625 22.1764 2.74514C22.2883 2.77403 22.3852 2.84381 22.4481 2.94068C22.511 3.03756 22.5353 3.1545 22.5162 3.26841C22.497 3.38232 22.4359 3.48492 22.3448 3.55595C22.3247 3.57169 20.291 5.17323 17.9504 8.10672C15.7963 10.8063 12.9329 15.2204 11.5238 20.919C11.4991 21.0191 11.4415 21.1081 11.3603 21.1717C11.2791 21.2352 11.1789 21.2698 11.0758 21.2698L11.076 21.2696Z" fill="currentcolor"/>
+                                </svg>
+                            </span>
+                          {%- elsif kind == 'cross' -%}
+                            <span class="hb-compare-icon hb-compare-icon--cross" aria-label="No">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14.544 12L18.78 16.236L16.236 18.78L12 14.544L7.75201 18.792L5.20801 16.248L9.45601 12L5.20801 7.75201L7.75201 5.20801L12 9.45601L16.248 5.22001L18.792 7.76401L14.544 12Z" fill="currentcolor"/>
+                                </svg>
+                            </span>
+                          {%- else -%}
+                            <span class="hb-compare-text">{{ txt | escape | newline_to_br }}</span>
+                          {%- endif -%}
+                        </td>
+                      {%- else -%}
+                        {%- assign kind_raw2 = row_kinds[col_index0] | default: '' -%}
+                        {%- assign kind2 = kind_raw2 | strip | downcase -%}
+                        {%- assign txt2 = row_texts[col_index0] | default: '' -%}
+                        <td class="hb-td hb-td--col hb-compare-cell hb-col hb-col-{{ forloop.index }}">
+                          {%- if kind2 == 'tick' -%}
+                            <span class="hb-compare-icon hb-compare-icon--tick" aria-label="Yes">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M11.076 21.2696C11.0123 21.2696 10.9493 21.2564 10.891 21.2309C10.8327 21.2054 10.7803 21.1681 10.737 21.1213L1.59918 11.2368C1.53827 11.1709 1.49788 11.0887 1.48298 11.0002C1.46807 10.9117 1.47928 10.8208 1.51524 10.7385C1.55121 10.6563 1.61036 10.5864 1.68546 10.5372C1.76056 10.4881 1.84835 10.462 1.93809 10.462H6.33655C6.40259 10.462 6.46786 10.4761 6.52796 10.5035C6.58805 10.5309 6.64158 10.5708 6.68492 10.6207L9.73883 14.1341C10.0689 13.4286 10.7078 12.2539 11.829 10.8225C13.4864 8.70631 16.5694 5.59411 21.8441 2.78463C21.946 2.73034 22.0646 2.71625 22.1764 2.74514C22.2883 2.77403 22.3852 2.84381 22.4481 2.94068C22.511 3.03756 22.5353 3.1545 22.5162 3.26841C22.497 3.38232 22.4359 3.48492 22.3448 3.55595C22.3247 3.57169 20.291 5.17323 17.9504 8.10672C15.7963 10.8063 12.9329 15.2204 11.5238 20.919C11.4991 21.0191 11.4415 21.1081 11.3603 21.1717C11.2791 21.2352 11.1789 21.2698 11.0758 21.2698L11.076 21.2696Z" fill="currentcolor"/>
+                                </svg>
+                            </span>
+                          {%- elsif kind2 == 'cross' -%}
+                            <span class="hb-compare-icon hb-compare-icon--cross" aria-label="No">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14.544 12L18.78 16.236L16.236 18.78L12 14.544L7.75201 18.792L5.20801 16.248L9.45601 12L5.20801 7.75201L7.75201 5.20801L12 9.45601L16.248 5.22001L18.792 7.76401L14.544 12Z" fill="currentcolor"/>
+                                </svg>
+                            </span>
+                          {%- else -%}
+                            <span class="hb-compare-text">{{ txt2 | escape | newline_to_br }}</span>
+                          {%- endif -%}
+                        </td>
+                      {%- else -%}
+                        <td class="hb-td hb-td--col hb-compare-cell hb-col hb-col-{{ forloop.index }}"></td>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+          </div>
+          <div class="hb-compare-table__bar" data-hb-compare-bar aria-hidden="true">
+            <span class="hb-compare-table__bar-thumb" data-hb-compare-thumb></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        var root = document.getElementById('shopify-section-{{ section.id }}');
+        if (!root) return;
+        var card = root.querySelector('[data-hb-compare-card]');
+        var bar = root.querySelector('[data-hb-compare-bar]');
+        var thumb = root.querySelector('[data-hb-compare-thumb]');
+        if (!card || !bar || !thumb) return;
+
+        function update() {
+          var sw = card.scrollWidth;
+          var cw = card.clientWidth;
+          var sl = card.scrollLeft;
+
+          if (sw <= cw + 1) {
+            bar.style.display = 'none';
+            return;
+          }
+          bar.style.display = '';
+
+          var ratio = cw / sw;
+          var thumbW = Math.max(20, Math.round(ratio * cw));
+          var maxScroll = sw - cw;
+          var maxThumbX = cw - thumbW;
+          var x = maxScroll > 0 ? Math.round((sl / maxScroll) * maxThumbX) : 0;
+
+          thumb.style.width = thumbW + 'px';
+          thumb.style.transform = 'translateX(' + x + 'px)';
+        }
+
+        card.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+        update();
+        // Re-check after fonts/images load (table width may change)
+        window.setTimeout(update, 200);
+        window.setTimeout(update, 800);
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Grillbot - Compare table",
+  "class": "shopify-section--grillbot-compare-table",
+  "disabled_on": { "templates": ["password"] },
+  "settings": [
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#080808" },
+    { "type": "color", "id": "highlight_column_text_color", "label": "2nd column text color", "default": "#080808" },
+    { "type": "color", "id": "tick_color", "label": "Tick color", "default": "#B6D22F" },
+    { "type": "color", "id": "cross_color", "label": "Cross color", "default": "#080808" },
+
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "padding_desktop_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_top",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile_bottom",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [{ "name": "Grillbot - Compare table", "category": "Custom" }]
+}
+{% endschema %}

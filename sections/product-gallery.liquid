@@ -1,0 +1,1157 @@
+<section class="pg" id="pg-{{ section.id }}" style="
+  --pg-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+  --pg-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  --pg-pt-mobile:  {{ section.settings.padding_top_mobile }}px;
+  --pg-pb-mobile:  {{ section.settings.padding_bottom_mobile }}px;
+">
+  <div class="pg__inner">
+
+    <!-- ══════════════════════════════════
+         LEFT COLUMN
+    ══════════════════════════════════ -->
+    <div class="pg__left">
+
+      {% if section.settings.eyebrow != blank %}
+        <p class="pg__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="pg__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="pg__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+
+      <!-- Feature blocks -->
+      {% if section.blocks.size > 0 %}
+        <ul class="pg__features">
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' %}
+              <li class="pg__feature" {{ block.shopify_attributes }}>
+                <div class="pg__feature-icon">
+                  {% if block.settings.icon != blank %}
+                    <img
+                      src="{{ block.settings.icon | image_url: width: 60 }}"
+                      alt="{{ block.settings.title }}"
+                      width="28" height="28" loading="lazy"
+                    >
+                  {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                  {% endif %}
+                </div>
+                <div class="pg__feature-text">
+                  {% if block.settings.title != blank %}
+                    <p class="pg__feature-title">{{ block.settings.title }}</p>
+                  {% endif %}
+                  {% if block.settings.description != blank %}
+                    <p class="pg__feature-desc">{{ block.settings.description }}</p>
+                  {% endif %}
+                </div>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if section.settings.button_label != blank %}
+        <a class="pg__btn" href="{{ section.settings.button_link | default: '#' }}">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+
+    </div>
+
+    <!-- ══════════════════════════════════
+         RIGHT COLUMN: Slider or Grid
+    ══════════════════════════════════ -->
+    <div class="pg__right {% if section.settings.media_layout == 'grid' %}pg__right--grid{% else %}pg__right--slider{% endif %}">
+
+      {% if section.settings.media_layout == 'grid' %}
+
+        <!-- Grid blocks (max 2) -->
+        <div class="pg__grid" id="pg-grid-{{ section.id }}">
+          {% assign grid_count = 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'grid_block' and grid_count < 2 %}
+              {% assign grid_count = grid_count | plus: 1 %}
+              {% assign has_video = false %}
+              {% assign video_src = '' %}
+              {% if block.settings.video != blank %}
+                {% assign has_video = true %}
+                {% for source in block.settings.video.sources %}
+                  {% if source.format == 'mp4' %}
+                    {% assign video_src = source.url %}
+                  {% endif %}
+                {% endfor %}
+                {% if video_src == blank %}
+                  {% assign video_src = block.settings.video.sources.first.url %}
+                {% endif %}
+              {% endif %}
+
+              {% assign card_image = block.settings.image %}
+              {% if card_image == blank and block.settings.video != blank %}
+                {% assign card_image = block.settings.video.preview_image %}
+              {% endif %}
+
+              <div
+                class="pg__grid-card {% if has_video %}pg__grid-card--video{% endif %}"
+                data-type="{% if has_video %}video{% else %}image{% endif %}"
+                {% if has_video %}data-video="{{ video_src }}"{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {% if card_image != blank %}
+                  <img
+                    class="pg__grid-img"
+                    src="{{ card_image | image_url: width: 1200 }}"
+                    alt="{{ block.settings.heading | escape }}"
+                    loading="lazy"
+                    width="600"
+                    height="340"
+                  >
+                {% else %}
+                  <div class="pg__grid-placeholder"></div>
+                {% endif %}
+
+                <div class="pg__grid-overlay">
+                  {% if block.settings.heading != blank %}
+                    <h3 class="pg__grid-heading">{{ block.settings.heading }}</h3>
+                  {% endif %}
+
+                  {% if has_video %}
+                    <button class="pg__grid-play" aria-label="Play video" type="button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <path d="M27.9248 42.4889L41.8461 33.5522C42.4068 33.1918 42.6872 32.6767 42.6872 32.0067C42.6872 31.3367 42.4068 30.8171 41.8461 30.4478L27.9248 21.5111C27.2729 21.0826 26.6257 21.0508 25.9829 21.4158C25.3402 21.7809 25.0188 22.33 25.0188 23.0632V40.9368C25.0188 41.67 25.3402 42.2191 25.9829 42.5842C26.6257 42.9492 27.2729 42.9174 27.9248 42.4889ZM32.0119 64C27.6005 64 23.4585 63.1603 19.5858 61.481C15.713 59.8016 12.321 57.5076 9.40969 54.599C6.49846 51.6905 4.20237 48.3016 2.52142 44.4325C0.840474 40.5634 0 36.4232 0 32.0119C0 27.5868 0.839675 23.4265 2.51902 19.531C4.19843 15.6355 6.49241 12.2469 9.40098 9.36525C12.3095 6.48365 15.6984 4.20237 19.5675 2.52142C23.4366 0.840477 27.5768 0 31.9881 0C36.4132 0 40.5735 0.839673 44.469 2.51902C48.3645 4.19843 51.7531 6.4776 54.6348 9.35653C57.5164 12.2355 59.7976 15.6209 61.4786 19.5127C63.1595 23.4046 64 27.5631 64 31.9881C64 36.3995 63.1603 40.5415 61.481 44.4142C59.8016 48.287 57.5224 51.679 54.6435 54.5903C51.7645 57.5015 48.3791 59.7976 44.4873 61.4786C40.5954 63.1595 36.4369 64 32.0119 64Z" fill="currentcolor"/>
+                        </svg>
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+      {% else %}
+
+        <!-- Main viewer -->
+        <div class="pg__main-viewer" id="pg-viewer-{{ section.id }}">
+          {% assign first_media = false %}
+          {% for block in section.blocks %}
+            {% if block.type == 'media' and first_media == false %}
+              {% assign first_media = true %}
+              {% if block.settings.video_url != blank and block.settings.image != blank %}
+                <!-- Video with image thumbnail -->
+                <div class="pg__main-item pg__main-item--active" data-type="video" data-video="{{ block.settings.video_url }}">
+                  <img class="pg__main-img" src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.alt }}">
+                  <button class="pg__play-btn" aria-label="Play video">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                  </button>
+                </div>
+              {% elsif block.settings.image != blank %}
+                <div class="pg__main-item pg__main-item--active" data-type="image">
+                  <img class="pg__main-img" src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.alt }}">
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Vertical thumbnail Swiper -->
+        <div class="pg__thumbs-wrap">
+          <div class="swiper pg__thumbs-swiper" id="pg-thumbs-{{ section.id }}">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                {% if block.type == 'media' %}
+                  <div class="swiper-slide pg__thumb-slide {% if forloop.first %}pg__thumb-slide--active{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                    data-type="{% if block.settings.video_url != blank and block.settings.image != blank %}video{% else %}image{% endif %}"
+                    data-video="{{ block.settings.video_url }}"
+                    data-src="{{ block.settings.image | image_url: width: 900 }}"
+                    data-alt="{{ block.settings.alt }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {% if block.settings.image != blank %}
+                      <img
+                        src="{{ block.settings.image | image_url: width: 120 }}"
+                        alt="{{ block.settings.alt }}"
+                        loading="lazy"
+                        width="120" height="120"
+                      >
+                    {% else %}
+                      <div class="pg__thumb-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      </div>
+                    {% endif %}
+                    {% if block.settings.video_url != blank %}
+                      <span class="pg__thumb-play" style="display:none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+
+  <!-- Video modal -->
+  <div class="pg__modal" id="pg-modal-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Video player">
+    <div class="pg__modal-backdrop"></div>
+    <div class="pg__modal-box">
+      <button class="pg__modal-close" aria-label="Close video">&times;</button>
+      <div class="pg__modal-media"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Swiper CSS -->
+
+<style>
+  /* ─────────────────────────────────────────
+     Section
+  ───────────────────────────────────────── */
+  .pg {
+    background-color: #0a0a0a;
+    padding-top: var(--pg-pt-desktop);
+    padding-bottom: var(--pg-pb-desktop);
+  }
+
+  .pg__inner {
+    max-width: 1440;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 48px;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  /* ─────────────────────────────────────────
+     LEFT
+  ───────────────────────────────────────── */
+  .pg__left {
+    display: flex;
+    flex-direction: column;
+    max-width:41%;
+  }
+
+ .pg__eyebrow {
+
+    font-style: italic;
+    color: var(--green, #B6D22F);
+    font-family: Rubik;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 40px;
+    margin:0px;
+}
+
+  .pg__heading {
+  
+    margin: 0;
+    color: #FFF;
+    font-family: Anton!important;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    text-transform: uppercase;
+}
+
+
+
+ .pg__sub {
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    margin-top: 14px;
+    margin-bottom: 40px;
+}
+
+  /* Feature list */
+  .pg__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pg__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid #22260E;
+  }
+
+  .pg__feature:first-child {
+    border-top: 1px solid #22260E;
+  }
+
+  .pg__feature-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #AAFF00;
+    margin-top: 2px;
+  }
+
+  .pg__feature-icon img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .pg__feature-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .pg__feature-title {
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+    margin:0px;
+  }
+
+  .pg__feature-desc {
+   
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    margin:0px;
+  }
+
+  /* CTA */
+ a.pg__btn {
+    display: flex;
+    width: 238px;
+    height: 56px;
+    padding: 16px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: #B6D22F;
+    color: var(--Black, #080808);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    margin-top:60px
+}
+
+  .pg__btn:hover { opacity: 0.85; }
+
+  /* ─────────────────────────────────────────
+     RIGHT
+  ───────────────────────────────────────── */
+  .pg__right {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+    max-width: 55.8%;
+    width: 100%;
+}
+
+  /* Main viewer */
+
+
+  .pg__main-viewer {
+    flex: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    aspect-ratio: 1/1.12;
+    position: relative;
+}
+
+  .pg__main-item {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .pg__main-item--active {
+    display: block;
+  }
+
+  .pg__main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Play button overlay */
+  .pg__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  
+    border: none;
+    color: #111111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    z-index: 2;
+    padding-left: 4px;
+        background: #B6D22F;
+  }
+
+  .pg__play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: #AAFF00;
+  }
+
+  /* ─────────────────────────────────────────
+     Thumbnail Swiper (vertical)
+  ───────────────────────────────────────── */
+  .pg__thumbs-wrap {
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .pg__thumbs-swiper {
+    height: 100%;
+  }
+
+  .pg__thumbs-swiper .swiper-wrapper {
+    flex-direction: column;
+  }
+
+  .pg__thumb-slide {
+    width: 120px !important;
+    height: 120px !important;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+    position: relative;
+    background-color: #1a1a1a;
+    flex-shrink: 0;
+    margin-bottom: 10px;
+   
+  }
+
+  .pg__thumb-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pg__thumb-slide--active {
+    border-color: #AAFF00;
+   
+  }
+
+  .pg__thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+  }
+
+  /* Small play badge on thumb */
+  .pg__thumb-play {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(170,255,0,0.9);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2px;
+  }
+
+  /* ─────────────────────────────────────────
+     Grid media cards
+  ───────────────────────────────────────── */
+  .pg__right--grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pg__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .pg__grid-card {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 2.15 / 1;
+    background-color: #1a1a1a;
+  }
+
+  .pg__grid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pg__grid-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+  }
+
+  .pg__grid-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .pg__grid-heading {
+    position: absolute;
+    top: 34px;
+    right: 34px;
+    margin: 0;
+    color: #fff;
+    font-family: Anton, sans-serif !important;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: right;
+    max-width: 428px;
+    pointer-events: none;
+  }
+
+  .pg__grid-play {
+    position: absolute;
+    bottom: 34px;
+    right: 34px;
+    border-radius: 50%;
+    border: none;
+    color: #B6D22F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding-left: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .pg__grid-play:hover {
+    opacity: 0.8;
+  }
+
+  /* ─────────────────────────────────────────
+     Video Modal
+  ───────────────────────────────────────── */
+  .pg__modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pg__modal.is-open {
+    display: flex;
+  }
+
+  .pg__modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+  }
+
+  .pg__modal-box {
+    position: relative;
+    z-index: 1;
+    width: 90vw;
+    max-width: 900px;
+    background: #000;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .pg__modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .pg__modal-media {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .pg__modal-media iframe,
+  .pg__modal-media video {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ─────────────────────────────────────────
+     Mobile
+  ───────────────────────────────────────── */
+  @media screen and (max-width: 900px) {
+    .pg {
+      padding-top: var(--pg-pt-mobile);
+      padding-bottom: var(--pg-pb-mobile);
+    }
+
+    .pg__inner {
+   
+    padding: 0 16px;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+.pg__left {
+    max-width:100%;
+
+}
+.pg__right{
+    max-width:100%;
+}
+
+   
+
+    .pg__right {
+      flex-direction: column;
+    }
+
+    .pg__grid-heading {
+      font-size: 26px;
+      top: 12px;
+      right: 12px;
+      max-width: 260px;
+    }
+
+    .pg__grid-play {
+      width: 42px;
+      height: 42px;
+      bottom: 12px;
+      right: 12px;
+    }
+
+    .pg__thumbs-wrap {
+      width: 100%;
+    }
+
+    .pg__thumbs-swiper {
+      max-height: none;
+    }
+
+    .pg__thumbs-swiper .swiper-wrapper {
+      flex-direction: row;
+    }
+
+    .pg__thumb-slide {
+      width: 120px !important;
+      height: 120px !important;
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+
+    .pg__btn {
+      align-self: stretch;
+      text-align: center;
+    }
+
+    .pg__eyebrow {
+  
+    font-size: 18px;
+    
+    line-height: 34px;
+  
+}
+.pg__heading {
+
+    color: #FFF;
+    font-family: Anton;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 44px;
+    text-transform: uppercase;
+}
+.pg__sub {
+   
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 24px;
+}
+.pg__feature-desc {
+   
+    font-size: 14px;
+    
+    line-height: 20px;
+   
+}
+.pg__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #22260E;
+}
+a.pg__btn {
+    display: flex;
+    width: 238px;
+    height: 56px;
+    padding: 16px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: #B6D22F;
+    color: var(--Black, #080808);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    margin-top: 24px;
+    width:100%;
+}
+  }
+</style>
+
+<!-- Swiper JS -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const sectionId = '{{ section.id }}';
+  const layout    = '{{ section.settings.media_layout | default: "slider" }}';
+  const viewer    = document.getElementById('pg-viewer-' + sectionId);
+  const modal     = document.getElementById('pg-modal-' + sectionId);
+  const modalMedia = modal ? modal.querySelector('.pg__modal-media') : null;
+  const thumbsEl  = document.getElementById('pg-thumbs-' + sectionId);
+  const gridEl    = document.getElementById('pg-grid-' + sectionId);
+
+  /* ── Helpers ── */
+  function isYouTube(url) { return url && (url.includes('youtube.com') || url.includes('youtu.be')); }
+  function isVimeo(url)   { return url && url.includes('vimeo.com'); }
+
+  function getYouTubeId(url) {
+    const m = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+    return m ? m[1] : null;
+  }
+
+  function getVimeoId(url) {
+    const m = url.match(/vimeo\.com\/(\d+)/);
+    return m ? m[1] : null;
+  }
+
+  function buildEmbedHTML(videoUrl) {
+    if (isYouTube(videoUrl)) {
+      const id = getYouTubeId(videoUrl);
+      return '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+    }
+    if (isVimeo(videoUrl)) {
+      const id = getVimeoId(videoUrl);
+      return '<iframe src="https://player.vimeo.com/video/' + id + '?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+    }
+    /* Direct video file */
+    return '<video src="' + videoUrl + '" autoplay controls playsinline></video>';
+  }
+
+  /* ── Open / close modal ── */
+  function openModal(videoUrl) {
+    if (!modal || !modalMedia) return;
+    modalMedia.innerHTML = buildEmbedHTML(videoUrl);
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal || !modalMedia) return;
+    modalMedia.innerHTML = '';
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (modal) {
+    modal.querySelector('.pg__modal-backdrop').addEventListener('click', closeModal);
+    modal.querySelector('.pg__modal-close').addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  }
+
+  /* ── Grid layout: play buttons ── */
+  if (layout === 'grid' && gridEl) {
+    gridEl.querySelectorAll('.pg__grid-play').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const card = btn.closest('.pg__grid-card');
+        if (card && card.dataset.video) openModal(card.dataset.video);
+      });
+    });
+    return;
+  }
+
+  /* ── Slider layout ── */
+  if (!thumbsEl) return;
+
+  const isMobile = () => window.innerWidth <= 900;
+
+  const thumbSwiper = new Swiper('#pg-thumbs-' + sectionId, {
+    direction: isMobile() ? 'horizontal' : 'vertical',
+    slidesPerView: 'auto',
+    spaceBetween: 10,
+    freeMode: true,
+    watchSlidesProgress: true,
+  });
+
+  window.addEventListener('resize', function () {
+    if (thumbSwiper) {
+      thumbSwiper.changeDirection(isMobile() ? 'horizontal' : 'vertical', true);
+    }
+  });
+
+  function activateSlide(thumb) {
+    if (!viewer) return;
+
+    const type     = thumb.dataset.type;
+    const src      = thumb.dataset.src;
+    const alt      = thumb.dataset.alt || '';
+    const videoUrl = thumb.dataset.video;
+
+    viewer.innerHTML = '';
+
+    const item = document.createElement('div');
+    item.className = 'pg__main-item pg__main-item--active';
+    item.dataset.type = type;
+    if (videoUrl) item.dataset.video = videoUrl;
+
+    const img = document.createElement('img');
+    img.className = 'pg__main-img';
+    img.src = src;
+    img.alt = alt;
+    item.appendChild(img);
+
+    if (type === 'video' && videoUrl) {
+      const btn = document.createElement('button');
+      btn.className = 'pg__play-btn';
+      btn.setAttribute('aria-label', 'Play video');
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+      btn.addEventListener('click', function () { openModal(videoUrl); });
+      item.appendChild(btn);
+    }
+
+    viewer.appendChild(item);
+
+    document.querySelectorAll('#pg-thumbs-' + sectionId + ' .pg__thumb-slide').forEach(function (t) {
+      t.classList.remove('pg__thumb-slide--active');
+    });
+    thumb.classList.add('pg__thumb-slide--active');
+  }
+
+  thumbsEl.querySelectorAll('.pg__thumb-slide').forEach(function (thumb) {
+    thumb.addEventListener('click', function () { activateSlide(thumb); });
+  });
+
+  if (viewer) {
+    viewer.addEventListener('click', function (e) {
+      const btn = e.target.closest('.pg__play-btn');
+      if (btn) {
+        const item = btn.closest('.pg__main-item');
+        if (item && item.dataset.video) openModal(item.dataset.video);
+      }
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Product Gallery",
+  "tag": "section",
+  "class": "product-gallery-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media Layout"
+    },
+    {
+      "type": "select",
+      "id": "media_layout",
+      "label": "Right column layout",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider (main image + thumbnails)"
+        },
+        {
+          "value": "grid",
+          "label": "Grid (stacked media cards)"
+        }
+      ],
+      "default": "slider",
+      "info": "Slider = Gallery Media thumbs. Grid = Grid Block cards (max 2)."
+    },
+    {
+      "type": "header",
+      "content": "Left Column Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Introducing the Smart Apron"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Everything You Need. Right On You."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Designed to keep your tools within reach while protecting against spills, grease, and heat."
+    },
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Text",
+      "default": "Shop Smart Apron"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image",
+          "info": "Use white/black PNG — lime green tint applied automatically"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Feature Description",
+          "default": "Short description of this feature."
+        }
+      ]
+    },
+    {
+      "type": "media",
+      "name": "Gallery Media",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image / Video Thumbnail",
+          "info": "Required. Acts as thumbnail if a video URL is also provided."
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL (optional)",
+          "info": "Paste a YouTube, Vimeo, or direct .mp4 URL. Leave blank for image-only."
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt Text",
+          "default": "Gallery image"
+        }
+      ]
+    },
+    {
+      "type": "grid_block",
+      "name": "Grid Block",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Card background / poster image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Select a Shopify-hosted video. Play button shows only when a video is selected."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Watch in action"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Gallery",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "BBQ Command Center",
+            "description": "Tools, music, lighting, and smart cooking in one place"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Bluetooth speaker built-in",
+            "description": "Music and calls right from your apron"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Motion-activated LED grill light",
+            "description": "Lights up your grill after sunset"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Built-in storage pockets",
+            "description": "Keep grilling tools close at hand"
+          }
+        },
+        { "type": "media", "settings": { "alt": "Main product image" } },
+        { "type": "media", "settings": { "alt": "Gallery image 2" } },
+        { "type": "media", "settings": { "alt": "Gallery image 3" } },
+        { "type": "media", "settings": { "alt": "Gallery image 4" } },
+        { "type": "media", "settings": { "alt": "Gallery image 5" } }
+      ]
+    }
+  ],
+  "max_blocks": 30
+}
+{% endschema %}

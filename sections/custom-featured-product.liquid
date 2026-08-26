@@ -1,0 +1,435 @@
+{% assign product = all_products[section.settings.product] %}
+
+<style>
+  #featured-bundle-{{ section.id }}{
+    background:{{ section.settings.background_color }};
+    color:{{ section.settings.text_color }};
+    padding-top:{{ section.settings.mobile_padding_top }}px;
+    padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+    margin-top:-2px;
+   
+  }
+
+  #featured-bundle-{{ section.id }} *{box-sizing:border-box;}
+
+  #featured-bundle-{{ section.id }} .bundle-wrapper{
+    max-width:1440px;
+    margin:0 auto;
+    padding-inline: 32px;
+  }
+
+  #featured-bundle-{{ section.id }} .bundle-grid{
+    display:grid;
+    grid-template-columns:0.83fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+
+  #featured-bundle-{{ section.id }} .bundle-thumbnail{
+    position:relative;
+    border-radius:16px;
+    overflow:hidden;
+  }
+
+  #featured-bundle-{{ section.id }} .bundle-thumbnail img{
+    width:100%;
+    display:block;
+    aspect-ratio:0.91;
+    object-fit:cover;
+    height:100%;
+  }
+
+  #featured-bundle-{{ section.id }} video{
+    width:100%;
+    display:none;
+    aspect-ratio:0.91;
+    object-fit:cover;
+    height:100%;
+  }
+
+  #featured-bundle-{{ section.id }} .play-btn{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:2;
+  }
+
+  #featured-bundle-{{ section.id }} .play-btn svg{
+    width:100%;
+    height:100%;
+    fill:#000;
+  }
+
+ .bundle-tag {
+ 
+    color: var(--green, #B6D22F);
+    font-family: Rubik;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}
+
+  .bundle-title{
+    margin-top: 0;
+    margin-bottom: 14px;
+    color: #FFF;
+    font-family: Anton !important;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    text-transform: uppercase;
+  }
+
+  .bundle-description{margin-bottom:32px;}
+
+.bundle-description p {
+   
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+
+
+ .bundle-price {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 48px;
+    align-items: center;
+}
+
+
+.sale-price {
+ 
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+}
+span.compare-price {
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    text-decoration-line: line-through;
+}
+
+.discount-badge {
+    display: flex;
+    align-items: center;
+    padding: 3px 6px;
+    font-family: var(--text-font-family);
+    font-style: var(--text-font-style);
+    font-weight: var(--text-font-bold-weight);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    background: rgb(var(--heading-color));
+    color: rgb(var(--background));
+    border-radius: 4px;
+    background: #A10505;
+    display: flex;
+    /* height: 24px; */
+    padding: 0 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.bundle-btn {
+    margin-top: 68px;
+    display: flex;
+    width: max-content;
+    height: 56px;
+    padding: 16px 32px;
+    border-radius: 100px;
+    background: #B6D22F;
+    color: #080808;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+ul.bundle-points {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    list-style: none;
+    padding:0px;
+}
+
+li.bundle-point {
+    color: #FFF;
+    text-align: center;
+    font-family: Rubik;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bundle-point-icon {
+    display: flex;
+}
+
+
+  @media(max-width:767px){
+  
+
+    ul.bundle-points {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    padding: 0px;
+}
+  #featured-bundle-{{ section.id }} .bundle-wrapper{
+    padding-inline: 16px;
+  }
+
+
+    .bundle-title{
+      font-size:36px;
+      line-height:44px;
+    }
+
+   #featured-bundle-{{ section.id }} .bundle-grid{
+    display:flex;
+    gap:40px;
+    align-items:center;
+    flex-direction:column;
+  }
+  .bundle-media {
+    width: 100%;
+}
+.bundle-description p {
+
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+.bundle-btn {
+    margin-top: 32px;
+   width:100%;
+   text-align:center;
+   justify-content:center;
+}
+.bundle-price {
+    margin-bottom: 24px;
+}
+
+  }
+
+  @media(min-width:990px){
+    #featured-bundle-{{ section.id }}{
+      padding-top:{{ section.settings.desktop_padding_top }}px;
+      padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+</style>
+
+<section id="featured-bundle-{{ section.id }}">
+  <div class="bundle-wrapper">
+    <div class="bundle-grid">
+
+      <div class="bundle-media">
+        <div class="bundle-thumbnail">
+
+          {% if section.settings.video_thumbnail != blank %}
+            {{ section.settings.video_thumbnail | image_url: width: 1200 | image_tag: class: 'thumb-img' }}
+          {% elsif product.featured_image != blank %}
+            {{ product.featured_image | image_url: width: 1200 | image_tag: class: 'thumb-img' }}
+          {% endif %}
+
+          {% if section.settings.video != blank %}
+            <div class="play-btn" data-play>
+             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <path d="M28.9436 39.8667L39.3846 33.1641C39.8051 32.8939 40.0154 32.5075 40.0154 32.005C40.0154 31.5025 39.8051 31.1128 39.3846 30.8359L28.9436 24.1333C28.4547 23.812 27.9692 23.7881 27.4872 24.0619C27.0051 24.3356 26.7641 24.7475 26.7641 25.2974V38.7026C26.7641 39.2525 27.0051 39.6644 27.4872 39.9381C27.9692 40.2119 28.4547 40.188 28.9436 39.8667ZM32.0089 56C28.7004 56 25.5939 55.3702 22.6893 54.1107C19.7848 52.8512 17.2407 51.1307 15.0573 48.9493C12.8738 46.7678 11.1518 44.2262 9.89107 41.3244C8.63036 38.4226 8 35.3174 8 32.0089C8 28.6901 8.62976 25.5699 9.88927 22.6483C11.1488 19.7266 12.8693 17.1852 15.0507 15.0239C17.2322 12.8627 19.7738 11.1518 22.6756 9.89107C25.5774 8.63036 28.6826 8 31.9911 8C35.3099 8 38.4301 8.62975 41.3517 9.88927C44.2734 11.1488 46.8148 12.8582 48.9761 15.0174C51.1373 17.1766 52.8482 19.7156 54.1089 22.6345C55.3696 25.5535 56 28.6723 56 31.9911C56 35.2996 55.3702 38.4061 54.1107 41.3107C52.8512 44.2152 51.1418 46.7593 48.9826 48.9427C46.8234 51.1262 44.2844 52.8482 41.3655 54.1089C38.4465 55.3696 35.3277 56 32.0089 56Z" fill="#B6D22F"/>
+</svg>
+            </div>
+
+            {{ section.settings.video | video_tag: controls: true, class: 'inline-video' }}
+          {% endif %}
+
+        </div>
+      </div>
+
+      <div class="bundle-content">
+        <div class="bundle-tag">MOST POPULAR BUNDLE</div>
+
+        <h2 class="bundle-title">{{ product.title }}</h2>
+
+        {% for block in section.blocks %}
+          {% if block.type == 'short_description' %}
+            <div class="bundle-description">
+              {{ block.settings.text }}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div class="bundle-price">
+          {% if product.compare_at_price > product.price %}
+            <span class="compare-price">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+          
+          {% assign pricema = product.price | money %}
+         
+
+          <span class="sale-price">{{ pricema | replace:" ", "" }}</span>
+
+          {% if product.compare_at_price > product.price %}
+            {% assign discount = product.compare_at_price
+              | minus: product.price
+              | times: 100
+              | divided_by: product.compare_at_price
+            %}
+            <span class="discount-badge">-{{ discount }}%</span>
+          {% endif %}
+        </div>
+
+        <ul class="bundle-points">
+          {% for block in section.blocks %}
+            {% if block.type == 'featured_point' %}
+              <li class="bundle-point">
+                <div class="bundle-point-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12 22C13.3135 22.0016 14.6143 21.7437 15.8278 21.2411C17.0412 20.7384 18.1434 20.0009 19.071 19.071C20.0009 18.1434 20.7384 17.0412 21.2411 15.8278C21.7437 14.6143 22.0016 13.3135 22 12C22.0016 10.6866 21.7437 9.38572 21.2411 8.17225C20.7384 6.95878 20.0009 5.85659 19.071 4.92901C18.1434 3.99909 17.0412 3.26162 15.8278 2.75897C14.6143 2.25631 13.3135 1.99839 12 2.00001C10.6866 1.99839 9.38572 2.25631 8.17225 2.75897C6.95878 3.26162 5.85659 3.99909 4.92901 4.92901C3.99909 5.85659 3.26162 6.95878 2.75897 8.17225C2.25631 9.38572 1.99839 10.6866 2.00001 12C1.99839 13.3135 2.25631 14.6143 2.75897 15.8278C3.26162 17.0412 3.99909 18.1434 4.92901 19.071C5.85659 20.0009 6.95878 20.7384 8.17225 21.2411C9.38572 21.7437 10.6866 22.0016 12 22Z" stroke="#B6D22F" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M8 12L11 15L17 9" stroke="#B6D22F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+                <span>{{ block.settings.text }}</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <a href="{{ product.url }}" class="bundle-btn">
+          Get The Ultimate Bundle
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const section = document.querySelector('#featured-bundle-{{ section.id }}');
+  if (!section) return;
+
+  const btn = section.querySelector('[data-play]');
+  const video = section.querySelector('video');
+  const thumb = section.querySelector('.thumb-img');
+
+  if (!btn || !video) return;
+
+  btn.addEventListener('click', function () {
+    if (thumb) thumb.style.display = 'none';
+    btn.style.display = 'none';
+    video.style.display = 'block';
+    video.play();
+  });
+
+  video.addEventListener('ended', function () {
+    video.style.display = 'none';
+    if (thumb) thumb.style.display = 'block';
+    btn.style.display = 'flex';
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Custom Featured Product",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "video", "id": "video", "label": "Video" },
+    { "type": "image_picker", "id": "video_thumbnail", "label": "Video Thumbnail" },
+    { "type": "color", "id": "background_color", "label": "Background Color", "default": "#000000" },
+
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Top Spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop Bottom Spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Top Spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Bottom Spacing",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "short_description",
+      "name": "Short Description",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "featured_point",
+      "name": "Featured Point",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Point" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Custom Featured Product" }
+  ]
+}
+{% endschema %}

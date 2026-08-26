@@ -1,0 +1,418 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+<style>
+section.youtube-text--section.shopify-section--{{ section.id }} .text-color {
+  color: {{ section.settings.text_color }};
+}
+{% if section.settings.out_spacing %}
+section.youtube-text--section.shopify-section--{{ section.id }} {
+  margin: 0 !important;
+}
+{% endif %}
+
+section.youtube-text--section.shopify-section--{{ section.id }} .text__alignment {
+  text-align: {% if section.settings.heading_alignment == 'left' %}left
+              {% elsif section.settings.heading_alignment == 'center' %}center
+              {% elsif section.settings.heading_alignment == 'right' %}right{% endif %};
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .heading-apart h2.heading {
+    font-weight: 900;
+    font-size: 63px;
+    line-height: 78px;
+    margin-bottom: 20px !important;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .content-apart .content p {
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 300;
+    margin: 12px 0;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .subheading-apart h3.heading {
+    font-weight: 900;
+    font-size: 33px;
+    line-height: 41px;
+    margin-bottom: 20px !important;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .iframe-embeded {
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .youtube-video-with-text .points-apart {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: {% if section.settings.heading_alignment == 'left' %}left
+                     {% elsif section.settings.heading_alignment == 'center' %}center
+                     {% elsif section.settings.heading_alignment == 'right' %}right{% endif %};
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area {
+    padding: 0 10px;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area span {
+    font-size: 12px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+@media only screen and (max-width: 740px) {
+  section.youtube-text--section.shopify-section--{{ section.id }} .heading-apart h2.heading {
+    font-size: 39px;
+    line-height: 48px;
+    margin-bottom: 10px !important;
+  }
+  section.youtube-text--section.shopify-section--{{ section.id }} .content-apart .content p {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  section.youtube-text--section.shopify-section--{{ section.id }} .iframe-embeded {
+    padding-top: 20px;
+  }
+  {% if section.settings.hide_on_mobile %}
+  section.youtube-text--section.shopify-section--{{ section.id }} .youtube-video-with-text .points-apart {
+    display: none;
+  }
+  {% endif %}
+  section.youtube-text--section.shopify-section--{{ section.id }} .subheading-apart h3.heading {
+    font-size: 25px;
+    line-height: 31px;
+    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+  }
+}
+
+</style>
+
+<section class="section{% unless is_boxed %} section--flush{% endunless %} youtube-text--section shopify-section--{{ section.id }}"
+          style="background: {{ section.settings.bg_color_all }};
+                 padding-top: {{ section.settings.padding_top }}px;
+                 padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div {% if is_boxed %}class="container"{% endif %}>
+    <div class="youtube-video-with-text">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% case block.type %}
+          <div class="text-field-wrapper">
+            {% when 'heading' %}
+              {% if block.settings.heading != blank %}
+              <div class="heading-apart">
+                <h2 class="heading h2 text-color text__alignment">{{ block.settings.heading }}</h2>
+              </div>
+              {% endif %}
+
+            {% when 'points' %}
+              <div class="points-apart">
+                {% for i in (1..5) %}
+                  {% assign key_link = 'key_link_' | append: i %}
+                  {% assign svg_text_key = 'svg_text_' | append: i %}
+                  {% if block.settings[svg_text_key] != blank %}
+                    <div class="single_tab_area">
+                      {% if block.settings[key_link] != blank %}
+                      <a href="{{ block.settings[key_link] }}" class="points_link">
+                      {% endif %}
+                        <span>{{ block.settings[svg_text_key] }}</span>
+                      {% if block.settings[key_link] != blank %}
+                      </a>
+                      {% endif %}
+                    </div>
+                    <style>
+                      section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area span {
+                        color: {{ block.settings.point_color }};
+                      }
+                      section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area {
+                        border: 1px solid {{ block.settings.point_color }};
+                      }
+                    </style>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            {% when 'subheading' %}
+              {% if block.settings.sub_heading != blank %}
+              <div class="subheading-apart">
+                <h3 class="heading h3 text-color text__alignment">{{ block.settings.sub_heading }}</h3>
+              </div>
+              {% endif %}
+
+            {% when 'content' %}
+              {% if block.settings.content != blank %}
+              <div class="content-apart">
+                <div class="content text-color text__alignment">{{ block.settings.content }}</div>
+              </div>
+              {% endif %}
+          </div>
+          {% endcase %}
+        {% endfor %}
+      {% endif %}
+      <div class="video-field-wrapper">
+        <div class="iframe-embeded">
+          {% if section.settings.video_type == 'video' %}
+            {% if section.settings.video != blank %}
+            <video class="mob_height" autoplay loop muted width="100%" height="{{ section.settings.youtube_height }}">
+              <source type="video/mp4" src="{{ section.settings.video }}">
+            </video>
+            {% endif %}
+          {% elsif section.settings.video_type == 'youtube' %}
+            {% if section.settings.iframe != blank %}
+            <iframe class="mob_height" width="100%" height="{{ section.settings.youtube_height }}" src="{{ section.settings.iframe }}" allow="autoplay" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen allowtransparency></iframe>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@media only screen and (max-width: 1200px) {
+  .youtube-text--section.shopify-section--{{ section.id }} .mob_height {
+    height: 800px !important;
+  }
+}
+@media only screen and (max-width: 740px) {
+  .youtube-text--section.shopify-section--{{ section.id }} .mob_height {
+    height: 250px !important;
+  }
+}
+</style>
+{% schema %}
+  {
+    "name": "Text With Youtube Video",
+    "settings": [
+      {
+        "type": "select",
+        "id": "video_type",
+        "options": [
+          {
+            "value": "video",
+            "label": "Video"
+          },
+          {
+            "value": "youtube",
+            "label": "Iframe Link"
+          }
+        ],
+        "default": "video",
+        "label": "Video Type"
+      },
+      {
+        "type": "text",
+        "id": "video",
+        "label": "Video Url"
+      },
+      {
+        "type": "text",
+        "id": "iframe",
+        "label": "Iframe Link",
+        "info": "Add link youtube iframe or vimeo iframe here"
+      },
+      {
+        "type": "range",
+        "id": "youtube_height",
+        "label": "Video Height",
+        "min": 500,
+        "max": 1200,
+        "default": 800,
+        "step": 50,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "background_type",
+        "label": "Background",
+        "options": [
+          {
+            "value": "full_width",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "boxed"
+      },
+      {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Content Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "checkbox",
+        "id": "out_spacing",
+        "label": "Hide outer Spacing",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_on_mobile",
+        "label": "Hide Points On Mobile",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding Top",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding Bottom",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "bg_color_all",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Content Color",
+        "default": "#ffffff"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "subheading",
+        "name": "Subheading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "sub_heading",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "points",
+        "name": "Points",
+        "settings": [
+          {
+            "type": "text",
+            "id": "svg_text_1",
+            "label": "Point 1"
+          },
+          {
+            "type": "url",
+            "id": "key_link_1",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_2",
+            "label": "Point 2"
+          },
+          {
+            "type": "url",
+            "id": "key_link_2",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_3",
+            "label": "Point 3"
+          },
+          {
+            "type": "url",
+            "id": "key_link_3",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_4",
+            "label": "Point 4"
+          },
+          {
+            "type": "url",
+            "id": "key_link_4",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_5",
+            "label": "Point 5"
+          },
+          {
+            "type": "url",
+            "id": "key_link_5",
+            "label": "Link"
+          },
+          {
+            "type": "color",
+            "id": "point_color",
+            "label": "Color",
+            "default": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "content",
+        "name": "Content",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Text With Youtube Video"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

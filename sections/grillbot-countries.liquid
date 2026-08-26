@@ -1,0 +1,145 @@
+<style>
+.shopify--section-{{ section.id }} .section--header .heading {
+    color: {{ section.settings.heading_color }};
+}
+.shopify--section-{{ section.id }} .flags-custom-box .text-flag {
+    color: {{ section.settings.flag_color }};
+}
+.shopify--section-{{ section.id }} .flags-custom-box .custom-inner-width {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_per_row }}, 1fr);
+    gap: 40px;
+    max-width: 950px;
+    margin: auto;
+    width: 100%;
+}
+@media only screen and (max-width: 740px) {
+  .shopify--section-{{ section.id }} .flags-custom-box .custom-inner-width {
+    grid-template-columns: repeat({% if section.settings.columns_per_row_mobile == '1' %}1{% elsif section.settings.columns_per_row_mobile == '2' %}2{% endif %}, 1fr);
+    gap: 40px 20px;
+  }
+}
+</style>
+
+<section class="section grillbot-countries shopify--section-{{ section.id }}" style="background: {{ section.settings.bg_color }}">
+  <div class="custom-grillbot-section">
+    <div class="container">
+      {% if section.settings.heading != blank %}
+      <div class="section--header">
+        <h2 class="heading h3">{{ section.settings.heading }}</h2>
+      </div>
+      {% endif %}
+      <div class="flags-custom-box">
+        <div class="custom-inner-width">
+        {% for block in section.blocks %}
+          <div class="flag--slide">
+            {% if block.settings.image_flag != blank %}
+              <div class="image"><img src="{{ block.settings.image_flag | img_url: '' }}"/></div>
+            {% endif %}
+            {% if block.settings.text_flag != blank %}
+              <p class="text-flag">{{ block.settings.text_flag }}</p>
+            {% endif %}
+            {% if block.settings.url_link != blank %}
+              <a class="enable_link" href="{{ block.settings.url_link }}"></a>
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Grillbot Countries",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "range",
+        "id": "columns_per_row",
+        "label": "Columns Per Row",
+        "min": 2,
+        "max": 6,
+        "default": 5,
+        "step": 1
+      },
+      {
+        "type": "select",
+        "id": "columns_per_row_mobile",
+        "label": "Mobile Columns Per Row",
+        "options": [
+          {
+            "value": "1",
+            "label": "1 Column"
+          },
+          {
+            "value": "2",
+            "label": "2 Columns"
+          }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "flag_color",
+        "label": "Text Color",
+        "default": "#ffffff"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "block",
+        "name": "Country Flag",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image_flag",
+            "label": "Flag"
+          },
+          {
+            "type": "text",
+            "id": "text_flag",
+            "label": "Flag Text"
+          },
+          {
+            "type": "url",
+            "id": "url_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Grillbot Countries"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

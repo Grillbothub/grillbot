@@ -1,0 +1,765 @@
+{%- comment -%}
+  GB - Steps (Pinned) - metaobject driven
+  Product metafields:
+  - custom.grillbot_steps_section_heading (metaobject ref)
+  - custom.grillbot_steps_section_slides  (list of metaobjects)
+  Each slide metaobject `media`: file reference — image or uploaded video (same logic on mobile + desktop orbit).
+{%- endcomment -%}
+
+{%- assign gb_steps_heading = blank -%}
+{%- assign gb_steps_slides = blank -%}
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign gb_steps_heading = product.metafields.custom.grillbot_steps_section_heading.value
+    | default: product.metafields.custom.grillbot_steps_section_heading
+  -%}
+  {%- assign gb_steps_slides = product.metafields.custom.grillbot_steps_section_slides.value
+    | default: product.metafields.custom.grillbot_steps_section_slides
+  -%}
+{%- endif -%}
+
+{%- assign gb_steps_count = 0 -%}
+{%- if gb_steps_slides != blank -%}
+  {%- assign gb_steps_count = gb_steps_slides.size | default: 0 -%}
+{%- endif -%}
+
+
+  {% style %}
+    /* Prevent white background showing behind ScrollTrigger pin spacer */
+    #shopify-section-{{ section.id }},
+    #shopify-section-{{ section.id }} .pin-spacer{
+      background: {{ section.settings.background }};
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps{
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+      overflow: hidden;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__head{
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps__badge{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 14px;
+      border-radius: 4px;
+      background: {{ section.settings.badge_bg }};
+      color: {{ section.settings.badge_text }};
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 400;
+      margin: 0 auto 16px;
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps__title{
+      margin: 0;
+      text-align: center;
+      font-family: Anton !important;
+      font-size: 52px;
+      font-weight: 400;
+      line-height: 60px;
+      text-transform: uppercase;
+      color: {{ section.settings.text_color }};
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps__description{
+      margin: 0;
+      text-align: center;
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 400;
+      margin-top: 10px;
+      max-width: 710px;
+      margin-left: auto;
+      margin-right: auto;
+      color: {{ section.settings.text_color }};
+    }
+    #shopify-section-{{ section.id }} .gb-steps__grid{
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+      gap: {{ section.settings.gap_desktop }}px;
+      align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps__content{min-width:0}
+    /* Scroll-driven active step */
+    #shopify-section-{{ section.id }} .gb-steps__content{position:relative}
+    #shopify-section-{{ section.id }} .gb-steps__step{
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+      will-change: opacity, transform;
+      pointer-events:none;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__step.is-active{
+      opacity:1;
+      transform: translateY(0);
+      pointer-events:auto;
+    }
+
+    #shopify-section-{{ section.id }} .gb-steps__kicker{
+      margin: 0 0 24px;
+      font-size: 32px;
+      line-height: 40px;
+      font-weight: 550;
+      color: {{ section.settings.text_color }};
+    }
+    #shopify-section-{{ section.id }} .gb-steps__step-title{
+      font-family: Anton;
+      font-size: 52px;
+      line-height: 60px;
+      font-weight: 400;
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      color: {{ section.settings.accent }};
+    }
+    #shopify-section-{{ section.id }} .gb-steps__desc :is(p,li){
+      margin: 0;
+      font-size: 24px;
+      line-height: 34px;
+      color: {{ section.settings.muted_text }};
+    }
+    #shopify-section-{{ section.id }} .gb-steps__desc :is(p+p,ul+p,p+ul){margin-top:10px}
+
+    #shopify-section-{{ section.id }} .gb-steps__media{
+      position: relative;
+      min-width: 0;
+      display: flex;
+      justify-content: flex-end;
+      height: 521px;
+      position: relative;
+    }
+
+    /* Orbit ring lines behind the card */
+    #shopify-section-{{ section.id }} .gb-steps__orbit-images::before{
+      content:"";
+      position:absolute;
+      border: 1px solid rgba(91, 105, 23, 0.70);
+      width: 737px;
+      height: 737px;
+      border-radius: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* The "card" (we reuse the first orbit image as main media) */
+    #shopify-section-{{ section.id }} .gb-steps__orbit-images{
+      position: absolute;
+      width: 647.543px;
+      height: 647.543px;
+      border-radius: 100%;
+      border: 1px solid rgba(91, 105, 23, 0.70);
+      top: 50%;
+      left: calc(100% - 111px);
+      margin-top: -41%;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img{
+      opacity: 0;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      border-radius: {{ section.settings.media_radius }}px;
+      overflow: hidden;
+      position: absolute;
+      min-width: 670px;
+      top: 50%;
+      right: 110%;
+      transform: translate(25%, -50%);
+      transition: opacity .35s ease;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img > :is(img, video){
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img:nth-child(2){
+      transform: translate(-50%, 95%) rotate(-90deg);
+      left: 50%;
+    }
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img:nth-child(3){
+      transform: translate(190%, -50%) rotate(-180deg);
+    }
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img:nth-child(4){transform: translate(50%, -130%) rotate(90deg)}
+    #shopify-section-{{ section.id }} .gb-steps__orbit-img.is-active{opacity:1;}
+    @media screen and (max-width: 1300px){
+      #shopify-section-{{ section.id }} .gb-steps__orbit-images{
+        height: 521px;
+        width: 521px;
+        aspect-ratio: 1 / 1;
+      }
+      #shopify-section-{{ section.id }} .gb-steps__orbit-images::before{
+        height: 120%;
+        width: 120%;
+      }
+      #shopify-section-{{ section.id }} .gb-steps__orbit-images{
+        margin-top: 0;
+        top: inherit;
+      }
+      #shopify-section-{{ section.id }} .gb-steps__orbit-img{
+        min-width: 300px;
+      }
+    }
+    #shopify-section-{{ section.id }} .gb-steps__mobile{
+      display: none;
+    }
+    /* Mobile layout (as requested): < 1000px */
+    @media (max-width: 999px){
+      .shopify-section--{{ section.id }} .gb-steps__mobile{display:block}
+      #shopify-section-{{ section.id }} .gb-steps{
+        padding: 60px 0;
+      }
+       #shopify-section-{{ section.id }} .gb-steps .container{
+        padding: 0 16px;
+      }
+      #shopify-section-{{ section.id }} .hero-btn-primary {
+   
+    height: 48px;
+    
+}
+      #shopify-section-{{ section.id }} .gb-steps__title{font-size: 36px; line-height: 44px;}
+      #shopify-section-{{ section.id }} .gb-steps__description{font-size: 16px; line-height: 26px;}
+      #shopify-section-{{ section.id }} .gb-steps__step-title{
+        font-size: 32px;
+        line-height: 40px;
+        margin-bottom: 6px;
+      }
+      #shopify-section-{{ section.id }} .gb-steps__kicker{font-size: 22px; line-height: 34px; margin-bottom: 6px;}
+      #shopify-section-{{ section.id }} .gb-steps__desc :is(p,li){
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      /* Mobile: use dedicated row structure (image + text together) */
+      #shopify-section-{{ section.id }} .gb-steps__grid{display:none}
+      #shopify-section-{{ section.id }} .gb-steps__mobile{display:block;margin-top: 40px}
+      #shopify-section-{{ section.id }} .gb-steps__m-row{display:block}
+      #shopify-section-{{ section.id }} .gb-steps__m-media{
+        width:100%;
+        border-radius: {{ section.settings.media_radius }}px;
+        overflow:hidden;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.10);
+      }
+      #shopify-section-{{ section.id }} .gb-steps__m-media :is(img,video){
+        width:100%;
+        height:auto;
+        display:block;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+      }
+      #shopify-section-{{ section.id }} .gb-steps__m-text{margin-top:22px}
+      #shopify-section-{{ section.id }} .gb-steps__m-row + .gb-steps__m-row{margin-top:8px}
+
+      /* Mobile: static stacked steps — no scroll-driven pin, no hide/fade animations */
+      #shopify-section-{{ section.id }} .gb-steps__mobile,
+      #shopify-section-{{ section.id }} .gb-steps__mobile .gb-steps__m-row,
+      #shopify-section-{{ section.id }} .gb-steps__mobile .gb-steps__m-media,
+      #shopify-section-{{ section.id }} .gb-steps__mobile .gb-steps__m-text{
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  {% endstyle %}
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign gb_badge = gb_steps_heading.subheading.value | default: gb_steps_heading.subheading -%}
+  {%- assign gb_heading = gb_steps_heading.heading.value | default: gb_steps_heading.heading -%}
+  {%- assign gb_description = gb_steps_heading.description -%}
+  <div
+    class="gb-steps"
+  >
+    <div class="container">
+      <div class="gb-steps__head" data-gb-steps-head>
+        {%- if gb_badge != blank -%}<div class="gb-steps__badge">{{ gb_badge | escape }}</div>{%- endif -%}
+        {%- if gb_heading != blank -%}<h2 class="gb-steps__title">{{ gb_heading | escape }}</h2>{%- endif -%}
+        {%- if gb_description != blank -%}
+          <div class="gb-steps__description rte">{{ gb_description | metafield_tag }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="gb-steps__mobile">
+        {%- for s in gb_steps_slides -%}
+          {%- assign step_obj = s.value | default: s -%}
+          {%- assign step_kicker = step_obj.subheading.value | default: step_obj.subheading -%}
+          {%- assign step_title = step_obj.heading.value | default: step_obj.heading -%}
+          {%- assign step_desc = step_obj.content -%}
+          {%- assign m_media = step_obj.media.value | default: step_obj.media -%}
+          {%- assign m_image = m_media.preview_image | default: m_media -%}
+          {%- assign m_is_video = false -%}
+          {%- if m_media != blank -%}
+            {%- if m_media.media_type == 'video' or m_media.media_type == 'external_video' -%}{%- assign m_is_video = true -%}{%- endif -%}
+            {%- if m_media.sources != blank -%}{%- assign m_is_video = true -%}{%- endif -%}
+          {%- endif -%}
+
+          <div class="gb-steps__m-row">
+            <div class="gb-steps__m-media">
+              {%- if m_media != blank and m_is_video -%}
+                {{- m_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true -}}
+              {%- elsif m_image != blank -%}
+                <img
+                  src="{{ m_image | image_url: width: 1600 }}"
+                  alt="{{ step_title | escape }}"
+                  width="{{ m_image.width | default: 1600 }}"
+                  height="{{ m_image.height | default: 900 }}"
+                  loading="lazy"
+                  decoding="async"
+                >
+              {%- endif -%}
+            </div>
+
+            <div class="gb-steps__m-text">
+              {%- if step_title != blank -%}<div class="gb-steps__step-title">{{ step_title | escape }}</div>{%- endif -%}
+              {%- if step_kicker != blank -%}<div class="gb-steps__kicker">{{ step_kicker | escape }}</div>{%- endif -%}
+              {%- if step_desc != blank -%}
+                <div class="gb-steps__desc rte">
+                  {%- if step_desc.value != blank -%}{{ step_desc | metafield_tag }}{%- else -%}{{ step_desc }}{%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="gb-steps__grid">
+        <div class="gb-steps__content">
+          {%- for s in gb_steps_slides -%}
+            {%- assign step_obj = s.value | default: s -%}
+            {%- assign step_kicker = step_obj.subheading.value | default: step_obj.subheading -%}
+            {%- assign step_title = step_obj.heading.value | default: step_obj.heading -%}
+            {%- assign step_desc = step_obj.content -%}
+
+            <div class="gb-steps__step{% if forloop.first %} is-active{% endif %}" data-gb-steps-step data-step-index="{{ forloop.index0 }}">
+              {%- if step_title != blank -%}<div class="gb-steps__step-title">{{ step_title | escape }}</div>{%- endif -%}
+              {%- if step_kicker != blank -%}<div class="gb-steps__kicker">{{ step_kicker | escape }}</div>{%- endif -%}
+              {%- if step_desc != blank -%}
+                <div class="gb-steps__desc rte">
+                  {%- if step_desc.value != blank -%}{{ step_desc | metafield_tag }}{%- else -%}{{ step_desc }}{%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="gb-steps__media">
+          <div class="gb-steps__orbit-images" data-gb-steps-orbit>
+            {%- for s in gb_steps_slides -%}
+              {%- assign o = s.value | default: s -%}
+              {%- assign o_media = o.media.value | default: o.media -%}
+              {%- assign o_img = o_media.preview_image | default: o_media -%}
+              {%- assign o_is_video = false -%}
+              {%- if o_media != blank -%}
+                {%- if o_media.media_type == 'video' or o_media.media_type == 'external_video' -%}{%- assign o_is_video = true -%}{%- endif -%}
+                {%- if o_media.sources != blank -%}{%- assign o_is_video = true -%}{%- endif -%}
+              {%- endif -%}
+              {%- if o_media != blank and o_is_video -%}
+                <div
+                  class="gb-steps__orbit-img{% if forloop.first %} is-active{% endif %}"
+                  data-gb-steps-orbit-img
+                  data-step-index="{{ forloop.index0 }}"
+                >
+                  {{- o_media | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true -}}
+                </div>
+              {%- elsif o_img != blank -%}
+                <div
+                  class="gb-steps__orbit-img{% if forloop.first %} is-active{% endif %}"
+                  data-gb-steps-orbit-img
+                  data-step-index="{{ forloop.index0 }}"
+                >
+                  <img
+                    src="{{ o_img | image_url: width: 1600 }}"
+                    alt="Orbit Image"
+                    width="{{ o_img.width | default: 1600 }}"
+                    height="{{ o_img.height | default: 900 }}"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  {% comment %} Assign schema settings to variables matching old metafield variable names {% endcomment %}
+{%- assign gb_badge = section.settings.badge -%}
+{%- assign gb_heading = section.settings.heading -%}
+{%- assign gb_description = section.settings.description -%}
+{%- assign gb_steps_slides = section.blocks -%}
+
+<div class="gb-steps">
+  <div class="container">
+    <div class="gb-steps__head" data-gb-steps-head>
+      {%- if gb_badge != blank -%}<div class="gb-steps__badge">{{ gb_badge | escape }}</div>{%- endif -%}
+      {%- if gb_heading != blank -%}<h2 class="gb-steps__title">{{ gb_heading | escape }}</h2>{%- endif -%}
+      {%- if gb_description != blank -%}<div class="gb-steps__description rte">{{ gb_description }}</div>{%- endif -%}
+    </div>
+
+    <div class="gb-steps__mobile">
+      {%- for s in gb_steps_slides -%}
+        {%- assign step_kicker = s.settings.subheading -%}
+        {%- assign step_title = s.settings.heading -%}
+        {%- assign step_desc = s.settings.content -%}
+        {%- assign m_image = s.settings.image -%}
+        {%- assign m_video = s.settings.video -%}
+        {%- assign m_is_video = false -%}
+        {%- if m_video != blank -%}{%- assign m_is_video = true -%}{%- endif -%}
+
+        <div class="gb-steps__m-row">
+          <div class="gb-steps__m-media">
+            {%- if m_is_video -%}
+              {{- m_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true -}}
+            {%- elsif m_image != blank -%}
+              <img
+                src="{{ m_image | image_url: width: 1600 }}"
+                alt="{{ step_title | escape }}"
+                width="{{ m_image.width | default: 1600 }}"
+                height="{{ m_image.height | default: 900 }}"
+                loading="lazy"
+                decoding="async"
+              >
+            {%- endif -%}
+          </div>
+
+          <div class="gb-steps__m-text">
+            {%- if step_title != blank -%}<div class="gb-steps__step-title">{{ step_title | escape }}</div>{%- endif -%}
+            {%- if step_kicker != blank -%}<div class="gb-steps__kicker">{{ step_kicker | escape }}</div>{%- endif -%}
+            {%- if step_desc != blank -%}
+              <div class="gb-steps__desc rte">{{ step_desc }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="gb-steps__grid">
+      <div class="gb-steps__content">
+        {%- for s in gb_steps_slides -%}
+          {%- assign step_kicker = s.settings.subheading -%}
+          {%- assign step_title = s.settings.heading -%}
+          {%- assign step_desc = s.settings.content -%}
+
+          <div class="gb-steps__step{% if forloop.first %} is-active{% endif %}" data-gb-steps-step data-step-index="{{ forloop.index0 }}">
+            {%- if step_title != blank -%}<div class="gb-steps__step-title">{{ step_title | escape }}</div>{%- endif -%}
+            {%- if step_kicker != blank -%}<div class="gb-steps__kicker">{{ step_kicker | escape }}</div>{%- endif -%}
+            {%- if step_desc != blank -%}
+              <div class="gb-steps__desc rte">{{ step_desc }}</div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="gb-steps__media">
+        <div class="gb-steps__orbit-images" data-gb-steps-orbit>
+          {%- for s in gb_steps_slides -%}
+            {%- assign o_img = s.settings.image -%}
+            {%- assign o_video = s.settings.video -%}
+            {%- assign o_is_video = false -%}
+            {%- if o_video != blank -%}{%- assign o_is_video = true -%}{%- endif -%}
+
+            {%- if o_is_video -%}
+              <div
+                class="gb-steps__orbit-img{% if forloop.first %} is-active{% endif %}"
+                data-gb-steps-orbit-img
+                data-step-index="{{ forloop.index0 }}"
+              >
+                {{- o_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true -}}
+              </div>
+            {%- elsif o_img != blank -%}
+              <div
+                class="gb-steps__orbit-img{% if forloop.first %} is-active{% endif %}"
+                data-gb-steps-orbit-img
+                data-step-index="{{ forloop.index0 }}"
+              >
+                <img
+                  src="{{ o_img | image_url: width: 1600 }}"
+                  alt="Orbit Image"
+                  width="{{ o_img.width | default: 1600 }}"
+                  height="{{ o_img.height | default: 900 }}"
+                  loading="lazy"
+                  decoding="async"
+                >  
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+   {%endif %}
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+
+      var sectionEl = root.querySelector('.gb-steps');
+      if (!sectionEl) return;
+
+      var orbit = sectionEl.querySelector('[data-gb-steps-orbit]');
+      var head = sectionEl.querySelector('[data-gb-steps-head]');
+      var content = sectionEl.querySelector('.gb-steps__content');
+      var steps = Array.prototype.slice.call(sectionEl.querySelectorAll('[data-gb-steps-step]'));
+      var imgs = Array.prototype.slice.call(sectionEl.querySelectorAll('[data-gb-steps-orbit-img]'));
+      var count = Math.max(steps.length, imgs.length);
+      if (!orbit || !count) return;
+
+      var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      var sectionIdStr = {{ section.id | json }}; 
+
+      function setActiveIndex(idx) {
+        steps.forEach(function (el) {
+          el.classList.toggle('is-active', Number(el.getAttribute('data-step-index')) === idx);
+        });
+        imgs.forEach(function (el) {
+          el.classList.toggle('is-active', Number(el.getAttribute('data-step-index')) === idx);
+        });
+      }
+
+      function setContentMinHeight() {
+        if (!content || !steps.length) return;
+        var maxH = 0;
+        for (var i = 0; i < steps.length; i++) {
+          // Temporarily ensure measurable (opacity doesn't affect layout)
+          var h = steps[i].offsetHeight || 0;
+          if (h > maxH) maxH = h;
+        }
+        if (maxH) content.style.minHeight = maxH + 'px';
+      }
+
+      function crossfadeImages(progress) {
+        if (!imgs.length) return;
+        // Clamp progress to avoid flicker at the ends
+        if (progress < 0) progress = 0;
+        if (progress > 1) progress = 1;
+
+        // Crossfade based on current rotation degrees (smooth)
+        var startDeg = 0;
+       
+      var maxDeg = count === 2 ? 90 
+            : count === 3 ? 180 
+            : 270;
+        var stepDeg = maxDeg / count;
+        var deg = startDeg + progress * (maxDeg - startDeg);
+
+        var phase = deg / stepDeg;
+        var base = Math.floor(phase + 1e-6);
+        var frac = phase - base;
+        var a = Math.min(count - 1, Math.max(0, base));
+        var b = Math.min(count - 1, a + 1);
+
+        // If we're on the last item (or only one), keep it solid.
+        if (a === b) {
+          for (var j = 0; j < imgs.length; j++) imgs[j].style.opacity = j === a ? '1' : '0';
+          return;
+        }
+
+        // Keep other/rotated images hidden.
+        // Active (current) stays visible, and the next fades in from 0->1 over the 90deg span.
+        for (var i = 0; i < imgs.length; i++) imgs[i].style.opacity = '0';
+
+        if (imgs[a]) imgs[a].style.opacity = '1';
+        if (imgs[b]) imgs[b].style.opacity = String(frac);
+      }
+
+      function ensureGsap(cb) {
+        if (window.gsap && window.ScrollTrigger) return cb();
+
+        function loadScript(src) {
+          return new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+          });
+        } 
+
+        loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js')
+          .then(function () {
+            return loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js');
+          })
+          .then(function () {
+            if (window.gsap && window.ScrollTrigger) cb();
+          })
+          .catch(function () {});
+      }
+
+      ensureGsap(function () {
+        var gsap = window.gsap;
+        var ScrollTrigger = window.ScrollTrigger;
+        gsap.registerPlugin(ScrollTrigger);
+
+        var mm = gsap.matchMedia();
+
+        mm.add('(min-width: 1000px)', function () {
+          // Scroll length (keep pin spacer reasonable)
+          var endDist = Math.max(1, (count - 1)) * window.innerHeight;
+          var startDeg = 0;
+            
+      var maxDeg = count === 2 ? 90 
+            : count === 3 ? 180 
+            : 270;
+          var stepDeg = maxDeg / count;
+
+          setActiveIndex(0);
+          crossfadeImages(0);
+          setContentMinHeight();
+          orbit.style.transformOrigin = '50% 50%';
+          orbit.style.transform = 'rotate(' + startDeg + 'deg)';
+          window.addEventListener('resize', setContentMinHeight, { passive: true });
+
+          var st = ScrollTrigger.create({
+            trigger: sectionEl,
+            start: 'top top',
+            end: '+=' + endDist, 
+            scrub: true,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            onUpdate: function (self) {
+              var p = self.progress || 0;
+              var deg = startDeg + p * (maxDeg - startDeg);
+              orbit.style.transformOrigin = '50% 50%';
+              orbit.style.transform = 'rotate(' + deg + 'deg)';
+
+              var idx = Math.min(count - 1, Math.max(0, Math.floor(deg / stepDeg + 1e-6)));
+              setActiveIndex(idx);
+              crossfadeImages(p);
+
+              if (head) {
+                var fadeEnd = 0.18;
+                var tt = Math.max(0, Math.min(1, p / fadeEnd));
+                head.style.opacity = String(1 - tt);
+                head.style.transform = 'translateY(' + Math.round(tt * -10) + 'px)';
+              }
+            }
+          });
+
+          return function () {
+            st.kill();
+            window.removeEventListener('resize', setContentMinHeight);
+            if (head) {
+              head.style.opacity = '';
+              head.style.transform = '';
+            }
+            if (content) content.style.minHeight = '';
+            orbit.style.transform = '';
+            orbit.style.transformOrigin = '';
+            imgs.forEach(function (el) {
+              el.style.opacity = '';
+            });
+            setActiveIndex(0);
+            ScrollTrigger.refresh();
+          };
+        });
+
+        document.addEventListener('shopify:section:unload', function gbStepsUnload(e) {
+          if (!e.detail || e.detail.sectionId !== sectionIdStr) return;
+          document.removeEventListener('shopify:section:unload', gbStepsUnload);
+          mm.revert();
+        });
+      });
+    })();
+  </script>
+
+
+
+{% schema %}
+{
+  "name": "GB - Steps (Pinned)",
+  "class": "shopify-section--gb-steps",
+  "disabled_on": { "templates": ["password"] },
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_text", "label": "Muted text", "default": "rgba(255,255,255,0.78)" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#B6D22F" },
+    { "type": "color", "id": "badge_bg", "label": "Badge background", "default": "#B6D22F" },
+    { "type": "color", "id": "badge_text", "label": "Badge text", "default": "#080808" },
+      {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "How It Works"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Simple steps to get started"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap_desktop", "label": "Gap (desktop)", "min": 8, "max": 80, "step": 2, "unit": "px", "default": 60 },
+    { "type": "range", "id": "media_radius", "label": "Media radius", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 16 },
+
+    { "type": "header", "content": "Orbit lines" },
+    { "type": "range", "id": "orbit_opacity", "label": "Orbit opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "orbit_turns", "label": "Orbit turns (full scroll)", "min": 1, "max": 6, "step": 1, "default": 1 },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 }
+  ],
+    "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Step Title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Kicker / Subheading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (overrides image if set)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "GB - Steps (Pinned)", "category": "Custom" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,782 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "filptray-product",
+      "blocks": {
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
+          "settings": {
+            "contentSize": 16,
+            "pattern": "",
+            "hideText": false,
+            "alignment": "",
+            "layout": "",
+            "textColor": "",
+            "starColor": "",
+            "showAllReviews": false,
+            "looxOpenFloatingWidget": false,
+            "emptyRatingWidget": false
+          }
+        },
+        "short_desc_LmJH8R": {
+          "type": "short_desc",
+          "settings": {
+            "short_desc": ""
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "selector_mode": "block",
+            "color_mode": "variant_image",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": true,
+            "show_quantity": true,
+            "show_description": false
+          }
+        },
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343": {
+          "type": "warranty_products",
+          "settings": {
+            "heading": "Add Warranty",
+            "warranty_products_list": "{{ product.metafields.custom.warranty_card.value }}"
+          }
+        },
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16": {
+          "type": "additional_bundles",
+          "settings": {
+            "heading": "Choose Free Gift (Apply Code at Checkout)",
+            "additional_bundles_list": "{{ product.metafields.custom.additional_bundles.value }}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": false,
+            "atc_button_background": "#de2a2a",
+            "atc_button_text_color": "#ffffff",
+            "buy_now_button_background": "rgba(0,0,0,0)",
+            "buy_now_button_text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": false,
+            "show_quantity": false,
+            "show_description": true
+          }
+        },
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7": {
+          "type": "buy_prime",
+          "settings": {
+            "show_prime_btn": false
+          }
+        }
+      },
+      "block_order": [
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0",
+        "short_desc_LmJH8R",
+        "variant_picker",
+        "quantity_selector",
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343",
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16",
+        "buy_buttons",
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824",
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7"
+      ],
+      "settings": {
+        "show_vendor": false,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "show_product_rating": false,
+        "show_sticky_add_to_cart": false,
+        "show_share_buttons": false,
+        "help_page": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "show_thumbnails_on_mobile": true,
+        "desktop_thumbnails_position": "bottom",
+        "transition_effect": "slide"
+      }
+    },
+    "product-content": {
+      "type": "product-content",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "description"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "custom_liquid_xV8BJY": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "subheading": "",
+        "title": "",
+        "liquid": "<p style=\"text-align: center\">{% if product %}\n<script>\nwindow.addEventListener('load', function() {\nvar _learnq = window._learnq || [];\nfunction addedToCart() {\n  fetch(`${window.location.origin}/cart.js`)\n  .then(res => res.clone().json().then(data => {\n    var cart = {\n      total_price: data.total_price/100,\n      $value: data.total_price/100,\n      total_discount: data.total_discount,\n      original_total_price: data.original_total_price/100,\n      items: data.items\n    }\n    if (item !== 'undefined') {\n      cart = Object.assign(cart, item)\n    }\n    if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', cart]);\n        klAjax = false;\n      }\n  }))\n};\n(function (ns, fetch) {\n  ns.fetch = function() {\n    const response = fetch.apply(this, arguments);\n    response.then(res => {\n      if (`${window.location.origin}/cart/add.js`\n      \t.includes(res.url)) {\n        \taddedToCart()\n      }\n    });\n    return response\n  }\n}(window, window.fetch));\nvar klAjax = true;\nvar atcButtons = document.querySelectorAll(\"form[action*='/cart/add'] button[type='submit']\");\nfor (var i = 0; i < atcButtons.length; i++) {\n    atcButtons[i].addEventListener(\"click\", function() {\n      if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', item]);\n        klAjax = false;\n      }\n    })\n}\n});\n</script>{% endif %}</p>",
+        "add_vertical_spacing": true,
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "multi_column_U7qHHy": {
+      "type": "multi-column",
+      "blocks": {
+        "item_qcVYPc": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_15719e90-1bf3-4373-8d5f-58f5cd09fe8c.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "PREP & CHOP",
+            "content": "<p>on the RAW side — cutting board surface, juices drain below</p>",
+            "html_content": "<div class=\"box-number\">1</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_7gPMxL": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_170f2495-80c1-4d19-b9d5-db473c0f1ab6.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "FLIP",
+            "content": "<p>the tray effortlessly using Lift & Flip Tab</p>",
+            "html_content": "<div class=\"box-number\">2</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_MEGRqF": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_50b24cc6-a610-4b63-a749-5eff5a415f05.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "COOK",
+            "content": "<p>with 4 built-in stainless steel BBQ tools</p>",
+            "html_content": "<div class=\"box-number\">3</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_YAWEhQ": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_cb563664-9b87-4674-a0f6-c3aa9c904207.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "SERVE",
+            "content": "<p>on COOKED side — carve and pour gravy directly from tray</p>",
+            "html_content": "<div class=\"box-number\">4</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_qcVYPc",
+        "item_7gPMxL",
+        "item_MEGRqF",
+        "item_YAWEhQ"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "home-how-to-use-section",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "How It Works",
+        "title": "From Prep to Plate in 4  Simple Steps",
+        "content": "",
+        "button_text": "See How it Works",
+        "button_url": "",
+        "button_text_2": "<img src=\"https://cdn.shopify.com/s/files/1/0337/8629/files/clipboard-image-1761037203.png?v=1761037217\" alt=\"Amazon logo, an orange arrow curving from a smile to an A.\">",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "tight",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "video_36ccx3": {
+      "type": "video",
+      "name": "Video",
+      "settings": {
+        "css_class": "grillbot-prouct-video fliptray-prouct-video",
+        "subheading": "{{ product.metafields.custom.video_section.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.video_section.value.title.value }}",
+        "video": "{{ product.metafields.custom.video_section.value.video.value }}",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "background_type": "full_width",
+        "video_size": "auto",
+        "autoplay": true,
+        "show_video_controls": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": "https://cdn.shopify.com/videos/c/o/v/bea9a00f237f46db965f4d92b993d5ae.webm"
+      }
+    },
+    "pdp_how_to_use_TYn6QR": {
+      "type": "pdp-how-to-use",
+      "name": "PDP How To Use",
+      "settings": {
+        "css_class": "home-how-to-use-section",
+        "reveal_on_scroll": true,
+        "stack_items": true,
+        "subheading": "Subheading",
+        "title": "Multi-column",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "loose",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "multi_column_8AQcfn": {
+      "type": "multi-column",
+      "blocks": {
+        "item_8tHFP3": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Frame_1000001844_fab5bec2-1f6b-4a4d-a8bf-01909810abe8.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "",
+            "html_content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_A4AByQ": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "RAW Side — Key Benefits",
+            "content": "",
+            "html_content": "<div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n          <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M35.2331 31.4083C36.395 30.535 37.3337 29.3992 37.9725 28.0936C38.6112 26.788 38.9318 25.3497 38.9081 23.8965C38.8843 22.4432 38.5169 21.0162 37.8358 19.7322C37.1548 18.4481 36.1794 17.3436 34.9896 16.5088C33.7997 15.674 32.4292 15.1328 30.99 14.9293C29.5509 14.7258 28.084 14.8659 26.7094 15.3381C25.3348 15.8103 24.0914 16.6012 23.0811 17.6461C22.0708 18.691 21.3221 19.9602 20.8964 21.3499C19.3381 25.7841 19.7914 26.8749 16.3914 29.9633C15.7139 30.5187 15.2246 31.2699 14.9905 32.1141C14.7564 32.9584 14.7889 33.8543 15.0835 34.6793C15.3782 35.5044 15.9206 36.2182 16.6366 36.7231C17.3525 37.228 18.207 37.4993 19.0831 37.4999C24.7498 37.4999 30.9831 34.9499 35.2331 31.4083Z\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M38.2082 20.5L41.3107 26.875C41.9046 28.7009 41.911 30.667 41.329 32.4967C40.7471 34.3265 39.6061 35.9276 38.0666 37.075C33.8166 40.6167 27.5832 43.1667 21.9166 43.1667C21.1278 43.1656 20.355 42.945 19.6844 42.5297C19.0139 42.1144 18.4722 41.5207 18.1199 40.815L15.3999 35.375\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M29.7082 27.5833C31.6642 27.5833 33.2498 25.9977 33.2498 24.0417C33.2498 22.0857 31.6642 20.5 29.7082 20.5C27.7522 20.5 26.1665 22.0857 26.1665 24.0417C26.1665 25.9977 27.7522 27.5833 29.7082 27.5833Z\" stroke=\"white\" stroke-width=\"3\"></path>\n</svg>\n\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>RAW surface</strong> for prepping food</p>\n          <p class=\"subtitle\"> </p>\n        </div>\n      </div>\n\n      <div class=\"divider\" role=\"separator\"></div>\n\n      <div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n          <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M38.686 31.4215C38.686 26.0725 29.0002 16.8928 29.0002 16.8928C29.0002 16.8928 19.3145 26.0725 19.3145 31.4215C19.3145 33.9903 20.3349 36.4539 22.1513 38.2703C23.9678 40.0868 26.4314 41.1072 29.0002 41.1072C31.569 41.1072 34.0327 40.0868 35.8491 38.2703C37.6655 36.4539 38.686 33.9903 38.686 31.4215Z\" stroke=\"white\" stroke-width=\"3\"></path>\n</svg>\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>Juices drain safely</strong> into deep base tray</p>\n        </div>\n      </div>\n\n      <div class=\"divider\" role=\"separator\"></div>\n\n      <div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n           <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M21.7721 28.0142C21.8314 27.5733 21.9303 27.1449 22.0648 26.7327L31.2639 35.9318C30.8517 36.0663 30.4233 36.1651 29.9824 36.2245V38.1749C29.9824 38.718 29.5422 39.1582 28.9991 39.1582C28.4561 39.1582 28.0158 38.718 28.0158 38.1749V36.2245C26.7378 36.0523 25.5648 35.549 24.5858 34.8038L23.2057 36.1839C22.8217 36.5679 22.1991 36.5679 21.8151 36.1839C21.4311 35.7999 21.4311 35.1773 21.8151 34.7933L23.1949 33.4135C22.4486 32.434 21.9445 31.26 21.7721 29.9808H19.8217C19.2786 29.9808 18.8384 29.5405 18.8384 28.9975C18.8384 28.4544 19.2786 28.0142 19.8217 28.0142H21.7721Z\" fill=\"white\"></path>\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M29.0001 44.0773C37.327 44.0773 44.0773 37.327 44.0773 29.0001C44.0773 20.6732 37.3271 13.9229 29.0001 13.9229C20.6732 13.9229 13.9229 20.6731 13.9229 29.0001C13.9229 37.327 20.6732 44.0773 29.0001 44.0773ZM41.4552 29.0001C41.4552 31.9672 40.4177 34.692 38.6857 36.8315L34.9986 33.1445C35.6374 32.222 36.069 31.1449 36.2259 29.9808H38.1762C38.7193 29.9808 39.1595 29.5406 39.1595 28.9975C39.1595 28.4545 38.7193 28.0142 38.1762 28.0142H36.2259C36.0536 26.736 35.5502 25.5627 34.8047 24.5836L36.1841 23.2042C36.5682 22.8203 36.5682 22.1976 36.1841 21.8136C35.8001 21.4296 35.1776 21.4296 34.7936 21.8136L33.4143 23.1929C32.435 22.4467 31.2611 21.9428 29.9821 21.7705V19.8201C29.9821 19.277 29.5419 18.8368 28.9988 18.8368C28.4557 18.8368 28.0155 19.277 28.0155 19.8201V21.7705C26.8514 21.9274 25.7744 22.3589 24.8519 22.9978L21.1687 19.3146C23.3082 17.5825 26.033 16.545 29.0001 16.545C35.8789 16.545 41.4552 22.1213 41.4552 29.0001ZM33.1442 34.9983C33.1378 35.0029 33.1313 35.0073 33.1248 35.0118L22.9845 24.8716C22.989 24.8651 22.9935 24.8586 22.998 24.8521L19.3146 21.1687C17.5825 23.3082 16.545 26.033 16.545 29.0001C16.545 35.8789 22.1213 41.4552 29.0001 41.4552C31.9672 41.4552 34.692 40.4177 36.8315 38.6857L33.1442 34.9983Z\" fill=\"white\"></path>\n</svg>\n\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>No more</strong> bacteria mix-ups</p>\n        </div>\n      </div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_8tHFP3",
+        "item_A4AByQ"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "home-scrubbing-section grillbot-product fliptray-product",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "Grillbot Fliptray",
+        "title": "Say Goodbye to BBQ Cross-Contamination",
+        "content": "<p>Juggling cutting boards and trays? Risking bacteria by mixing raw and cooked? The Fliptray™ solves it all with one smart flip.</p>",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "large",
+        "spacing": "loose",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "pdp_image_with_points_cBqATw": {
+      "type": "pdp-image-with-points",
+      "name": "PDP Image With Points",
+      "settings": {
+        "css_class": "home-scrubbing-section grillbot-product fliptray-product",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "{{ product.metafields.custom.image_with_points.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.image_with_points.value.title.value }}",
+        "content": "{{ product.metafields.custom.image_with_points.value.description | metafield_tag }}",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "normal",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "pdp_key_points_ccBzyB": {
+      "type": "pdp-key-points",
+      "disabled": true,
+      "name": "PDP Key Points",
+      "settings": {
+        "css_class": "grillbot-productmaster-love",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "{{ product.metafields.custom.key_points_heading.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.key_points_heading.value.title.value }}",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "normal",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "multi_column_JNqmwa": {
+      "type": "multi-column",
+      "blocks": {
+        "item_ndNJJY": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Unique 2-Sided Fliptray™",
+            "content": "<p>with RAW and COOKED markers</p>",
+            "html_content": "<div class=\"column-icon\"><svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M29.0001 16.25C29.7545 16.25 30.366 16.25 30.366 16.25V41.75C30.366 41.75 29.7545 41.75 29.0001 41.75C28.2458 41.75 27.5834 41.75 27.6343 41.75V16.25C27.6343 16.25 28.2458 16.25 29.0001 16.25ZM23.5003 23.2992V34.7013C23.5003 35.4954 23.5003 36.8998 23.5003 36.8998L15.6016 29.0004L23.5003 21.1007C23.5003 21.1007 23.5003 22.505 23.5003 23.2992ZM34.5001 21.1006L42.3987 29L34.5001 36.8999C34.5001 36.8999 34.5001 35.4954 34.5001 34.7013V23.2992C34.5001 22.505 34.5001 21.1006 34.5001 21.1006Z\" fill=\"white\"></path>\n</svg></div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_xMiNnR": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Built-in Stainless Steel",
+            "content": "<p>Fork, Spatula, Tongs & Basting Brush</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M26.8273 25.1552H24.2958V16.1841H21.7642V25.1552H19.2327V16.1841H16.7012V25.1552C16.7012 27.8722 18.8023 30.0765 21.4478 30.2431V41.8159H24.6122V30.2431C27.2577 30.0765 29.3589 27.8722 29.3589 25.1552V16.1841H26.8273V25.1552ZM33.1562 21.3104V31.5632H36.3206V41.8159H39.485V16.1841C35.9915 16.1841 33.1562 19.0548 33.1562 21.3104Z\" fill=\"white\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_aWp8Up": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "<p><strong>BPA-Free</strong>, Hygienic, and Dishwasher-Safe</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M39.953 30.369C39.953 38.4917 29.0178 42.6954 29.0178 42.6954C29.0178 42.6954 18.0464 38.5635 18.0464 30.369V20.7849C18.0464 20.4218 18.1906 20.0735 18.4474 19.8167C18.7042 19.56 19.0524 19.4157 19.4155 19.4157C22.1539 19.4157 25.5768 17.7727 27.9591 15.6916C28.2492 15.4438 28.6182 15.3076 28.9997 15.3076C29.3812 15.3076 29.7502 15.4438 30.0402 15.6916C32.4363 17.7864 35.8455 19.4157 38.5838 19.4157C38.9469 19.4157 39.2952 19.56 39.5519 19.8167C39.8087 20.0735 39.953 20.4218 39.953 20.7849V30.369Z\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M24.3398 28.4279L27.8282 31.9161L33.6599 26.0845\" stroke=\"white\" stroke-width=\"3\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_T9mG4n": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "<p>Grease and Gravy Draining with <strong>Quick-Release Plug</strong></p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M38.686 31.4212C38.686 26.0723 29.0002 16.8926 29.0002 16.8926C29.0002 16.8926 19.3145 26.0723 19.3145 31.4212C19.3145 33.9901 20.3349 36.4537 22.1513 38.2701C23.9678 40.0865 26.4314 41.107 29.0002 41.107C31.569 41.107 34.0327 40.0865 35.8491 38.2701C37.6655 36.4537 38.686 33.9901 38.686 31.4212Z\" stroke=\"white\" stroke-width=\"3\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_XjNPkP": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "<p><strong>Fits the Largest Steaks</strong> — 17\" x 12\" Cutting Surface</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M32.7764 17.6719H40.3286V25.2241\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M33.4058 32.147H25.8535V24.5947\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M40.3286 17.6719L25.8535 32.147\" stroke=\"white\" stroke-width=\"3\"></path>\n<path d=\"M27.7415 17.6719H18.9306C18.2354 17.6719 17.6719 18.2354 17.6719 18.9306V39.0699C17.6719 39.7651 18.2354 40.3286 18.9306 40.3286H39.0699C39.7651 40.3286 40.3286 39.7651 40.3286 39.0699V30.2589\" stroke=\"white\" stroke-width=\"3\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_49H6HB": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "<p>Stainless Steel Frame with <strong>Tool Holders</strong></p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<mask id=\"mask0_835_1252\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_835_1252)\">\n<path d=\"M25.1044 43.1668L24.5377 38.6335C24.2308 38.5154 23.9415 38.3738 23.67 38.2085C23.3985 38.0432 23.1328 37.8661 22.8731 37.6772L18.6585 39.4481L14.7627 32.7189L18.4106 29.9564C18.387 29.7911 18.3752 29.6318 18.3752 29.4783V28.522C18.3752 28.3686 18.387 28.2092 18.4106 28.0439L14.7627 25.2814L18.6585 18.5522L22.8731 20.3231C23.1328 20.1342 23.4044 19.9571 23.6877 19.7918C23.971 19.6266 24.2544 19.4849 24.5377 19.3668L25.1044 14.8335H32.896L33.4627 19.3668C33.7696 19.4849 34.0589 19.6266 34.3304 19.7918C34.6019 19.9571 34.8676 20.1342 35.1273 20.3231L39.3419 18.5522L43.2377 25.2814L39.5898 28.0439C39.6134 28.2092 39.6252 28.3686 39.6252 28.522V29.4783C39.6252 29.6318 39.6016 29.7911 39.5544 29.9564L43.2023 32.7189L39.3064 39.4481L35.1273 37.6772C34.8676 37.8661 34.596 38.0432 34.3127 38.2085C34.0294 38.3738 33.746 38.5154 33.4627 38.6335L32.896 43.1668H25.1044ZM27.5835 40.3335H30.3814L30.8773 36.5793C31.6092 36.3904 32.288 36.113 32.9137 35.747C33.5394 35.3811 34.112 34.9384 34.6314 34.4189L38.1377 35.871L39.5189 33.4627L36.4731 31.1606C36.5912 30.83 36.6738 30.4818 36.721 30.1158C36.7683 29.7498 36.7919 29.3779 36.7919 29.0002C36.7919 28.6224 36.7683 28.2505 36.721 27.8845C36.6738 27.5186 36.5912 27.1703 36.4731 26.8397L39.5189 24.5377L38.1377 22.1293L34.6314 23.6168C34.112 23.0738 33.5394 22.6193 32.9137 22.2533C32.288 21.8873 31.6092 21.6099 30.8773 21.421L30.4169 17.6668H27.6189L27.1231 21.421C26.3912 21.6099 25.7123 21.8873 25.0867 22.2533C24.461 22.6193 23.8884 23.062 23.3689 23.5814L19.8627 22.1293L18.4814 24.5377L21.5273 26.8043C21.4092 27.1585 21.3266 27.5127 21.2794 27.8668C21.2321 28.221 21.2085 28.5988 21.2085 29.0002C21.2085 29.3779 21.2321 29.7439 21.2794 30.0981C21.3266 30.4522 21.4092 30.8064 21.5273 31.1606L18.4814 33.4627L19.8627 35.871L23.3689 34.3835C23.8884 34.9266 24.461 35.3811 25.0867 35.747C25.7123 36.113 26.3912 36.3904 27.1231 36.5793L27.5835 40.3335ZM29.071 33.9585C30.4405 33.9585 31.6092 33.4745 32.5773 32.5064C33.5453 31.5384 34.0294 30.3696 34.0294 29.0002C34.0294 27.6307 33.5453 26.462 32.5773 25.4939C31.6092 24.5259 30.4405 24.0418 29.071 24.0418C27.678 24.0418 26.5033 24.5259 25.5471 25.4939C24.5908 26.462 24.1127 27.6307 24.1127 29.0002C24.1127 30.3696 24.5908 31.5384 25.5471 32.5064C26.5033 33.4745 27.678 33.9585 29.071 33.9585Z\" fill=\"white\"></path>\n</g>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_ndNJJY",
+        "item_xMiNnR",
+        "item_aWp8Up",
+        "item_T9mG4n",
+        "item_XjNPkP",
+        "item_49H6HB"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "grillbot-productmaster-love",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "Grillbot",
+        "title": "Why Grill Masters Love  the Fliptray",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "normal",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "css_class": "grillbot-related-products",
+        "subheading": "Products",
+        "title": "Featured Hot Picks",
+        "text_alignment": "left",
+        "recommendations_count": 4,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "hot_picks_products_RWn6J4": {
+      "type": "hot-picks-products",
+      "name": "Hot Picks Products",
+      "settings": {
+        "css_class": "grillbot-related-products",
+        "subheading": "Products",
+        "title": "Featured Hot Picks",
+        "content": "",
+        "heading_align": "center",
+        "products_count": 8,
+        "products_per_row": 4,
+        "stack_products": false,
+        "show_cta": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "masonary_blocks_EEkE79": {
+      "type": "masonary-blocks",
+      "blocks": {
+        "reviews_hxN6tA": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/C_R_8810.jpg",
+            "name": "Monica L., BBQ Enthusiast",
+            "heading": "Dishwasher-safe",
+            "content": "Super easy to clean"
+          }
+        },
+        "reviews_fNCwUf": {
+          "type": "reviews",
+          "settings": {
+            "name": "Evan T., Grill Fan",
+            "heading": "Brilliant idea!",
+            "content": "I love it"
+          }
+        },
+        "reviews_bqhjNB": {
+          "type": "reviews",
+          "settings": {
+            "name": "Lydia K., BBQ Mom",
+            "heading": "Safe & simple.",
+            "content": "The RAW/COOKED sides are genius. Makes grilling safer and way less stressful. Finally, one tray that keeps raw and cooked food separate. No more juggling boards..."
+          }
+        },
+        "reviews_iVhYxw": {
+          "type": "reviews",
+          "settings": {
+            "name": "Chris R., Backyard Pitmaster",
+            "heading": "Total game-changer",
+            "content": "Flipping from raw to cooked has never been this safe and easy."
+          }
+        },
+        "reviews_gkx9RQ": {
+          "type": "reviews",
+          "settings": {
+            "name": "Anna M.",
+            "heading": "Love it!",
+            "content": "Makes grilling so much easier."
+          }
+        },
+        "reviews_WCFrgE": {
+          "type": "reviews",
+          "settings": {
+            "name": "Kurt P.",
+            "heading": "Great design",
+            "content": "Flips smooth and feels solid"
+          }
+        },
+        "reviews_Tyzqb4": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/attachment.jpg",
+            "name": "Marvin B.",
+            "heading": "Perfect size.",
+            "content": "Huge tray! Fits all my steaks & veggies"
+          }
+        },
+        "reviews_bGFUaR": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/C_R_9479.jpg",
+            "name": "Marinee F.",
+            "heading": "Cleans up fast.",
+            "content": ""
+          }
+        },
+        "reviews_fPJrxz": {
+          "type": "reviews",
+          "settings": {
+            "name": "Ryan J., Simple Solutions Guy",
+            "heading": "So practical. One tray fits everything - genius.",
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "reviews_hxN6tA",
+        "reviews_fNCwUf",
+        "reviews_bqhjNB",
+        "reviews_iVhYxw",
+        "reviews_gkx9RQ",
+        "reviews_WCFrgE",
+        "reviews_Tyzqb4",
+        "reviews_bGFUaR",
+        "reviews_fPJrxz"
+      ],
+      "name": "Masonary Blocks",
+      "settings": {
+        "css_class": "grillbot-product",
+        "heading": "What Grillers <br><span>Are Saying</span>",
+        "sub_heading": "Let Our Customers<span> Speak For Us</span>",
+        "subheading": "",
+        "total_review_image": "shopify://shop_images/Frame_63.png"
+      }
+    },
+    "1762453270c4e6d542": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_loox_dynamic_section_zk6nnx": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
+          "settings": {
+            "reviews_to_display": "",
+            "default_tab": "automatic",
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_dynamic_section_zk6nnx"
+      ],
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
+    "custom_faq_whYU3p": {
+      "type": "custom-faq",
+      "blocks": {
+        "question_H48kBG": {
+          "type": "question",
+          "settings": {
+            "title": "How does the Fliptray help prevent food contamination?",
+            "answer": "<p><strong>Fliptray keeps raw and cooked foods 100% separated so you grill safely with<br/>confidence.</strong></p><p>Each side is clearly labeled RAW and COOKED, giving you peace of mind and<br/>eliminating the guesswork that often leads to cross-contamination.</p><p><em>No more wondering which tray touched raw chicken, Flip, prep, and serve without<br/>mixing juices.</em></p>"
+          }
+        },
+        "question_bW6yHj": {
+          "type": "question",
+          "settings": {
+            "title": "Can I really prep, grill, and serve using just one tray?",
+            "answer": "<p><strong>Yes! Fliptray is a full-service grilling system in one simple design.</strong></p><p>Prep your food on the RAW side, use the built-in stainless tools while grilling, then flip to the COOKED side to serve.</p><p>You’ll save time, reduce dishes, and enjoy a smoother grilling experience from start to<br/>finish.</p>"
+          }
+        },
+        "question_bEea3J": {
+          "type": "question",
+          "settings": {
+            "title": "What grilling tools are included, and where do they go?",
+            "answer": "<p><strong>No more scrambling mid-burger flip.</strong></p><p>Fliptray stores 4 stainless steel tools inside the handles:</p><ul><li>Spatula</li><li>Fork</li><li>Tongs</li><li>Basting Brush</li></ul><p>Your essentials are always right where you need them.</p>"
+          }
+        },
+        "question_nTjqkY": {
+          "type": "question",
+          "settings": {
+            "title": "What makes the FlipTray special?",
+            "answer": "<p><strong>Very. Fliptray was built to minimize mess and maximize convenience.</strong></p><ul><li>A deep juice well collects meat drippings</li><li>A silicone drain plug makes cleanup quick</li><li>All parts are dishwasher safe</li></ul><p><em>No more greasy pileups or extra cleanup time, it’s all streamlined.</em></p>"
+          }
+        },
+        "question_CJAtU8": {
+          "type": "question",
+          "settings": {
+            "title": "Does it come with the tools?",
+            "answer": "<p><strong>Absolutely. Fliptray is large, tough, and food-safe.</strong></p><ul><li>Measures 17\" x 12\", perfect for big cuts or multiple servings</li><li>Made from BPA-free, ultra-durable plastic</li><li>Doubles as a cutting board for slicing, carving, and plating</li></ul><p><em>Whether you're cooking for a couple or a crowd, Fliptray handles it with style and strength.</em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_H48kBG",
+        "question_bW6yHj",
+        "question_bEea3J",
+        "question_nTjqkY",
+        "question_CJAtU8"
+      ],
+      "disabled": true,
+      "name": "Custom Faq",
+      "settings": {
+        "css_class": "home-faq-section",
+        "show_navigation": false,
+        "title": "Got Questions?",
+        "content": "<p>We've Got </p><p><strong>Answers.</strong></p>",
+        "image": "shopify://shop_images/Video-Grill_bot_7.png",
+        "button_text": "View All",
+        "button_url": "shopify://pages/grillbot-faq",
+        "text_alignment": "left",
+        "content_width": "small",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "pdp_faq_CqGh9e": {
+      "type": "pdp-faq",
+      "name": "PDP Faq",
+      "settings": {
+        "css_class": "home-faq-section",
+        "show_navigation": false,
+        "title": "Answers to",
+        "content": "<p>frequently Asked <strong>Questions</strong></p>",
+        "image": "{{ product.metafields.custom.faq_image.value }}",
+        "button_text": "View All",
+        "button_url": "shopify://pages/grillbot-faq",
+        "text_alignment": "left",
+        "content_width": "small",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-content",
+    "custom_liquid_xV8BJY",
+    "multi_column_U7qHHy",
+    "video_36ccx3",
+    "pdp_how_to_use_TYn6QR",
+    "multi_column_8AQcfn",
+    "pdp_image_with_points_cBqATw",
+    "pdp_key_points_ccBzyB",
+    "multi_column_JNqmwa",
+    "product-recommendations",
+    "hot_picks_products_RWn6J4",
+    "masonary_blocks_EEkE79",
+    "1762453270c4e6d542",
+    "custom_faq_whYU3p",
+    "pdp_faq_CqGh9e"
+  ]
+}

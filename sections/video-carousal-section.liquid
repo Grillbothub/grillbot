@@ -1,0 +1,83 @@
+<section class="video-carousel-section section shopify--section-{{ section.id }}" data-section="{{ section.id }}">
+  <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+   {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
+        <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} section__header--{{ section.settings.column_alignment }}">
+          <div class="text-container">
+            {%- if section.settings.subheading != blank -%}
+              <h2 class="heading heading--small">{{ section.settings.subheading }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+              <h3 class="heading h2">{{ section.settings.heading }}</h3>
+            {%- endif -%}
+          </div>
+        </header>
+      {%- endif -%}
+  </div>
+
+  <div class="video-carousel-block">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        
+        {%- assign image = '' -%}
+        
+        {%- if block.settings.image != blank -%}
+          {%- assign image = block.settings.image | img_url: 'original' -%}
+        {%- endif -%}
+        
+        <video controls src="{{ block.settings.video_url }}" poster="{{ image }}"></video>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+
+</style>
+
+{% schema %}
+  {
+    "name": "Video Carousal",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Video",
+        "settings": [
+          {
+            "type": "text",
+            "id": "video_url",
+            "label": "Video URL"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Video Banner"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Video Carousal"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,220 @@
+{
+  "sections": {
+    "main": {
+      "type": "hb-main-product",
+      "blocks": {
+        "price_block_acc": {
+          "type": "price_block",
+          "settings": {
+            "heading": "",
+            "show_notification": true
+          }
+        },
+        "inventory_acc": {
+          "type": "inventory",
+          "settings": {
+            "low_inventory_threshold": 10
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "hide_ultimate_bundle": true,
+            "selector_mode": "block",
+            "color_mode": "variant_image",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": false,
+            "show_quantity": true,
+            "show_description": false
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": false,
+            "atc_button_background": "#b6d22f",
+            "atc_button_text_color": "#080808",
+            "buy_now_button_background": "rgba(0,0,0,0)",
+            "buy_now_button_text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "guarantee_box_acc": {
+          "type": "guarantee_box",
+          "settings": {
+            "item_1_icon": "shopify://shop_images/reward_3_1.svg",
+            "item_1_text": "60 Days Money-back guarantee",
+            "item_2_icon": "shopify://shop_images/package_2.svg",
+            "item_2_text": "Easy Returns",
+            "item_3_icon": "shopify://shop_images/delivery_1_1.svg",
+            "item_3_text": "Free Shipping for orders over $100+"
+          }
+        },
+        "description_acc": {
+          "type": "description",
+          "settings": {}
+        },
+        "accordion_shipping": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping",
+            "content": "<p>Orders are processed within 1 to 2 business days. You will get a confirmation email with tracking once your order ships.</p><p><strong>Delivery times:</strong></p><ul><li>United States and Canada: 3 to 7 business days</li><li>International: 7 to 14 business days</li></ul><p>We ship to the United States, Canada, Australia, France, the United Kingdom, and Germany. For anywhere else, reach out through the Contact Us form.</p><p>Duties and import taxes are calculated and charged at checkout for international orders.</p>",
+            "open_by_default": false
+          }
+        },
+        "accordion_returns": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Returns and Warranty",
+            "content": "<p>Accessories are returnable within 30 days if unopened and unused. Refunds are issued for confirmed manufacturer defects.</p><p>To report a defect, contact support within 30 days of delivery with your order number and photo or video proof. If approved, we will issue a refund or replacement.</p><p><strong>Not covered:</strong> regular wear and tear, accidental damage or misuse, and cosmetic blemishes that do not affect function.</p><p>Questions? Email <a href=\"mailto:customerservice@grillbots.com\">customerservice@grillbots.com</a>.</p>",
+            "open_by_default": false
+          }
+        },
+        "complete_your_setup_acc": {
+          "type": "complete_your_setup",
+          "settings": {
+            "heading": "Complete Your Setup",
+            "products_count": 3
+          }
+        }
+      },
+      "block_order": [
+        "price_block_acc",
+        "inventory_acc",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "guarantee_box_acc",
+        "description_acc",
+        "accordion_shipping",
+        "accordion_returns",
+        "complete_your_setup_acc"
+      ],
+      "settings": {
+        "show_breadcrumb": true,
+        "show_vendor": false,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "show_product_rating": true,
+        "rating_url": "",
+        "show_sticky_add_to_cart": true,
+        "show_share_buttons": false,
+        "help_page": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "show_thumbnails_on_mobile": true,
+        "desktop_thumbnails_position": "bottom",
+        "transition_effect": "fade"
+      }
+    },
+    "accessory_video": {
+      "type": "custom-liquid",
+      "name": "Tutorial video",
+      "settings": {
+        "subheading": "",
+        "title": "",
+        "liquid": "{%- assign acc_video = product.metafields.video.tutorials_video -%}{%- if acc_video != blank -%}<div class=\"accessory-tutorial-video\" style=\"max-width:900px;margin:0 auto;\"><h2 style=\"text-align:center;\">See It In Action</h2>{{ acc_video }}</div>{%- endif -%}",
+        "add_vertical_spacing": true,
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "loox-product-reviews-app-section": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_accessory": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "reviews_to_display": "product_reviews_only",
+            "default_tab": "automatic",
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": true
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_accessory"
+      ],
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
+    "accessory_cross_sell": {
+      "type": "featured-collections",
+      "blocks": {
+        "accessory_collection_block": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "label": "",
+            "button_text": "",
+            "button_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "accessory_collection_block"
+      ],
+      "settings": {
+        "css_class": "",
+        "subheading": "",
+        "title": "Shop Grillbot Accessories",
+        "content": "",
+        "heading_align": "left",
+        "products_count": 4,
+        "products_per_row": 4,
+        "stack_products": true,
+        "show_cta": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "css_class": "",
+        "subheading": "",
+        "title": "You May Also Like",
+        "text_alignment": "left",
+        "recommendations_count": 4,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "klaviyo_atc_tracking": {
+      "type": "custom-liquid",
+      "settings": {
+        "subheading": "",
+        "title": "",
+        "liquid": "<p style=\"text-align: center\">{% if product %}\n<script>\nwindow.addEventListener('load', function() {\nvar _learnq = window._learnq || [];\nfunction addedToCart() {\n  fetch(`${window.location.origin}/cart.js`)\n  .then(res => res.clone().json().then(data => {\n    var cart = {\n      total_price: data.total_price/100,\n      $value: data.total_price/100,\n      total_discount: data.total_discount,\n      original_total_price: data.original_total_price/100,\n      items: data.items\n    }\n    if (item !== 'undefined') {\n      cart = Object.assign(cart, item)\n    }\n    if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', cart]);\n        klAjax = false;\n      }\n  }))\n};\n(function (ns, fetch) {\n  ns.fetch = function() {\n    const response = fetch.apply(this, arguments);\n    response.then(res => {\n      if (`${window.location.origin}/cart/add.js`\n      \t.includes(res.url)) {\n        \taddedToCart()\n      }\n    });\n    return response\n  }\n}(window, window.fetch));\nvar klAjax = true;\nvar atcButtons = document.querySelectorAll(\"form[action*='/cart/add'] button[type='submit']\");\nfor (var i = 0; i < atcButtons.length; i++) {\n    atcButtons[i].addEventListener(\"click\", function() {\n      if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', item]);\n        klAjax = false;\n      }\n    })\n}\n});\n</script>{% endif %}</p>",
+        "add_vertical_spacing": false,
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "accessory_video",
+    "loox-product-reviews-app-section",
+    "accessory_cross_sell",
+    "product-recommendations",
+    "klaviyo_atc_tracking"
+  ]
+}

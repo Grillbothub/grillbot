@@ -1,0 +1,602 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+<style>
+section.custom--product-types.shopify-section--{{ section.id }} .text-color {
+  color: {{ section.settings.text_color }};
+}
+{% if section.settings.out_spacing %}
+section.youtube-text--section.shopify-section--{{ section.id }} {
+  margin: 0 !important;
+}
+{% endif %}
+
+section.youtube-text--section.shopify-section--{{ section.id }} .text__alignment {
+  text-align: {% if section.settings.heading_alignment == 'left' %}left
+              {% elsif section.settings.heading_alignment == 'center' %}center
+              {% elsif section.settings.heading_alignment == 'right' %}right{% endif %};
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .heading-apart h2.heading {
+    font-weight: 900;
+    font-size: 63px;
+    line-height: 78px;
+    margin-bottom: 20px !important;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .content-apart .content p {
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 300;
+    margin: 12px 0;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .subheading-apart h3.heading {
+    font-weight: 900;
+    font-size: 33px;
+    line-height: 41px;
+    margin-bottom: 20px !important;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .iframe-embeded {
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .youtube-video-with-text .points-apart {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: {% if section.settings.heading_alignment == 'left' %}left
+                     {% elsif section.settings.heading_alignment == 'center' %}center
+                     {% elsif section.settings.heading_alignment == 'right' %}right{% endif %};
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area {
+    padding: 0 10px;
+}
+section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area span {
+    font-size: 12px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+.custom--product-types .error-apart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    {% if section.settings.heading_alignment == 'left' %}
+      margin-right: auto;
+    {% elsif section.settings.heading_alignment == 'center' %}
+      margin: auto;
+    {% elsif section.settings.heading_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+    padding: 10px 15px;
+    background: #DE2A2C1A;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.custom--product-types .error-apart p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 24px;
+    color: #DE2A2C;
+    font-weight: 500;
+}
+.custom--product-types .product-types-custom {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+.custom--product-types .product-types-custom .pr_type_tabs {
+    background: #FFFFFF;
+    box-shadow: 0px 35px 60px rgba(0, 0, 0, 0.05);
+    padding: 30px 40px;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .image-ratio img {
+    display: block;
+    width: 100%;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .image-ratio {
+    max-width: 350px;
+    margin: auto;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .text-image-box {
+    position: relative;
+    padding-bottom: 60px;
+    height: 100%;
+    text-align: center;
+}
+.custom--product-types .pr_type_tabs .text-image-box .heading-type p {
+    font-size: 22px;
+    line-height: 34px;
+    font-weight: 600;
+    margin-top: 10px !important;
+}
+.custom--product-types .pr_type_tabs .text-image-box .content p {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 30px;
+}
+.custom--product-types .pr_type_tabs .text-image-box .content {
+    margin-top: 10px !important;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .text-image-box .button {
+    border-bottom: 2px solid #b6d22f;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .text-image-box .button a {
+    font-size: 14px;
+    line-height: 31px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.custom--product-types .product-types-custom .pr_type_tabs .text-image-box .button {
+    border-bottom: 2px solid #b6d22f;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    min-height: 51px;
+    padding: 0 20px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.custom--product-types .pr-tab-field-wrapper {
+    margin-top: 40px;
+}
+.custom--product-types .sale-percentage-badge span {
+    font-size: 18px;
+    line-height: 31px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #000000;
+    background: #b6d22f;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 25px auto 0;
+    padding: 0 20px;
+    position: relative;
+}
+.custom--product-types .sale-percentage-badge span::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 26px solid transparent;
+    border-left: 10px solid #ffffff;
+    border-bottom: 25px solid transparent;
+    position: absolute;
+    top: -1px;
+    left: 0px;
+    z-index: 9;
+}
+.custom--product-types .sale-percentage-badge span::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 26px solid transparent;
+    border-right: 10px solid #ffffff;
+    border-bottom: 25px solid transparent;
+    position: absolute;
+    top: -1px;
+    right: 0px;
+    z-index: 9;
+}
+@media only screen and (max-width: 1000px) {
+  .custom--product-types .product-types-custom {
+    gap: 20px;
+  }
+  .custom--product-types .product-types-custom .pr_type_tabs {
+    padding: 15px 15px 30px;
+  }
+}
+@media only screen and (max-width: 740px) {
+  section.custom--product-types.shopify-section--{{ section.id }} .heading-apart h2.heading {
+    font-size: 39px;
+    line-height: 48px;
+    margin-bottom: 10px !important;
+  }
+  section.custom--product-types.shopify-section--{{ section.id }} .content-apart .content p {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  section.custom--product-types.shopify-section--{{ section.id }} .iframe-embeded {
+    padding-top: 20px;
+  }
+  section.custom--product-types.shopify-section--{{ section.id }} .youtube-video-with-text .points-apart {
+    display: none;
+  }
+  section.custom--product-types.shopify-section--{{ section.id }} .subheading-apart h3.heading {
+    font-size: 25px;
+    line-height: 31px;
+    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+  }
+  section.custom--product-types.shopify-section--{{ section.id }} {
+    padding-top: 0 !important;
+  }
+  .custom--product-types .error-apart {
+    align-items: start;
+  }
+  .custom--product-types .product-types-custom {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 30px;
+  }
+  .custom--product-types .product-types-custom .pr_type_tabs {
+    padding: 10px 15px 30px;
+  }
+  .custom--product-types .product-types-custom .pr_type_tabs .text-image-box .button {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+</style>
+
+<section class="section{% unless is_boxed %} section--flush{% endunless %} youtube-text--section custom--product-types shopify-section--{{ section.id }}"
+          style="background: {{ section.settings.bg_color_all }};
+                 padding-top: {{ section.settings.padding_top }}px;
+                 padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div {% if is_boxed %}class="container"{% endif %}>
+    <div class="youtube-video-with-text">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% case block.type %}
+          <div class="text-field-wrapper">
+            {% when 'heading' %}
+              {% if block.settings.heading != blank %}
+              <div class="heading-apart">
+                <h2 class="heading h2 text-color text__alignment">{{ block.settings.heading }}</h2>
+              </div>
+              {% endif %}
+
+            {% when 'points' %}
+              <div class="points-apart">
+                {% for i in (1..5) %}
+                  {% assign key_link = 'key_link_' | append: i %}
+                  {% assign svg_text_key = 'svg_text_' | append: i %}
+                  {% if block.settings[svg_text_key] != blank %}
+                    <div class="single_tab_area">
+                      {% if block.settings[key_link] != blank %}
+                      <a href="{{ block.settings[key_link] }}" class="points_link">
+                      {% endif %}
+                        <span>{{ block.settings[svg_text_key] }}</span>
+                      {% if block.settings[key_link] != blank %}
+                      </a>
+                      {% endif %}
+                    </div>
+                    <style>
+                      section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area span {
+                        color: {{ block.settings.point_color }};
+                      }
+                      section.youtube-text--section.shopify-section--{{ section.id }} .points-apart .single_tab_area {
+                        border: 1px solid {{ block.settings.point_color }};
+                      }
+                    </style>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            {% when 'subheading' %}
+              {% if block.settings.sub_heading != blank %}
+              <div class="subheading-apart">
+                <h3 class="heading h3 text-color text__alignment">{{ block.settings.sub_heading }}</h3>
+              </div>
+              {% endif %}
+
+            {% when 'error' %}
+              {% if block.settings.error != blank %}
+              <div class="error-apart">
+                <img src="https://cdn.shopify.com/s/files/1/0337/8629/files/info.svg?v=1682399514"/>
+                <p class="error text__alignment">{{ block.settings.error }}</p>
+              </div>
+              {% endif %}
+            
+            {% when 'content' %}
+              {% if block.settings.content != blank %}
+              <div class="content-apart">
+                <div class="content text-color text__alignment">{{ block.settings.content }}</div>
+              </div>
+              {% endif %}
+          </div>
+          {% endcase %}
+        {% endfor %}
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+      <div class="pr-tab-field-wrapper">
+        <div class="product-types-custom">
+          {% for block in section.blocks %}
+            {% if block.type == 'product_type' %}
+            <div class="pr_type_tabs">
+              <div class="text-image-box">
+                {% if block.settings.image != blank %}
+                  <div class="image-ratio"><img src="{{ block.settings.image | img_url: '' }}"/></div>
+                {% endif %}
+                {% if block.settings.heading != blank %}
+                  <div class="heading-type"><p>{{ block.settings.heading }}</p></div>
+                {% endif %}
+                {% if block.settings.content != blank %}
+                  <div class="content">{{ block.settings.content }}</div>
+                {% endif %}
+                {% if block.settings.sale_badge != blank %}
+                  <div class="sale-percentage-badge"><span>{{ block.settings.sale_badge }}</span></div>
+                {% endif %}
+                {% if block.settings.label != blank %}
+                  <div class="button">
+                    <a href="{{ block.settings.link }}">{{ block.settings.label }}</a>
+                    <img src="https://cdn.shopify.com/s/files/1/0337/8629/files/Vector_30_2.svg?v=1682402070"/>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+@media only screen and (max-width: 1200px) {
+  .youtube-text--section.shopify-section--{{ section.id }} .mob_height {
+    height: 800px !important;
+  }
+}
+@media only screen and (max-width: 740px) {
+  .youtube-text--section.shopify-section--{{ section.id }} .mob_height {
+    height: 300px !important;
+  }
+}
+</style>
+{% schema %}
+  {
+    "name": "Product Types",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "background_type",
+        "label": "Background",
+        "options": [
+          {
+            "value": "full_width",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "boxed"
+      },
+      {
+        "type": "select",
+        "id": "heading_alignment",
+        "label": "Content Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "checkbox",
+        "id": "out_spacing",
+        "label": "Hide outer Spacing",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding Top",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding Bottom",
+        "min": 0,
+        "max": 100,
+        "unit": "px",
+        "step": 2,
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "bg_color_all",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Content Color",
+        "default": "#ffffff"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "subheading",
+        "name": "Subheading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "sub_heading",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "error",
+        "name": "Error",
+        "settings": [
+          {
+            "type": "text",
+            "id": "error",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "points",
+        "name": "Points",
+        "settings": [
+          {
+            "type": "text",
+            "id": "svg_text_1",
+            "label": "Point 1"
+          },
+          {
+            "type": "url",
+            "id": "key_link_1",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_2",
+            "label": "Point 2"
+          },
+          {
+            "type": "url",
+            "id": "key_link_2",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_3",
+            "label": "Point 3"
+          },
+          {
+            "type": "url",
+            "id": "key_link_3",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_4",
+            "label": "Point 4"
+          },
+          {
+            "type": "url",
+            "id": "key_link_4",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_5",
+            "label": "Point 5"
+          },
+          {
+            "type": "url",
+            "id": "key_link_5",
+            "label": "Link"
+          },
+          {
+            "type": "color",
+            "id": "point_color",
+            "label": "Color",
+            "default": "#ffffff"
+          }
+        ]
+      },
+      {
+        "type": "content",
+        "name": "Content",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "product_type",
+        "name": "Product type",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "type": "text",
+            "id": "sale_badge",
+            "label": "Sale Badge"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Button Label"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Button Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Types"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

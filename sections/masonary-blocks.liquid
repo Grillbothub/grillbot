@@ -1,0 +1,133 @@
+<section class="custom-reviews-section section shopify--section-{{ section.id }} {{ section.settings.css_class }}" data-section="{{ section.id }}">
+  <div class="guarantee-section">
+    
+        <div class="container">
+            <div class="custom-reviews-head">
+        
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading }}</h2>
+          {% endif %}
+        
+          {% if section.settings.sub_heading != blank %}
+            <div>
+                {% if section.settings.sub_heading != blank %}
+                    <h3>{{ section.settings.sub_heading }}</h3>
+                {% endif %}
+                <div class="total-review-image">
+                    <img src="{{ section.settings.total_review_image | img_url: '' }}"/>
+                </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+    <div class="reviews-content-area">
+        <div class="container">
+          <div class="reviews-slider owl-carousel">
+        
+            {% for block in section.blocks %}
+                <div class="review-slide">
+                    {% if block.settings.review_image != blank %}
+                        <img src="{{ block.settings.review_image | img_url: '' }}"/>
+                    {% endif %}
+                    <div class="review-body {% if block.settings.review_image != blank %} do-absolute {% endif %}">
+                      <svg width="84" height="16" viewBox="0 0 84 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 0L10.069 5.15226L15.6085 5.52786L11.3477 9.08774L12.7023 14.4721L8 11.52L3.29772 14.4721L4.65228 9.08774L0.391548 5.52786L5.931 5.15226L8 0Z" fill="#F6A429"/>
+                        <path d="M25 0L27.069 5.15226L32.6085 5.52786L28.3477 9.08774L29.7023 14.4721L25 11.52L20.2977 14.4721L21.6523 9.08774L17.3915 5.52786L22.931 5.15226L25 0Z" fill="#F6A429"/>
+                        <path d="M42 0L44.069 5.15226L49.6085 5.52786L45.3477 9.08774L46.7023 14.4721L42 11.52L37.2977 14.4721L38.6523 9.08774L34.3915 5.52786L39.931 5.15226L42 0Z" fill="#F6A429"/>
+                        <path d="M59 0L61.069 5.15226L66.6085 5.52786L62.3477 9.08774L63.7023 14.4721L59 11.52L54.2977 14.4721L55.6523 9.08774L51.3915 5.52786L56.931 5.15226L59 0Z" fill="#F6A429"/>
+                        <path d="M76 0L78.069 5.15226L83.6085 5.52786L79.3477 9.08774L80.7023 14.4721L76 11.52L71.2977 14.4721L72.6523 9.08774L68.3915 5.52786L73.931 5.15226L76 0Z" fill="#F6A429"/>
+                      </svg>
+
+                        {% if block.settings.heading != blank %}
+                            <h2>{{ block.settings.heading }}</h2>
+                        {% endif %}
+
+                        {% if block.settings.content != blank %}
+                            <p>{{ block.settings.content }}</p>
+                        {% endif %}
+
+                        {% if block.settings.name != blank %}
+                            <h3>{{ block.settings.name }}</h3>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Masonary Blocks",
+    "settings": [
+      {
+        "type": "text",
+        "id": "css_class",
+        "label": "CSS Class"
+      },
+      {
+        "type": "textarea",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "sub_heading",
+        "label": "Sub Heading"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading"
+      },
+      {
+        "type": "image_picker",
+        "id": "total_review_image",
+        "label": "Total Review Image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "reviews",
+        "name": "Reviews",
+        "settings": [
+        {
+            "type": "image_picker",
+            "id": "review_image",
+            "label": "Review Image"
+        },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Author Name"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Review Heading"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Review"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Masonary Blocks"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

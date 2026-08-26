@@ -1,0 +1,18 @@
+
+{%- comment -%}
+BOLD-INCLUDES.LIQUID
+
+---------------------------  WARNING  ---------------------------
+THIS IS A GENERATED ASSET OF INCLUDES FOR INSTALLED BOL APPLICATIONS SO NOT MODIFY
+---------------------------  WARNING  ---------------------------
+Performance: CSS loads non-blocking; ro.js uses defer (render after page paint).
+{%- endcomment -%}
+
+<link rel="stylesheet" href="{{ 'bold-upsell.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'bold-upsell.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'bold-upsell-custom.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'bold-upsell-custom.css' | asset_url | stylesheet_tag }}</noscript>
+<script src="https://ro.boldapps.net/v2_ui/js/ro.js" defer></script>
+<script>
+    window.BOLD.common.cacheParams.recurring_orders = 1694782030;
+</script>

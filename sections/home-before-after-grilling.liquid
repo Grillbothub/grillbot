@@ -1,0 +1,653 @@
+<style>
+.shopify-section--{{ section.id }}.section--above_overlap .start_grilling_section::after {
+    content: '';
+    -webkit-clip-path: polygon(100% 0, 0 0, 0 100%);
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+    position: absolute;
+    width: 100% !important;
+    background: {{ section.settings.overlap_color }};
+    height: 100px;
+    bottom: -100px;
+    z-index: 9;
+    left: 0;
+}
+@media only screen and (max-width: 1200px) {
+  .shopify-section--{{ section.id }}.section--above_overlap .start_grilling_section::after {
+    -webkit-clip-path: polygon(100% 0, 0 0, 0 80%);
+    clip-path: polygon(100% 0, 0 0, 0 80%);
+    bottom: -99px;
+  }
+  .shopify-section--{{ section.id }}.home-before-after-grilling-section .single_block_area .first_block:after {
+    -webkit-clip-path: polygon(65% 0,0 0,0 100%);
+    clip-path: polygon(65% 0,0 0,0 100%);
+    width: 65px;
+    right: -65px;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .shopify-section--{{ section.id }}.section--above_overlap .start_grilling_section::after {
+    -webkit-clip-path: polygon(100% 0, 0 0, 0 40%);
+    clip-path: polygon(100% 0, 0 0, 0 40%);
+  }
+}
+@media only screen and (max-width: 740px) {
+  .shopify-section--{{ section.id }}.section--above_overlap .start_grilling_section::after {
+    display: none;
+  }
+  .shopify-section--{{ section.id }}.home-before-after-grilling-section .single_block_area .first_block:after {
+    width: 100%;
+    bottom: 0;
+    height: 40px;
+    top: unset;
+    right: unset;
+    left: 0;
+    background: #fff;
+    -webkit-clip-path: polygon(100% 100%, 100% 0, 0 100%);
+    clip-path: polygon(100% 100%, 100% 0, 0 100%);
+  }
+}
+</style>
+
+<section class="home-before-after-grilling-section section shopify-section--{{ section.id }} {% if section.settings.section_upper_overlap %} section--above_overlap{% endif %}" data-section="{{ section.id }}">
+  {% for block in section.blocks %}
+    {% if block.type == 'start_grilling' %}
+      <div class="start_grilling_section" data-block-id="block-{{ block.id }}">
+        {% if block.settings.enable_left_sticks and block.settings.left_sticks != blank %}
+          <div class="enable_left_sticks" data-aos="fade-right"><img src="{{ block.settings.left_sticks | img_url:'original' }}"></div>
+        {% endif %}
+        <div class="container">
+          {%- if block.settings.heading != blank -%}
+            <div class="heading_area">
+              <h3 class="heading h3">
+                {{ block.settings.heading }}
+              </h3>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.subheading != blank -%}
+            <div class="subheading_area">
+              <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
+            </div>
+          {%- endif -%}
+          {% if block.settings.enable_block_icons %}
+            <div class="social-gift-icons">
+              {% for i in (1..4) %}
+                {% assign svg_icon_key = 'svg_icon_' | append: i %}
+                {% assign svg_text_key = 'svg_text_' | append: i %}
+                {% if block.settings[svg_icon_key] != blank and block.settings[svg_text_key] != blank %}
+                  <div class="single_icon_area">
+                    <span><img src="{{ block.settings[svg_icon_key] | img_url:'original' }}"></span>
+                    <span>{{ block.settings[svg_text_key] }}</span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="content_buttons_area">
+            <style>
+              .shopify-section--{{ section.id }} .content_buttons_area {
+              {% if block.settings.button_position == 'left' %}
+                justify-content: left;
+              {% elsif block.settings.button_position == 'center' %}
+                justify-content: center;
+              {% elsif block.settings.button_position == 'right' %}
+                justify-content: right;
+              {% elsif block.settings.button_position == 'spaceBetween' %}
+                justify-content: space-between;
+              {% endif %}
+              }
+            </style>
+            {%- if block.settings.button_text_1 != blank -%}
+            <a href="{{ block.settings.button_link_1 }}" class="button button--primary button--primary-bg{% if block.settings.button_type1 %} outlined--button-primary{% endif %}">
+              {{ block.settings.button_text_1 }}
+              {% if block.settings.button_type1 %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="11" viewBox="0 0 24 11" fill="none">
+                  <path d="M0.5 5.50012H22.5M22.5 5.50012L18.5 1.50012M22.5 5.50012L18.5 9.50012" stroke="{{ block.settings.first_button_color }}" stroke-width="2"/>
+                </svg>
+              {% endif %}
+            </a>
+              <style>
+                .shopify-section--{{ section.id }} .button--primary-bg {
+                  display: flex;
+                  color: {{ block.settings.first_button_color }};
+                  background: {{ block.settings.first_button_bg }};
+                  font-weight: 700;
+                  font-size: 14px;
+                  line-height: 51px;
+                  letter-spacing: 0.04em;
+                  padding: 0;
+                }
+                .shopify-section--{{ section.id }} .outlined--button-primary {
+                  background: transparent;
+                  border-bottom: 2px solid #b6d22f;
+                  justify-content: space-between !important;
+                }
+                .content_buttons_area a.button {
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  min-width: 200px;
+                  white-space: nowrap;
+                  max-width: 300px;
+                  align-items: center;
+                }
+                .content_buttons_area a.button img {
+                  display: flex;
+                  max-width: 25px;
+                  height: auto;
+                  align-items: center;
+                }
+                @media only screen and (max-width: 740px) {
+                  .shopify-section--{{ section.id }} .content_buttons_area a.button {
+                    max-width: 450px;
+                  }
+                  .shopify-section--{{ section.id }} .content_buttons_area {
+                    align-items: center;
+                  }
+                  .shopify-section--{{ section.id }} .outlined--button-primary {
+                    justify-content: center !important;
+                  }
+                }
+              </style>
+            {%- endif -%}
+  
+            {%- if block.settings.button_text_2 != blank -%}
+            <a href="{{ block.settings.button_link_2 }}" class="button button--secondary button--secondary-bg{% if block.settings.button_type2 %} outlined--button-secondary{% endif %}">
+              {{ block.settings.button_text_2 }}
+              {% if block.settings.button_type2 %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="11" viewBox="0 0 24 11" fill="none">
+                  <path d="M0.5 5.50012H22.5M22.5 5.50012L18.5 1.50012M22.5 5.50012L18.5 9.50012" stroke="{{ block.settings.second_button_color }}" stroke-width="2"/>
+                </svg>
+              {% endif %}
+            </a>
+              <style>
+                .shopify-section--{{ section.id }} .button--secondary-bg {
+                  display: flex;
+                  color: {{ block.settings.second_button_color }};
+                  background: {{ block.settings.second_button_bg }};
+                  font-weight: 700;
+                  font-size: 14px;
+                  line-height: 31px;
+                  letter-spacing: 0.04em;
+                  padding: 0;
+                }
+                .shopify-section--{{ section.id }} .outlined--button-secondary {
+                  background: transparent;
+                  border-bottom: 2px solid {{ block.settings.second_button_bg }};
+                  justify-content: space-between !important;
+                }
+                .content_buttons_area a.button {
+                  display: flex;
+                  justify-content: center;
+                  width: 100%;
+                  min-width: 200px;
+                  white-space: nowrap;
+                  max-width: 300px;
+                  align-items: center;
+                }
+                .content_buttons_area a.button img {
+                  display: flex;
+                  max-width: 25px;
+                  height: auto;
+                  align-items: center;
+                }
+                @media only screen and (max-width: 740px) {
+                  .shopify-section--{{ section.id }} .outlined--button-secondary {
+                    justify-content: center !important;
+                  }
+                }
+              </style>
+            {%- endif -%}
+          </div>
+        </div>
+        {% if block.settings.enable_right_sticks and block.settings.right_sticks != blank %}
+          <div class="enable_right_sticks" data-aos="fade-left"><img src="{{ block.settings.right_sticks | img_url:'original' }}"></div>
+        {% endif %}
+      </div>
+     <style>
+       {% if block.settings.bg_color != blank %}
+         .start_grilling_section[data-block-id="block-{{ block.id }}"]
+         {
+           background:{{block.settings.bg_color}};
+         }
+      {% endif %}
+     </style>
+    {% endif %}
+    {% if block.type == 'before_after' %}
+      <div class="before_after_section" data-block-id="block-{{ block.id }}">
+        {% if block.settings.left_content != blank %}
+        <div class="before-after-content-left">{{ block.settings.left_content }}</div>
+        {% endif %}
+      {% if block.settings.enable_before_after and block.settings.before_after_image != blank %}
+        <div class="before_after_banner">
+          <img src="{{ block.settings.before_after_image | img_url:'' }}">
+        </div>
+        <style>
+          @media only screen and (max-width: 740px) {
+            {% if block.settings.hide_image_mobile %}
+            .shopify-section--{{ section.id }} .before_after_section {
+              display: none;
+            }
+            {% endif %}
+          }
+        </style>
+      {% endif %}
+        {% if block.settings.right_content != blank %}
+        <div class="before-after-content-right">{{ block.settings.right_content }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if block.type == 'award_winning_design' %}
+    <div class="award_winning_design_section" data-block-id="block-{{ block.id }}">
+      <div class="single_block_area">
+      {% if block.settings.bg_image != blank %}
+        <div class="first_block">
+          <img src="{{ block.settings.bg_image | img_url:'original' }}">
+          {% if block.settings.overlay_text != blank %}
+            <p class="overlay_text">{{ block.settings.overlay_text }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+      </div>
+
+               {% for i in (1..3) %}
+                {% assign logo_key = 'logo_' | append: i %}
+                {% assign image_key = 'subimage_' | append: i %}
+                {% assign text_key = 'text_' | append: i %}
+                <div class="single_block_area">
+                  <div class="other-block">
+                  {% if block.settings[logo_key] != blank  %}
+                    <div class="logo_area">
+                      <img src="{{ block.settings[logo_key] | img_url:'original' }}">
+                    </div>
+                  {% endif %}
+                  {% if block.settings[image_key] != blank  %}
+                    <div class="image_area">
+                      <img src="{{ block.settings[image_key] | img_url:'original' }}">
+                    </div>
+                  {% endif %}
+                   {% if block.settings[text_key] != blank  %}
+                    <div class="text_area">
+                     {{ block.settings[text_key] }}
+                    </div>
+                  {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+    </div>
+    {% endif %}
+  {% endfor %}
+  
+  {% if section.settings.animation_smoke != blank %}
+    <div class="effect-smoke-box"><img src="{{ section.settings.animation_smoke | img_url: '' }}"/></div>
+  {% endif %}
+</section>
+
+<style>
+@media only screen and (max-width: 940px) {
+  section.home-before-after-grilling-section.section .effect-smoke-box {
+    position: absolute;
+    top: -27%;
+    width: 100%;
+    max-width: 100%;
+  }
+  section.home-before-after-grilling-section.section .effect-smoke-box img {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+{% schema %}
+  {
+    "name": "Home - Before After Grill",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section Overlap"
+      },
+      {
+        "type": "checkbox",
+        "id": "section_upper_overlap",
+        "label": "Enable Overlap",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "overlap_color",
+        "label": "Overlap Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "image_picker",
+        "id": "animation_smoke",
+        "label": "Animation Smoke Image"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "start_grilling",
+        "name": "Start Grilling",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color",
+            "default": "#b6d22f"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_left_sticks",
+            "label": "Enable Left Sticks",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "left_sticks",
+            "label": "Left Sticks"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_right_sticks",
+            "label": "Enable Right Sticks",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "right_sticks",
+            "label": "Right Sticks"
+          },
+          {
+            "type":"html",
+            "id":"heading",
+            "label":"Heading",
+            "default":"Main<br>Benefits<br>of Grillbot"
+          },
+          {
+            "type":"text",
+            "id":"subheading",
+            "label":"Subheading",
+            "default":"Grillbot is powerful, convenient, and easy to use."
+          },
+          {
+            "type":"header",
+            "content":"Block Icons"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_block_icons",
+            "label": "Enable Block Icons",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_1",
+            "label": "SVG Icon 1",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_1",
+            "label": "SVG Text 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_2",
+            "label": "SVG Icon 2",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_2",
+            "label": "SVG Text 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_3",
+            "label": "SVG Icon 3",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_3",
+            "label": "SVG Text 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "svg_icon_4",
+            "label": "SVG Icon 4",
+            "info": "48 x 48px .svg recommended"
+          },
+          {
+            "type": "text",
+            "id": "svg_text_4",
+            "label": "SVG Text 4"
+          },
+          {
+            "type":"header",
+            "content":"Buttons"
+          },
+          {
+            "type": "select",
+            "id": "button_position",
+            "label": "Buttons Position",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "spaceBetween",
+                "label": "Space Between"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "text",
+            "id": "button_text_1",
+            "label": "Button text 1"
+          },
+          {
+            "type": "url",
+            "id": "button_link_1",
+            "label": "Button link 1"
+          },
+          {
+            "type": "color",
+            "id": "first_button_color",
+            "label": "Button Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "first_button_bg",
+            "label": "Button Background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_type1",
+            "label":"Outlined Button",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "button_text_2",
+            "label": "Button text 2"
+          },
+          {
+            "type": "url",
+            "id": "button_link_2",
+            "label": "Button link 2"
+          },
+          {
+            "type": "color",
+            "id": "second_button_color",
+            "label": "Button Color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "second_button_bg",
+            "label": "Button Background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_type2",
+            "label":"Outlined Button",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "before_after",
+        "name": "Before & After",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_before_after",
+            "label": "Enable Block",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "before_after_image",
+            "label": "Before & After Banner Image"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_image_mobile",
+            "label": "Hide image on mobile",
+            "default": true
+          },
+          {
+            "type": "text",
+            "id": "left_content",
+            "label": "Left Content"
+          },
+          {
+            "type": "text",
+            "id": "right_content",
+            "label": "Right Content"
+          }
+        ]
+      },
+      {
+        "type": "award_winning_design",
+        "name": "Award Winning Design",
+        "limit": 1,
+        "settings": [
+          {
+            "type":"header",
+            "content":"First Block"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image"
+          },
+          {
+            "type": "html",
+            "id": "overlay_text",
+            "label": "Overlay Text"
+          },
+          {
+            "type":"header",
+            "content":"Block 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo_1",
+            "label": "Logo 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "subimage_1",
+            "label": "Sub Image 1"
+          },
+          {
+            "type": "text",
+            "id": "text_1",
+            "label": "Title 1"
+          },
+          {
+            "type":"header",
+            "content":"Block 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo_2",
+            "label": "Logo 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "subimage_2",
+            "label": "Sub Image 2"
+          },
+          {
+            "type": "text",
+            "id": "text_2",
+            "label": "Title 2"
+          },
+          {
+            "type":"header",
+            "content":"Block 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo_3",
+            "label": "Logo 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "subimage_3",
+            "label": "Sub Image 3"
+          },
+          {
+            "type": "text",
+            "id": "text_3",
+            "label": "Title 3"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home - Before After Grill",
+        "settings": {},
+        "blocks": [
+          {
+            "type": "start_grilling",
+            "settings": {}
+          },
+          {
+            "type": "before_after",
+            "settings": {}
+          },
+          {
+            "type": "award_winning_design",
+            "settings": {}
+          }
+        ]
+      }
+    ]
+  
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

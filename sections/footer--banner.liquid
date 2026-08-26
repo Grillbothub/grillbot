@@ -1,0 +1,466 @@
+{% comment %}
+  Risk-Free Trial Banner Section
+  File: sections/risk-free-banner.liquid
+{% endcomment %}
+
+<section
+  class="risk-banner"
+  style="--section-height: {{ section.settings.section_height }}px;"
+>
+  {%- comment %} Background Images {% endcomment -%}
+  {% if section.settings.background_image_desktop != blank %}
+    <div class="risk-banner__bg risk-banner__bg--desktop">
+      {{
+        section.settings.background_image_desktop
+        | image_url: width: 2000
+        | image_tag: loading: 'lazy', alt: section.settings.heading
+      }}
+    </div>
+  {% endif %}
+
+  {% if section.settings.background_image_mobile != blank %}
+    <div class="risk-banner__bg risk-banner__bg--mobile">
+      {{
+        section.settings.background_image_mobile
+        | image_url: width: 800
+        | image_tag: loading: 'lazy', alt: section.settings.heading
+      }}
+    </div>
+  {% elsif section.settings.background_image_desktop != blank %}
+    <div class="risk-banner__bg risk-banner__bg--mobile">
+      {{
+        section.settings.background_image_desktop
+        | image_url: width: 800
+        | image_tag: loading: 'lazy', alt: section.settings.heading
+      }}
+    </div>
+  {% endif %}
+
+  {%- comment %} Dark overlay {% endcomment -%}
+
+  {%- comment %} Center vertical divider {% endcomment -%}
+
+
+  {%- comment %} Content {% endcomment -%}
+  <div class="risk-banner__content">
+    <div class="banner__content--inner">
+    {% if section.settings.heading != blank %}
+      <h2 class="risk-banner__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <p class="risk-banner__subheading">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {%- comment %} Trust Badges {% endcomment -%}
+    <div class="risk-banner__badges">
+      {% if section.settings.badge_1_text != blank %}
+        <div class="risk-banner__badge">
+          <span class="risk-banner__badge-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M12 2.99996L12.295 2.30996C12.2018 2.27008 12.1014 2.24951 12 2.24951C11.8986 2.24951 11.7982 2.27008 11.705 2.30996L12 2.99996ZM12 21L11.628 21.651C11.7413 21.7157 11.8695 21.7497 12 21.7497C12.1305 21.7497 12.2587 21.7157 12.372 21.651L12 21ZM11.704 2.31096L5.312 5.04996L5.9 6.42996L12.294 3.68996L11.704 2.31096ZM4.25 6.65896V13.519H5.75V6.65896H4.25ZM7.651 19.379L11.628 21.651L12.372 20.349L8.395 18.076L7.651 19.379ZM12.372 21.651L16.349 19.379L15.605 18.076L11.628 20.349L12.372 21.651ZM19.75 13.518V6.65996H18.25V13.52L19.75 13.518ZM18.69 5.05096L12.295 2.31096L11.705 3.68896L18.099 6.42996L18.69 5.05096ZM19.75 6.65996C19.75 5.95996 19.333 5.32696 18.69 5.05096L18.099 6.42996C18.1439 6.44933 18.1821 6.48144 18.209 6.52232C18.2358 6.5632 18.2501 6.61106 18.25 6.65996H19.75ZM16.349 19.379C17.3821 18.7886 18.2408 17.9357 18.838 16.9066C19.4353 15.8775 19.7499 14.7088 19.75 13.519H18.25C18.2498 14.4443 18.0051 15.3531 17.5406 16.1533C17.0761 16.9536 16.4083 17.6168 15.605 18.076L16.349 19.379ZM4.25 13.519C4.25011 14.7088 4.56473 15.8775 5.16199 16.9066C5.75925 17.9357 6.61792 18.7886 7.651 19.379L8.395 18.076C7.59151 17.6168 6.92367 16.9533 6.45917 16.1529C5.99468 15.3524 5.75002 14.4434 5.75 13.518L4.25 13.519ZM5.31 5.04996C4.99541 5.18494 4.72731 5.40922 4.5389 5.69503C4.35049 5.98084 4.25004 6.31664 4.25 6.65896H5.75C5.75 6.55896 5.81 6.46796 5.902 6.42796L5.31 5.04996Z" fill="#B6D22F"/>
+  <path d="M15 10L11 14L9 12" stroke="#B6D22F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+          </span>
+          <span>{{ section.settings.badge_1_text }}</span>
+        </div>
+      {% endif %}
+
+      {% if section.settings.badge_1_text != blank and section.settings.badge_2_text != blank %}
+        <div class="risk-banner__badge-sep"></div>
+      {% endif %}
+
+      {% if section.settings.badge_2_text != blank %}
+        <div class="risk-banner__badge">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g clip-path="url(#clip0_2044_672)">
+    <path d="M0 4.5V6H14.25V17.25H9.633C9.2985 15.9607 8.139 15 6.75 15C5.361 15 4.2015 15.9607 3.867 17.25H3V13.5H1.5V18.75H3.867C4.2015 20.0393 5.361 21 6.75 21C8.139 21 9.2985 20.0393 9.633 18.75H15.867C16.2015 20.0393 17.361 21 18.75 21C20.139 21 21.2985 20.0393 21.633 18.75H24V12.633L23.9528 12.5153L22.4528 8.01525L22.29 7.5H15.75V4.5H0ZM0.75 7.5V9H7.5V7.5H0.75ZM15.75 9H21.2108L22.5 12.8438V17.25H21.633C21.2985 15.9607 20.139 15 18.75 15C17.361 15 16.2015 15.9607 15.867 17.25H15.75V9ZM1.5 10.5V12H6V10.5H1.5ZM6.75 16.5C7.58775 16.5 8.25 17.1622 8.25 18C8.25 18.8378 7.58775 19.5 6.75 19.5C5.91225 19.5 5.25 18.8378 5.25 18C5.25 17.1622 5.91225 16.5 6.75 16.5ZM18.75 16.5C19.5877 16.5 20.25 17.1622 20.25 18C20.25 18.8378 19.5877 19.5 18.75 19.5C17.9123 19.5 17.25 18.8378 17.25 18C17.25 17.1622 17.9123 16.5 18.75 16.5Z" fill="#B6D22F"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_2044_672">
+      <rect width="24" height="24" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>
+          <span>{{ section.settings.badge_2_text }}</span>
+        </div>
+      {% endif %}
+
+      {% if section.settings.badge_2_text != blank and section.settings.badge_3_text != blank %}
+        <div class="risk-banner__badge-sep"></div>
+      {% endif %}
+
+      {% if section.settings.badge_3_text != blank %}
+        <div class="risk-banner__badge">
+          <span class="risk-banner__badge-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M16.35 19.1751L19.9 15.6251C20.1 15.4251 20.3333 15.3291 20.6 15.3371C20.8667 15.3451 21.1 15.4494 21.3 15.6501C21.4833 15.8501 21.575 16.0834 21.575 16.3501C21.575 16.6168 21.4833 16.8501 21.3 17.0501L17.075 21.3001C16.875 21.5001 16.6417 21.6001 16.375 21.6001C16.1083 21.6001 15.875 21.5001 15.675 21.3001L13.525 19.1501C13.3417 18.9668 13.25 18.7334 13.25 18.4501C13.25 18.1668 13.3417 17.9334 13.525 17.7501C13.7083 17.5668 13.9417 17.4751 14.225 17.4751C14.5083 17.4751 14.7417 17.5668 14.925 17.7501L16.35 19.1751ZM4 13.0001C4 11.0501 4.59167 9.18776 5.775 7.41309C6.95833 5.63842 8.58333 4.09242 10.65 2.77509C10.9333 2.59176 11.2293 2.58776 11.538 2.76309C11.8467 2.93842 12.0007 3.20075 12 3.55009V5.30009C12 5.86676 12.196 6.34175 12.588 6.72509C12.98 7.10842 13.459 7.30009 14.025 7.30009C14.325 7.30009 14.6043 7.23775 14.863 7.11309C15.1217 6.98842 15.3507 6.80076 15.55 6.55009C15.6833 6.38342 15.846 6.28342 16.038 6.25009C16.23 6.21676 16.4173 6.25842 16.6 6.37509C17.5333 7.02509 18.2917 7.85009 18.875 8.85009C19.4583 9.85009 19.8167 10.9251 19.95 12.0751C19.9833 12.3584 19.9083 12.5834 19.725 12.7501C19.5417 12.9168 19.325 13.0168 19.075 13.0501C18.825 13.0834 18.5833 13.0211 18.35 12.8631C18.1167 12.7051 17.975 12.4424 17.925 12.0751C17.875 11.7418 17.8 11.4211 17.7 11.1131C17.6 10.8051 17.4793 10.5091 17.338 10.2251C17.1967 9.94109 17.03 9.66609 16.838 9.40009C16.646 9.13409 16.4333 8.88409 16.2 8.65009C15.8667 8.86675 15.5167 9.02942 15.15 9.13809C14.7833 9.24675 14.4083 9.30076 14.025 9.30009C12.9917 9.30009 12.096 8.95842 11.338 8.27509C10.58 7.59175 10.1423 6.75009 10.025 5.75009C8.725 6.85009 7.729 8.02109 7.037 9.26309C6.345 10.5051 5.99933 11.7508 6 13.0001C6 14.3668 6.40433 15.5751 7.213 16.6251C8.02167 17.6751 9.05067 18.3834 10.3 18.7501C10.5667 18.8334 10.7667 18.9961 10.9 19.2381C11.0333 19.4801 11.0583 19.7341 10.975 20.0001C10.8917 20.2661 10.729 20.4661 10.487 20.6001C10.245 20.7341 9.991 20.7591 9.725 20.6751C8.875 20.4251 8.08733 20.0461 7.362 19.5381C6.63667 19.0301 6.00767 18.4008 5.475 17.6501C5.00833 17.0001 4.646 16.2794 4.388 15.4881C4.13 14.6968 4.00067 13.8674 4 13.0001Z" fill="#B6D22F"/>
+</svg>
+          </span>
+          <span>{{ section.settings.badge_3_text }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    </div>
+    {%- comment %} CTA Button {% endcomment -%}
+    {% if section.settings.button_label != blank %}
+      <a
+        href="{{ section.settings.button_link | default: '#' }}"
+        class="risk-banner__btn"
+      >
+        {{ section.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .risk-banner {
+    position: relative;
+    width: 100%;
+    height: var(--section-height, 500px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .banner__content--inner{
+    display:flex;
+    flex-direction:column;
+    gap: 8px
+  }
+
+  .risk-banner__heading {
+   
+    letter-spacing: -0.5px;
+    color: #FFF;
+    font-family: Anton!important;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    text-transform: uppercase;
+    margin:0px;
+}
+
+  /* Background images */
+  .risk-banner__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .risk-banner__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .risk-banner__bg--mobile {
+    display: none;
+  }
+
+  .risk-banner__bg--desktop {
+    display: block;
+  }
+
+  @media (max-width: 749px) {
+    .risk-banner__bg--desktop {
+      display: none;
+    }
+    .risk-banner__bg--mobile {
+      display: block;
+    }
+  }
+
+  /* Dark overlay */
+  .risk-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+  }
+
+  /* Center divider */
+  .risk-banner__divider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 100%;
+    background: #e07b2a;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .risk-banner__divider-badge {
+    position: absolute;
+    right: -28px;
+    background: #e07b2a;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  /* Content */
+  
+  .risk-banner__content {
+    position: relative;
+    z-index: 3;
+    max-width: 860px;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    height: 100%;
+}
+
+ 
+  .risk-banner__subheading {
+  color: #FFF;
+text-align: center;
+font-family: Rubik;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 28px; /* 155.556% */
+margin:0px;
+  }
+
+  /* Trust badges row */
+  .risk-banner__badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 0;
+    margin: 4px 0;
+  }
+
+
+
+  .risk-banner__badge {
+    color: #FFF;
+    text-align: center;
+    font-family: Rubik;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0px 21px;
+}
+
+  .risk-banner__badge-icon {
+    color: #c8e63c;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .risk-banner__badge-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+}
+
+  /* CTA Button */
+.risk-banner__btn {
+    display: inline-block;
+    background: #c8e63c;
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 48px;
+    border-radius: 50px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: flex;
+    width: 184px;
+    height: 56px;
+    padding: 16px 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: #B6D22F;
+    color: var(--Black, #080808);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+}
+
+  .risk-banner__btn:hover {
+    background: #d4f040;
+    transform: translateY(-1px);
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 749px) {
+   h2.risk-banner__heading {
+    color: #FFF;
+    text-align: center;
+    font-family: Anton;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 44px;
+    text-transform: uppercase;
+}
+.risk-banner__badge {
+    padding: 0;
+    color: #FFF;
+    text-align: center;
+    font-family: Rubik;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}
+.risk-banner__content {
+    position: relative;
+    z-index: 3;
+    max-width: 860px;
+    padding: 30px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    height: 100%;
+    padding-top:16px;
+}
+
+.risk-banner__badge-sep{
+    display:none;
+}
+  .risk-banner {
+   height:646px;
+  }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer Banner",
+  "tag": "section",
+  "class": "risk-free-banner-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "TRY GRILLBOT FOR 60 DAYS WITH ZERO RISK."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "If you're not completely satisfied, return it — no questions asked."
+    },
+    {
+      "type": "header",
+      "content": "Background Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Background Image (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image (Mobile)",
+      "info": "If left empty, the desktop image will be used on mobile."
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_text",
+      "label": "Badge 1 Text",
+      "default": "60-Day Risk-Free Trial"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_text",
+      "label": "Badge 2 Text",
+      "default": "Free Shipping on Orders $X+"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_text",
+      "label": "Badge 3 Text",
+      "default": "Backed by a 1-Year Warranty"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "text",
+      "id": "divider_number",
+      "label": "Divider Badge Number",
+      "default": "806",
+      "info": "The number shown on the orange center divider line."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height",
+      "min": 400,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    }
+  ],
+  "presets": [
+    {
+      "name": "footer Banner"
+    }
+  ]
+}
+{% endschema %}

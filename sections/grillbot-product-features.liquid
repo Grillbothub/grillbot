@@ -1,0 +1,469 @@
+{%- comment -%}
+  Animated section (sticky media + sticky content).
+  Converted to a Shopify section with fully dynamic blocks.
+{%- endcomment -%}
+
+<div class="animated-section" aria-label="{{ section.settings.aria_label | default: section.settings.heading | default: 'Animated section' | escape }}">
+    <div class="container">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="animated-section__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+  
+      <div class="animated-section__rows">
+        {%- assign grillbot_features = blank -%}
+        {%- if product != blank -%}
+          {%- assign grillbot_features = product.metafields.custom.grillbot_product_features.value -%}
+        {%- endif -%}
+  
+        {%- if grillbot_features != blank -%}
+          {%- for item in grillbot_features -%}
+            {%- assign media = item.media.value
+              | default: item.media
+              | default: item.grillbot_product_media.value
+              | default: item.grillbot_product_media
+            -%}
+            {%- assign media_image = media.preview_image | default: media -%}
+            {%- assign is_video = false -%}
+            {%- if media != blank -%}
+              {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                {%- assign is_video = true -%}
+              {%- elsif media.sources != blank -%}
+                {%- assign is_video = true -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- assign media_text = item.media_text.value
+              | default: item.media_text
+              | default: item.grillbot_product_media_text
+            -%}
+            {%- assign feature_title = item.title.value
+              | default: item.title
+              | default: item.grillbot_product_feature_title
+            -%}
+            {%- assign feature_content_val = item.content.value
+              | default: item.content
+              | default: item.grillbot_product_features_content.value
+              | default: item.grillbot_product_features_content
+            -%}
+  
+            <div
+              class="animated-section__row{% if section.settings.image_side == 'right' %} is-image-right{% else %} is-image-left{% endif %}"
+              style="--as-gap: {{ section.settings.gap_desktop }}px; --as-radius: {{ section.settings.radius_desktop }}px; --as-sticky-top: {{ section.settings.sticky_top_desktop }}px; --as-media-height: {{ section.settings.media_height_desktop | default: 580 | plus: 0 }}px; --as-media-height-mobile: {{ section.settings.media_height_mobile | default: 300 | plus: 0 }}px; --as-sticky-height: {{ section.settings.sticky_height_desktop | default: 350 | plus: 0 }}px; --as-kicker-color: {{ section.settings.kicker_color | default: '#A6C328' }}; --as-overlay-color: {{ section.settings.overlay_text_color | default: '#FFFFFF' }};"
+            >
+              <div class="animated-section__col animated-section__col--media">
+                <div class="animated-section__media">
+                  {%- if media != blank -%}
+                    {%- if is_video -%}
+                      {{- media | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'animated-section__img' -}}
+                    {%- else -%}
+                      <img
+                        src="{{ media_image | image_url: width: 2000 }}"
+                        alt="{{ media_text | escape }}"
+                        width="{{ media_image.width | default: 2000 }}"
+                        height="{{ media_image.height | default: 2000 }}"
+                        loading="lazy"
+                        decoding="async"
+                        class="animated-section__img"
+                      >
+                    {%- endif -%}
+                  {%- endif -%}
+  
+                  {%- if media_text != blank -%}
+                    <div class="animated-section__overlay">
+                      <div class="animated-section__overlay-text">{{ media_text | escape }}</div>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+  
+              <div class="animated-section__col animated-section__col--content">
+                <div class="animated-section__sticky">
+                  <div class="animated-section__content">
+                    {%- if feature_title != blank -%}
+                      <div class="animated-section__title">{{ feature_title | escape }}</div>
+                    {%- endif -%}
+                    {%- if feature_content_val != blank -%}
+                      <div class="animated-section__text rte">
+                        {%- if item.content != blank and item.content.value != blank -%}
+                          {{ item.content | metafield_tag }}
+                        {%- elsif item.grillbot_product_features_content != blank and item.grillbot_product_features_content.value != blank -%}
+                          {{ item.grillbot_product_features_content | metafield_tag }}
+                        {%- else -%}
+                          {{ feature_content_val }}
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  
+    {%- style -%}
+      #shopify-section-{{ section.id }} .animated-section {
+        background: {{ section.settings.bg_color }};
+        color: {{ section.settings.text_color }};
+        padding-top: {{ section.settings.padding_top_desktop }}px;
+        padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      }
+  
+  
+      @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .animated-section {
+          padding-top: {{ section.settings.padding_top_mobile }}px;
+          padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+        }
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__rows {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__row {
+        display: flex;
+        gap: var(--as-gap);
+        align-items: stretch;
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__row.is-image-right {
+        flex-direction: row-reverse;
+      }
+  
+      @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .animated-section__row,
+        #shopify-section-{{ section.id }} .animated-section__row.is-image-right {
+          flex-direction: column;
+          gap: {{ section.settings.gap_mobile }}px;
+        }
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__col {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+  
+      /* Media */
+      #shopify-section-{{ section.id }} .animated-section__media {
+        position: relative;
+        height: var(--as-media-height);
+        border-radius: var(--as-radius);
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.06);
+      }
+  
+      @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .animated-section__media {
+          height: var(--as-media-height-mobile);
+          border-radius: {{ section.settings.radius_mobile }}px;
+        }
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 24px;
+        pointer-events: none;
+      }
+  
+      /* Text on image (desktop) — per your spec */
+      #shopify-section-{{ section.id }} .animated-section__overlay-text {
+        color: var(--as-overlay-color);
+        font-size: 40px;
+        font-weight: 400;
+        line-height: 60px;
+        text-transform: uppercase;
+        font-family: Anton;
+      }
+  
+      /* Text on image (mobile) — per your spec */
+      @media (max-width: 991px) {
+        #shopify-section-{{ section.id }} .animated-section__overlay-text {
+          font-size: 24px;
+          font-weight: 400;
+          line-height: 24px;
+        }
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__placeholder {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed rgba(var(--color-foreground), 0.35);
+        color: rgba(var(--color-foreground), 0.65);
+        background: rgba(var(--color-background), 0.35);
+      }
+  
+      /* Sticky content card */
+      #shopify-section-{{ section.id }} .animated-section__sticky {
+        height: var(--as-sticky-height);
+        max-height: 100%;
+        border-radius: var(--as-radius);
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        padding: 16px 24px;
+        box-sizing: border-box;
+      }
+  
+      @media (min-width: 768px) {
+        #shopify-section-{{ section.id }} .animated-section__sticky {
+          position: sticky;
+          top: var(--as-sticky-top);
+        }
+      }
+  
+      @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .animated-section__sticky {
+          position: relative;
+          top: auto;
+          height: auto;
+          padding: 20px;
+          border-radius: {{ section.settings.radius_mobile }}px;
+        }
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__heading {
+        margin: 0 0 24px;
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__title {
+        margin: 0 0 24px;
+        color: var(--as-kicker-color);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 22px;
+      }
+  
+      #shopify-section-{{ section.id }} .animated-section__text :is(p, ul, ol) {
+        margin: 0;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px;
+      }
+  
+      @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .animated-section__text :is(p, ul, ol) {
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 26px;
+        }
+        #shopify-section-{{ section.id }} .animated-section__title {
+          margin: 0 0 16px;
+        }
+      }
+    {%- endstyle -%}
+  </div>
+  
+  {% schema %}
+  {
+    "name": "Grillbot Product Features",
+    "tag": "section",
+    "class": "section-animated-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "aria_label",
+        "label": "ARIA label",
+        "default": "Animated section"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "#F2F2F2"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#080808"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "image_side",
+        "label": "Image side",
+        "default": "left",
+        "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "right", "label": "Right" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "gap_desktop",
+        "min": 8,
+        "max": 80,
+        "step": 2,
+        "unit": "px",
+        "label": "Gap (desktop)",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "gap_mobile",
+        "min": 8,
+        "max": 48,
+        "step": 2,
+        "unit": "px",
+        "label": "Gap (mobile)",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "radius_desktop",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Card radius (desktop)",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "radius_mobile",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Card radius (mobile)",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "sticky_top_desktop",
+        "min": 0,
+        "max": 240,
+        "step": 4,
+        "unit": "px",
+        "label": "Sticky top offset (desktop)",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Row styles"
+      },
+      {
+        "type": "color",
+        "id": "overlay_text_color",
+        "label": "Text on image color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "kicker_color",
+        "label": "Kicker color",
+        "default": "#A6C328"
+      },
+      {
+        "type": "range",
+        "id": "media_height_desktop",
+        "min": 240,
+        "max": 900,
+        "step": 10,
+        "unit": "px",
+        "label": "Media height (desktop)",
+        "default": 580
+      },
+      {
+        "type": "range",
+        "id": "media_height_mobile",
+        "min": 160,
+        "max": 520,
+        "step": 10,
+        "unit": "px",
+        "label": "Media height (mobile)",
+        "default": 300
+      },
+      {
+        "type": "range",
+        "id": "sticky_height_desktop",
+        "min": 200,
+        "max": 700,
+        "step": 10,
+        "unit": "px",
+        "label": "Content height (desktop)",
+        "default": 350
+      },
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+        "type": "range",
+        "id": "padding_top_desktop",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "label": "Padding top (desktop)",
+        "default": 92
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom_desktop",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "label": "Padding bottom (desktop)",
+        "default": 92
+      },
+      {
+        "type": "range",
+        "id": "padding_top_mobile",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "label": "Padding top (mobile)",
+        "default": 48
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom_mobile",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "unit": "px",
+        "label": "Padding bottom (mobile)",
+        "default": 48
+      }
+    ],
+    "presets": [
+      {
+        "name": "Grillbot Product Features"
+      }
+    ]
+  }
+  {% endschema %}

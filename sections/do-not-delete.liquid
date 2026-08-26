@@ -1,0 +1,57 @@
+{% if section.settings.mobile_image == blank %}{% assign show_always = true %}{% endif %}
+
+<section class="hero-banner-section">
+  <div class="slideshow__slide-list">
+    <div class="hero-wrapper">
+      <div class="image-banner-wrapper">
+        <div class="image-with-upper-text">
+          {% if section.settings.image != blank %}
+          <div class="desktop-only{% if show_always %} show_mobile{% endif %}">
+            <img src="{{ section.settings.image | img_url: '' }}"/>
+          </div>
+          {% endif %}
+          {% if section.settings.mobile_image != blank %}
+          <div class="mobile-only">
+            <img src="{{ section.settings.mobile_image | img_url: '' }}"/>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="banner-text-wrapper">
+        <div class="banner__text-wrapper">
+          <div class=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Banner Image",
+    "class": "shopify-banner--hero",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile Image"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Banner Image"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

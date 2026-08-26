@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+<rect x="0.5" y="0.5" width="31" height="31" rx="15.5" fill="black" fill-opacity="0.5"/>
+<rect x="0.5" y="0.5" width="31" height="31" rx="15.5" stroke="#B6D22F"/>
+<path d="M8 15L8 17L20 17L20 19L22 19L22 17L24 17L24 15L22 15L22 13L20 13L20 15L8 15ZM18 11L20 11L20 13L18 13L18 11ZM18 11L16 11L16 9L18 9L18 11ZM18 21L20 21L20 19L18 19L18 21ZM18 21L16 21L16 23L18 23L18 21Z" fill="#B6D22F"/>
+</svg>

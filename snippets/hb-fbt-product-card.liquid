@@ -1,0 +1,92 @@
+{%- comment -%}
+  Single FBT product card slide. Accepts: product (p)
+{%- endcomment -%}
+{%- if product != blank and product.title != 'Route Package Protection' -%}
+    {%- assign p = product -%}
+    {%- assign fbt_feature_mf = p.metafields.custom.frequently_bought_together_feature_image.value
+      | default: p.metafields.custom.frequently_bought_together_feature_image
+    -%}
+    {%- assign fbt_image = blank -%}
+    {%- if fbt_feature_mf != blank -%}
+      {%- assign fbt_image = fbt_feature_mf -%}
+      {%- if fbt_feature_mf.preview_image != blank -%}
+        {%- assign fbt_image = fbt_feature_mf.preview_image -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if fbt_image == blank -%}
+      {%- assign featured = p.featured_media -%}
+      {%- assign fbt_image = p.featured_image -%}
+      {%- if fbt_image == blank and featured != blank and featured.preview_image != blank -%}
+        {%- assign fbt_image = featured.preview_image -%}
+      {%- endif -%}
+    {%- endif -%}
+  
+    <div class="swiper-slide">
+      {%- assign fbt_line_raw = p.metafields.custom.card_subtitle.value
+        | default: p.metafields.custom.card_subtitle
+        | default: p.metafields.custom.short_description.value
+        | default: p.metafields.custom.short_description
+      -%}
+      {%- if fbt_line_raw == blank -%}
+        {%- assign fbt_line_raw = p.description -%}
+      {%- endif -%}
+      {%- assign fbt_line = fbt_line_raw | strip_html | strip_newlines | strip -%}
+  
+      {%- assign fbt_compare = p.compare_at_price -%}
+      {%- assign fbt_price = p.price -%}
+      {%- assign fbt_discount = blank -%}
+      {%- if fbt_compare != blank and fbt_compare > fbt_price -%}
+        {%- assign fbt_discount = fbt_compare | minus: fbt_price | times: 100.0 | divided_by: fbt_compare | round -%}
+      {%- endif -%}
+  
+      <div class="hb-fbt-card">
+        <div class="hb-fbt-card__media">
+          {%- if p.tags contains 'Bestseller' or p.tags contains 'bestseller' -%}
+            <span class="hb-fbt-card__badge-top">Bestseller</span>
+          {%- endif -%}
+  
+          <a class="hb-fbt-card__link" href="{{ p.url }}" data-instant>
+            <div class="hb-product-media">
+              {%- if fbt_image != blank -%}
+                {{ fbt_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '200,300,400,500,600,700', sizes: '323px', alt: p.title }}
+              {%- endif -%}
+            </div>
+          </a>
+        </div>
+  
+        <div class="hb-fbt-card__content">
+          <a class="hb-fbt-card__link" href="{{ p.url }}" data-instant>
+            <h3 class="hb-fbt-card__title">{{ p.title }}</h3>
+          </a>
+          {%- if fbt_line != blank -%}
+            <div class="hb-fbt-card__desc">{{ fbt_line }}</div>
+          {%- endif -%}
+        </div>
+  
+        <div class="hb-fbt-card__prices">
+          {%- if fbt_compare != blank and fbt_compare > fbt_price -%}
+            <span class="hb-fbt-card__compare">
+              {%- if settings.currency_code_enabled -%}
+                {{- fbt_compare | money_with_currency -}}
+              {%- else -%}
+                {{- fbt_compare | money -}}
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+  
+          {%- if fbt_discount != blank and fbt_discount > 0 -%}
+            <span class="hb-fbt-card__discount">-{{ fbt_discount }}%</span>
+          {%- endif -%}
+  
+          <span class="hb-fbt-card__price">
+            {%- if settings.currency_code_enabled -%}
+              {{- fbt_price | money_with_currency -}}
+            {%- else -%}
+              {{- fbt_price | money -}}
+            {%- endif -%}
+          </span>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+  

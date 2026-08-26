@@ -1,0 +1,541 @@
+
+<section class="rv" style="
+  --rv-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+  --rv-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  --rv-pt-mobile:  {{ section.settings.padding_top_mobile }}px;
+  --rv-pb-mobile:  {{ section.settings.padding_bottom_mobile }}px;
+" id="rv-{{ section.id }}">
+
+  <div class="rv__wrapper">
+
+    <!-- ── Heading ── -->
+    <div class="rv__header">
+      <h2 class="rv__title">
+        {% if section.settings.heading_highlight_1 != blank %}
+          <span class="rv__hl">{{ section.settings.heading_highlight_1 }}</span>
+        {% endif %}
+        {{ section.settings.heading_middle }}
+        {% if section.settings.heading_highlight_2 != blank %}
+          <span class="rv__hl">{{ section.settings.heading_highlight_2 }}</span>
+        {% endif %}
+        {{ section.settings.heading_end }}
+      </h2>
+      {% if section.settings.subheading != blank %}
+        <p class="rv__sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <!-- ── Swiper ── -->
+    <div class="swiper rv__swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          <div class="swiper-slide rv__slide" {{ block.shopify_attributes }}>
+            <div class="rv__card">
+
+              <!-- Optional image -->
+              {% if block.settings.image != blank %}
+                <div class="rv__card-img">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 300 }}"
+                    alt="{{ block.settings.author }}"
+                    loading="lazy"
+                    width="300"
+                    height="300"
+                  >
+                </div>
+              {% endif %}
+
+              <!-- Text side -->
+              <div class="rv__card-body">
+                <!-- Stars -->
+                <div class="rv__stars">
+                  
+                  {% for i in (1..5) %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+  <path d="M6.56829 11.0896C6.79074 10.9553 7.06926 10.9553 7.29171 11.0896L9.79244 12.5989C10.3226 12.9188 10.9765 12.4436 10.8359 11.8406L10.1722 8.9958C10.1132 8.74275 10.1992 8.47782 10.3956 8.30769L12.606 6.39276C13.074 5.98732 12.8239 5.21854 12.2069 5.16619L9.29794 4.9194C9.03923 4.89745 8.81393 4.73411 8.71261 4.49506L7.5745 1.80978C7.33329 1.24066 6.52671 1.24066 6.2855 1.80978L5.14739 4.49506C5.04608 4.73411 4.82077 4.89745 4.56207 4.9194L1.65314 5.16619C1.03614 5.21854 0.785958 5.98732 1.25398 6.39276L3.46444 8.30769C3.66083 8.47782 3.74682 8.74275 3.68779 8.99579L3.02415 11.8406C2.88348 12.4436 3.53744 12.9188 4.06756 12.5989L6.56829 11.0896Z" fill="#FFAF2E"/>
+</svg>
+                  {% endfor %}
+                </div>
+
+                <!-- Quote -->
+                {% if block.settings.quote != blank %}
+                  <p class="rv__quote">"{{ block.settings.quote }}"</p>
+                {% endif %}
+
+                <!-- Author -->
+                {% if block.settings.author != blank %}
+                  <p class="rv__author">— {{ block.settings.author }}</p>
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ── Navigation Arrows ── -->
+    <div class="rv__nav">
+      <button class="rv__arrow rv__arrow--prev" aria-label="Previous review">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M20 13L20 11L8 11L8 9L6 9L6 11L4 11L4 13L6 13L6 15L8 15L8 13L20 13ZM10 17L8 17L8 15L10 15L10 17ZM10 17L12 17L12 19L10 19L10 17ZM10 7L8 7L8 9L10 9L10 7ZM10 7L12 7L12 5L10 5L10 7Z" fill="#B6D22F"/>
+</svg>
+      </button>
+      <button class="rv__arrow rv__arrow--next" aria-label="Next review">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M4 11L4 13L16 13L16 15L18 15L18 13L20 13L20 11L18 11L18 9L16 9L16 11L4 11ZM14 7L16 7L16 9L14 9L14 7ZM14 7L12 7L12 5L14 5L14 7ZM14 17L16 17L16 15L14 15L14 17ZM14 17L12 17L12 19L14 19L14 17Z" fill="#B6D22F"/>
+</svg>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Swiper CSS -->
+
+<style>
+  /* ─────────────────────────────────────────
+     Section
+  ───────────────────────────────────────── */
+  .rv {
+    background-color: #080808;
+    padding-top: var(--rv-pt-desktop);
+    padding-bottom: var(--rv-pb-desktop);
+    overflow: hidden;
+  }
+
+  .rv__wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ─────────────────────────────────────────
+     Header
+  ───────────────────────────────────────── */
+  .rv__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .rv__title {
+
+    color: #FFF;
+    font-family: Anton!important;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    margin-bottom:8px;
+}
+
+  .rv__hl {
+    color: #B6D22f;
+  }
+
+  .rv__sub {
+   
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+  /* ─────────────────────────────────────────
+     Swiper overrides
+  ───────────────────────────────────────── */
+  .rv__swiper {
+    overflow: visible;
+    padding: 12px 4px 12px;
+    padding-top:0px;
+  }
+
+  /* ─────────────────────────────────────────
+     Card
+  ───────────────────────────────────────── */
+.rv__card {
+    background-color: #f5f5f5;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 200px;
+    height: 100%;
+    border-radius: 16px;
+    background: #F3F3F3;
+    padding: 32px;
+    gap: 31px;
+}
+
+  /* Image pane */
+.rv__card-img {
+    flex-shrink: 0;
+    width: 206px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+  .rv__card-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Text pane */
+  .rv__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 31px;
+    justify-content: center;
+  }
+
+  /* Stars */
+  .rv__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .rv__star {
+    font-size: 17px;
+    color: #cccccc;
+    line-height: 1;
+  }
+
+  .rv__star--on {
+    color: #AAFF00;
+  }
+
+  /* Quote */
+  .rv__quote {
+    font-size: 14px;
+    color: #222222;
+    margin: 0;
+    line-height: 1.65;
+    font-style: italic;
+    color: var(--Gray, #525252);
+    font-family: Rubik;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+  /* Author */
+ .rv__author {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333333;
+    margin: 0;
+    color: var(--Black, #080808);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: left;
+}
+  /* ─────────────────────────────────────────
+     Navigation arrows
+  ───────────────────────────────────────── */
+  .rv__nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .rv__arrow {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid #B6D22F;
+    background: transparent;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .rv__arrow:hover {
+    border-color: #AAFF00;
+    color: #AAFF00;
+  }
+
+  .rv__arrow:disabled,
+  .rv__arrow.swiper-button-disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  /* ─────────────────────────────────────────
+     Mobile
+  ───────────────────────────────────────── */
+  @media screen and (max-width: 768px) {
+    .rv {
+      padding-top: var(--rv-pt-mobile);
+      padding-bottom: var(--rv-pb-mobile);
+    }
+
+    .rv__wrapper {
+      padding: 0 16px;
+    }
+
+
+
+    .rv__card-img {
+      width: 100px;
+    }
+
+    h2.rv__title {
+    font-size: 36px;
+    line-height: 44px;
+}
+.rv__card {
+    background-color: #f5f5f5;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 200px;
+    height: 100%;
+    border-radius: 16px;
+    background: #F3F3F3;
+    padding: 16px;
+    gap: 12px;
+}
+.rv__quote {
+    font-size: 14px;
+    color: #222222;
+    margin: 0;
+    line-height: 1.65;
+    font-style: italic;
+    color: var(--Gray, #525252);
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+.rv__author {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333333;
+    margin: 0;
+    color: var(--Black, #080808);
+    text-align: center;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: left;
+}
+.rv__card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+}
+
+  }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('#rv-{{ section.id }} .rv__swiper', {
+      slidesPerView: 1.05,
+      spaceBetween: 16,
+      centeredSlides: true,
+      loop: true,
+      navigation: {
+        nextEl: '#rv-{{ section.id }} .rv__arrow--next',
+        prevEl: '#rv-{{ section.id }} .rv__arrow--prev',
+        disabledClass: 'swiper-button-disabled',
+      },
+      breakpoints: {
+        600: {
+          slidesPerView: 2.1,
+          spaceBetween: 16,
+        },
+        900: {
+          slidesPerView: 2.24,
+          spaceBetween: 16,
+          centeredSlides: true,
+        }
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Reviews Slider",
+  "tag": "section",
+  "class": "reviews-slider-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_highlight_1",
+      "label": "Heading — First Highlighted Word",
+      "info": "Displays in lime green",
+      "default": "REAL"
+    },
+    {
+      "type": "text",
+      "id": "heading_middle",
+      "label": "Heading — Middle Text",
+      "default": "REVIEWS FROM"
+    },
+    {
+      "type": "text",
+      "id": "heading_highlight_2",
+      "label": "Heading — Second Highlighted Word",
+      "info": "Displays in lime green",
+      "default": "REAL"
+    },
+    {
+      "type": "text",
+      "id": "heading_end",
+      "label": "Heading — End Text",
+      "default": "GRILL OWNERS"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See why thousands of grill lovers are switching to Grillbot."
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card Image",
+          "info": "Optional — shows on the left side of the card"
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review Quote",
+          "default": "This product is amazing and I use it every single day."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Reviewer Name",
+          "default": "— Happy Customer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Slider",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "quote": "Perfect gift for anyone who loves grilling. Looks cool and genuinely useful.",
+            "author": "Alex & Sarah"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "quote": "This thing saves me so much time after every BBQ. I just press the button and relax while it does the work.",
+            "author": "Michael, 34"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "quote": "Super easy to use and satisfying to watch. Everyone asks about it when we have people over.",
+            "author": "Daniel, 29"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20
+}
+{% endschema %}

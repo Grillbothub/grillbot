@@ -1,0 +1,16 @@
+{% render 'blog-post-comments', show_gravatar: section.settings.show_gravatar %}
+
+{% schema %}
+{
+  "name": "Blog post comments",
+  "class": "shopify-section--blog-post-comments",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_gravatar",
+      "label": "Show comment Gravatar",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

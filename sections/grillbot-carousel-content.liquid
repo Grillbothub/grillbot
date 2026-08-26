@@ -1,0 +1,1200 @@
+{%- liquid
+  assign sid = section.id
+-%}
+
+
+<div
+  class="collection-carousel-section"
+  tabindex="-1"
+  aria-label="{{ section.settings.aria_label | default: 'Collection carousel' | escape }}"
+>
+{%- if request.page_type == 'product' and product != blank -%}
+  <div class="container" data-cc-root>
+    <div class="cc-pin" data-cc-pin>
+      <div class="cc-pin__inner" data-cc-pin-inner>
+        <div class="cc-layout">
+      <div class="cc-static" data-cc-static>
+        {%- assign carousel_heading_mo = blank -%}
+        {%- if product != blank -%}
+          {%- assign carousel_heading_mo = product.metafields.custom.grillbots_carousel_content_heading.value
+            | default: product.metafields.custom.grillbots_carousel_content_heading
+            | default: product.metafields.custom.grillbots_carousel_content.value
+            | default: product.metafields.custom.grillbots_carousel_content
+          -%}
+        {%- endif -%}
+
+        {%- if carousel_heading_mo != blank -%}
+          {%- assign cc_heading = carousel_heading_mo.heading.value | default: carousel_heading_mo.heading | default: carousel_heading_mo.grillbots_carousel_title -%}
+          {%- assign cc_desc = carousel_heading_mo.description | default: carousel_heading_mo.grillbots_carousel_description -%}
+          {%- assign cc_btn = carousel_heading_mo.button_link | default: carousel_heading_mo.grillbots_carousel_button_link -%}
+
+          {%- if cc_heading != blank -%}
+            <h2 class="cc-heading">{{ cc_heading | escape }}</h2>
+          {%- endif -%}
+
+          {%- if cc_desc != blank -%}
+            <div class="cc-desc rte">
+              {%- if cc_desc.value != blank -%}
+                {{ cc_desc | metafield_tag }}
+              {%- else -%}
+                {{ cc_desc }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- assign button_href = blank -%}
+          {%- assign button_label = blank -%}
+          {%- if cc_btn != blank -%}
+            {%- assign button_href = cc_btn.url | default: cc_btn.value.url | default: cc_btn.value | default: cc_btn -%}
+            {%- assign button_label = cc_btn.text | default: cc_btn.title | default: cc_btn.value.text | default: cc_btn.value.title -%}
+          {%- endif -%}
+
+          {%- if button_label != blank and button_href != blank -%}
+            <a class="cc-btn" href="{{ button_href }}">
+              {{ button_label | escape }}
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <div class="cc-slider">
+        {%- assign slide_content_list = blank -%}
+        {%- assign slide_content_count = 0 -%}
+        {%- if product != blank -%}
+          {%- assign slide_content_metafield = product.metafields.custom.grillbots_carousel_slide_content
+            | default: product.metafields.custom['grillbots_carousel_slide_content']
+            | default: product.metafields.custom.grillbots_slide_content
+            | default: product.metafields.custom['grillbots_slide_content']
+          -%}
+          {%- assign slide_content_list = slide_content_metafield.value -%}
+        {%- endif -%}
+        {%- if slide_content_list != blank -%}
+          {%- assign slide_content_count = slide_content_list.size | default: 0 -%}
+        {%- endif -%}
+        {%- if request.design_mode -%}
+          <!-- cc-debug-slides: product={{ product.handle | default: 'nil' }}, mf={{ slide_content_metafield | default: 'nil' }}, count={{ slide_content_count }} -->
+        {%- endif -%}
+
+        <div class="cc-swiper swiper" data-cc-swiper aria-label="{{ section.settings.list_aria_label | default: 'Carousel' | escape }}">
+          <div class="swiper-wrapper">
+            {%- assign cc_default_ratio = section.settings.image_ratio | default: 68 -%}
+
+            {%- if slide_content_count > 0 -%}
+              {%- assign cc_slide_index = 0 -%}
+              {%- for slide_item in slide_content_list -%}
+                {%- assign overlay_heading = blank -%}
+                {%- assign bottom_caption_html = blank -%}
+                {%- assign slide_media = blank -%}
+                {%- assign slide_file_url = blank -%}
+                {%- assign use_video_media = false -%}
+
+                {%- assign slide_obj = slide_item.value | default: slide_item -%}
+
+                {%- assign overlay_field = slide_obj.heading | default: slide_obj.grillbots_slide_overlay_heading | default: slide_obj['grillbots-slide-overlay-heading'] -%}
+                {%- assign overlay_heading = overlay_field.value | default: overlay_field -%}
+
+                {%- assign slide_desc_field = slide_obj.description | default: slide_obj.grillbots_slide_description | default: slide_obj['grillbots-slide-description'] -%}
+                {%- if slide_desc_field != blank -%}
+                  {%- if slide_desc_field.value != blank -%}
+                    {%- assign bottom_caption_html = slide_desc_field | metafield_tag -%}
+                  {%- else -%}
+                    {%- assign bottom_caption_html = slide_desc_field -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- assign slide_media_field = slide_obj.media | default: slide_obj.grillbots_slide_media | default: slide_obj['grillbots-slide-media'] -%}
+                {%- assign slide_media_ref = slide_media_field.value | default: slide_media_field -%}
+                {%- if slide_media_ref != blank -%}
+                  {%- assign slide_media = slide_media_ref -%}
+                  {%- if slide_media_ref.preview_image != blank and slide_media_ref.media_type == blank -%}
+                    {%- assign slide_media = slide_media_ref.preview_image -%}
+                  {%- endif -%}
+                  {%- if slide_media_ref.url != blank -%}
+                    {%- assign slide_file_url = slide_media_ref.url -%}
+                  {%- elsif slide_media_ref != blank -%}
+                    {%- assign slide_file_url = slide_media_ref | file_url -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if request.design_mode -%}
+                  <!-- cc-debug-slide-{{ cc_slide_index | plus: 1 }}: has_item=true, item_class={{ slide_item.class | default: 'nil' }}, has_value={% if slide_item.value != blank %}true{% else %}false{% endif %}, has_media={% if slide_media != blank or slide_file_url != blank %}true{% else %}false{% endif %} -->
+                {%- endif -%}
+
+                {%- if slide_media != blank -%}
+                  {%- if slide_media.media_type == 'video' or slide_media.sources != blank -%}
+                    {%- assign use_video_media = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- assign use_video_file = false -%}
+                {%- if use_video_media == false and slide_file_url != blank -%}
+                  {%- assign _f = slide_file_url | downcase -%}
+                  {%- if _f contains '.mp4' or _f contains '.webm' or _f contains '.mov' -%}
+                    {%- assign use_video_file = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                <div class="cc-slide swiper-slide">
+                <div class="cc-media">
+                  <div class="cc-media-inner" style="--cc-ratio: {{ cc_default_ratio }}%;">
+                    {%- if slide_media != blank and use_video_media -%}
+                      {{
+                        slide_media
+                        | video_tag:
+                          autoplay: true,
+                          loop: true,
+                          muted: true,
+                          controls: false,
+                          playsinline: true,
+                          class: 'cc-img'
+                      }}
+                    {%- elsif slide_media != blank -%}
+                      <img
+                        src="{{ slide_media | image_url: width: 2000 }}"
+                        alt="{{ slide_media.alt | default: overlay_heading | escape }}"
+                        srcset="
+                          {{ slide_media | image_url: width: 540 }} 540w,
+                          {{ slide_media | image_url: width: 720 }} 720w,
+                          {{ slide_media | image_url: width: 900 }} 900w,
+                          {{ slide_media | image_url: width: 1200 }} 1200w,
+                          {{ slide_media | image_url: width: 1600 }} 1600w,
+                          {{ slide_media | image_url: width: 2000 }} 2000w
+                        "
+                        sizes="(min-width: 990px) 58vw, 92vw"
+                        width="{{ slide_media.width | default: 2000 }}"
+                        height="{{ slide_media.height | default: 1125 }}"
+                        loading="lazy"
+                        class="cc-img"
+                        style="object-position:{{ slide_media.presentation.focal_point | default: '50% 50%' }};"
+                      >
+                    {%- elsif slide_file_url != blank and use_video_file -%}
+                      <video class="cc-img" autoplay muted loop playsinline preload="metadata">
+                        <source src="{{ slide_file_url }}" type="video/mp4">
+                      </video>
+                    {%- elsif slide_file_url != blank -%}
+                      <img src="{{ slide_file_url }}" alt="{{ overlay_heading | escape }}" width="2000" height="1125" loading="lazy" class="cc-img">
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg cc-img' }}
+                    {%- endif -%}
+                  </div>
+
+                  {%- if overlay_heading != blank -%}
+                    <div class="cc-image-overlay">
+                      <p class="cc-image-overlay-title">{{ overlay_heading | escape }}</p>
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                {%- if bottom_caption_html != blank -%}
+                  <div class="cc-bottom-caption rte">{{ bottom_caption_html }}</div>
+                {%- endif -%}
+              </div>
+              {%- assign cc_slide_index = cc_slide_index | plus: 1 -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      {%- if section.settings.show_progress_bar -%}
+        <div class="cc-progress" aria-hidden="true">
+          <span class="cc-progress__fill" data-cc-progress></span>
+        </div>
+      {%- endif -%}
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+       {% liquid
+assign cc_heading = section.settings.cc_heading
+assign cc_desc = section.settings.cc_desc
+assign button_label = section.settings.button_label
+assign button_href = section.settings.button_href
+%}
+ <div class="container" data-cc-root>
+    <div class="cc-pin" data-cc-pin>
+      <div class="cc-pin__inner" data-cc-pin-inner>
+        <div class="cc-layout">
+ 
+
+<div class="cc-static" data-cc-static>
+{%- if cc_heading != blank -%}
+  <h2 class="cc-heading">{{ cc_heading | escape }}</h2>
+{%- endif -%}
+
+{%- if cc_desc != blank -%}
+  <div class="cc-desc rte">
+    {{ cc_desc }}
+  </div>
+{%- endif -%}
+
+{%- if button_label != blank and button_href != blank -%}
+  <a class="cc-btn" href="{{ button_href }}">
+    {{ button_label | escape }}
+  </a>
+{%- endif -%}
+</div>
+
+      {% liquid
+assign cc_default_ratio = section.settings.image_ratio | default: 68
+%}
+
+<div class="cc-slider">
+<div class="cc-swiper swiper" data-cc-swiper aria-label="{{ section.settings.list_aria_label | default: 'Carousel' | escape }}">
+  <div class="swiper-wrapper">
+
+    {%- for block in section.blocks -%}
+      {% liquid
+        assign overlay_heading   = block.settings.overlay_heading
+        assign bottom_caption_html = block.settings.slide_description
+        assign slide_image       = block.settings.slide_image
+        assign slide_video       = block.settings.slide_video
+
+        assign use_video_media = false
+        assign use_video_file  = false
+
+        if slide_video != blank
+          assign use_video_media = true
+        endif
+      %}
+
+      <div class="cc-slide swiper-slide" {{ block.shopify_attributes }}>
+        <div class="cc-media">
+          <div class="cc-media-inner" style="--cc-ratio: {{ cc_default_ratio }}%;">
+
+            {%- if use_video_media -%}
+              {{
+                slide_video
+                | video_tag:
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  class: 'cc-img'
+              }}
+
+            {%- elsif slide_image != blank -%}
+              <img
+                src="{{ slide_image | image_url: width: 2000 }}"
+                alt="{{ slide_image.alt | default: overlay_heading | escape }}"
+                srcset="
+                  {{ slide_image | image_url: width: 540 }} 540w,
+                  {{ slide_image | image_url: width: 720 }} 720w,
+                  {{ slide_image | image_url: width: 900 }} 900w,
+                  {{ slide_image | image_url: width: 1200 }} 1200w,
+                  {{ slide_image | image_url: width: 1600 }} 1600w,
+                  {{ slide_image | image_url: width: 2000 }} 2000w
+                "
+                sizes="(min-width: 990px) 58vw, 92vw"
+                width="{{ slide_image.width | default: 2000 }}"
+                height="{{ slide_image.height | default: 1125 }}"
+                loading="lazy"
+                class="cc-img"
+                style="object-position: {{ slide_image.presentation.focal_point | default: '50% 50%' }};"
+              >
+
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg cc-img' }}
+            {%- endif -%}
+          </div>
+
+          {%- if overlay_heading != blank -%}
+            <div class="cc-image-overlay">
+              <p class="cc-image-overlay-title" style="color:#ffffff">{{ overlay_heading | escape }}</p>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if bottom_caption_html != blank -%}
+          <div class="cc-bottom-caption rte">{{ bottom_caption_html }}</div>
+        {%- endif -%}
+      </div>
+
+    {%- endfor -%}
+
+  </div>
+</div>
+</div>
+
+      {%- if section.settings.show_progress_bar -%}
+        <div class="cc-progress" aria-hidden="true">
+          <span class="cc-progress__fill" data-cc-progress></span>
+        </div>
+      {%- endif -%}
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+  {%- style -%}
+    .collection-carousel-section {
+      --cc-bg: {{ section.settings.bg_color }};
+      --cc-text: {{ section.settings.text_color }};
+      --cc-muted: {{ section.settings.muted_text_color }};
+      --cc-accent: {{ section.settings.accent_color }};
+      --cc-accent-track: {{ section.settings.accent_track_color }};
+      --cc-btn-bg: {{ section.settings.button_bg }};
+      --cc-btn-text: {{ section.settings.button_text }};
+      --cc-radius: {{ section.settings.card_radius }}px;
+      --cc-gap: {{ section.settings.gap }}px;
+      --cc-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      --cc-max-media-h: {{ section.settings.media_max_height }}px;
+    }
+
+    .collection-carousel-section {
+      background: var(--cc-bg);
+      color: var(--cc-text);
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: section.settings.padding_botavstom }}px;
+    }
+
+    /* Your requested hover/focus reset — scoped to this section */
+    .collection-carousel-section *,
+    .collection-carousel-section :focus,
+    .collection-carousel-section :focus-visible,
+    .collection-carousel-section :hover {
+      outline: 0;
+      scrollbar-width: thin;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .collection-carousel-section .cc__wrap {
+      max-width: {{ section.settings.max_width }}px;
+    }
+
+    /* Pinned scroll: inner stays fixed while user scrolls through slides */
+    .collection-carousel-section .cc-pin {
+      position: relative;
+    }
+    .collection-carousel-section .cc-pin__inner {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .collection-carousel-section .cc-layout {
+      display: grid;
+      grid-template-columns: 560px minmax(0, 1fr);
+      column-gap: var(--cc-gap);
+      row-gap: 24px;
+    }
+
+    .collection-carousel-section .cc-static {
+      width: 560px;
+      max-width: 560px;
+      padding: 16px 0;
+      transform-origin: left center;
+      isolation: isolate;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transition-property: transform, opacity;
+      transition-duration: 0.38s;
+      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-out;
+    }
+
+    .collection-carousel-section .cc-static:not(.cc-static-visible) {
+      transform: translate3d(-18px, 0, 0) scale3d(0.86, 0.86, 1);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .collection-carousel-section .cc-static.cc-static-visible {
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .collection-carousel-section .cc-heading {
+      margin: 0 0 16px;
+      font-family: Anton !important;
+      font-size: 52px;
+      font-weight: 400;
+      line-height: 60px;
+      text-transform: uppercase;
+      color: var(--cc-text);
+    }
+
+    .collection-carousel-section .cc-desc {
+      margin: 0 0 32px;
+      max-width: 520px;
+      color: var(--cc-muted);
+      font-size: 16px;
+      line-height: 26px;
+      font-weight: 400;
+    }
+
+    .collection-carousel-section .cc-desc :is(p, li) {
+      margin: 0;
+    }
+
+    .collection-carousel-section .cc-desc :is(p + p, ul + p, p + ul) {
+      margin-top: 13px;
+    }
+
+    .collection-carousel-section .cc-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 222px;
+      height: 48px;
+      padding: 10px;
+      gap: 14px;
+      border-radius: 100px;
+      background: #B6D22F;
+      color: #080808;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 700;
+      text-transform: capitalize;
+      text-decoration: none;
+    }
+
+    .collection-carousel-section .cc-slider {
+      width: 100%;
+      min-width: 0;
+      margin-left: 0;
+      margin-right: 0;
+      overflow: visible;
+    }
+
+    .collection-carousel-section .cc-swiper {
+      margin: 0;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    @media screen and (min-width: 990px) {
+      .shopify-section.hb-grillbot-collection-carousel-section,
+      .collection-carousel-section > .container,
+      .collection-carousel-section .cc-pin,
+      .collection-carousel-section .cc-pin__inner,
+      .collection-carousel-section .cc-layout {
+        overflow-x: visible;
+      }
+
+     
+      .collection-carousel-section {
+        --cc-slider-right-bleed: calc(
+          max(0px, (100vw - var(--container-max-width, 1350px)) * 0.5) + var(--container-gutter, 24px)
+        );
+      }
+
+      .collection-carousel-section .cc-slider {
+        /* width: calc(100% + var(--cc-slider-right-bleed)); */
+        margin-right: calc(-1 * var(--cc-slider-right-bleed));
+      }
+    }
+    .collection-carousel-section .cc-swiper .swiper-wrapper {
+      align-items: stretch;
+      /* overflow: hidden; */
+    }
+    .collection-carousel-section .cc-swiper .swiper-slide {
+      height: auto;
+    }
+
+    .collection-carousel-section .cc-slide {
+      padding: 0;
+    }
+
+    .collection-carousel-section .cc-media {
+      position: relative;
+      border-radius: var(--cc-radius);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .collection-carousel-section .cc-media-inner {
+      position: relative;
+      width: 100%;
+      height: var(--cc-max-media-h);
+      padding-bottom: 0;
+    }
+
+    .collection-carousel-section .cc-media-inner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, var(--cc-overlay-opacity));
+      pointer-events: none;
+    }
+
+    .collection-carousel-section .cc-img,
+    .collection-carousel-section .cc-media-inner svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+      will-change: transform;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .collection-carousel-section .cc-media:hover .cc-img {
+        transform: scale(1.05) rotate(-1deg);
+      }
+    }
+
+    .collection-carousel-section .cc-image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      pointer-events: none;
+      z-index: 2;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+    }
+
+    .collection-carousel-section .cc-image-overlay-title {
+      margin: 0;
+      padding: 0;
+      font-family: Anton;
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 44px;
+      text-transform: uppercase;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+    }
+
+    .collection-carousel-section .cc-bottom-caption {
+      margin: 16px 0 0;
+      text-align: center;
+      color: var(--cc-muted);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 38px;
+    }
+
+    .collection-carousel-section .cc-progress {
+      margin-top: 18px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--cc-accent-track);
+      overflow: hidden;
+      width: 100%;
+      grid-column: 1 / -1;
+    }
+
+    .collection-carousel-section .cc-progress__fill {
+      display: block;
+      height: 100%;
+      width: 100%;
+      transform-origin: left center;
+      transform: scaleX(0);
+      background: var(--cc-accent);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 989px) {
+      /* Mobile: stacked layout (no pin/sticky). */
+      .collection-carousel-section .cc-pin__inner {
+        position: relative;
+        top: auto;
+        height: auto;
+        display: block;
+      }
+      .collection-carousel-section .cc-pin {
+        height: auto !important;
+      }
+
+      .collection-carousel-section .cc-layout {
+        display: block;
+        grid-template-columns: 1fr;
+      }
+      .collection-carousel-section .cc-static,
+      .collection-carousel-section .cc-slider {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+      }
+
+      .collection-carousel-section .cc-static {
+        max-width: 100%;
+        width: 100%;
+        padding: 0 0 48px;
+      }
+
+      /* Mobile: remove desktop clip-path tricks */
+      .collection-carousel-section .cc-slider,
+      .collection-carousel-section .cc-swiper {
+        -webkit-clip-path: none;
+        clip-path: none;
+        overflow: hidden;
+        touch-action: pan-y pinch-zoom;
+      }
+
+      .collection-carousel-section .cc-swiper .swiper-wrapper {
+        will-change: transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .collection-carousel-section {
+        --cc-max-media-h: 176px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .collection-carousel-section .cc-desc{
+        margin: 0 0 16px;
+      }
+       .collection-carousel-section .container{
+        padding:0px 16px!Important;
+      }
+
+      .collection-carousel-section .cc-bottom-caption {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+
+      .collection-carousel-section .cc-image-overlay-title {
+        font-family: Anton;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 24px;
+        text-transform: uppercase;
+      }
+      .collection-carousel-section .cc-image-overlay{
+        padding: 8px;
+      }
+
+      .collection-carousel-section .cc-heading {
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 44px;
+      }
+
+      .collection-carousel-section .cc-btn {
+        width: 100%;
+      }
+
+      .collection-carousel-section .cc-static:not(.cc-static-visible) {
+  transform: none;
+  opacity: 1;
+  pointer-events: none;
+}  
+    }
+  {%- endstyle -%}
+
+  <script>
+    (() => {
+      const sectionId = {{ sid | json }};
+      const root = document.getElementById(`shopify-section-${sectionId}`);
+      if (!root) return;
+
+      let shopNavTimer = null;
+      const onShopBtnClick = (e) => {
+        const btn = e.target && e.target.closest && e.target.closest('a.cc-btn');
+        if (!btn || !root.contains(btn)) return;
+        if (e.defaultPrevented) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (typeof e.button === 'number' && e.button !== 0) return;
+
+        const href = btn.getAttribute('href');
+        if (!href || href === '#' || href.startsWith('javascript:')) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+
+        e.preventDefault();
+        if (shopNavTimer) window.clearTimeout(shopNavTimer);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        shopNavTimer = window.setTimeout(() => {
+          shopNavTimer = null;
+          window.location.assign(btn.href);
+        }, 380);
+      };
+
+      root.addEventListener('click', onShopBtnClick);
+      root.__ccShopBtnClickTeardown = () => {
+        root.removeEventListener('click', onShopBtnClick);
+        if (shopNavTimer) window.clearTimeout(shopNavTimer);
+        shopNavTimer = null;
+        root.__ccShopBtnClickTeardown = null;
+      };
+
+      const swiperEl = root.querySelector('[data-cc-swiper]');
+      const progress = root.querySelector('[data-cc-progress]');
+      const staticEl = root.querySelector('[data-cc-static]');
+      const mqSmall = window.matchMedia('(max-width: 989px)');
+      const isSmallViewport = () => mqSmall.matches;
+      // Desktop: hide left column as soon as carousel starts overlapping (was 0.9 = too late).
+      // Re-show when user scrolls back near the start.
+      const STATIC_HIDE_AT = 0.55;
+      const STATIC_REVEAL_AT = 0.12;
+      let lastProgress = null;
+      let staticHidden = false;
+
+      const setProgress = (pct) => {
+        if (!progress) return;
+        const clamped = Math.max(0, Math.min(1, pct || 0));
+        progress.style.transform = `scaleX(${clamped})`;
+      };
+
+      const hideStatic = () => {
+        if (!staticEl) return;
+        if (isSmallViewport()) return;
+        staticHidden = true;
+        staticEl.classList.remove('cc-static-visible');
+      };
+
+      const revealStatic = () => {
+        if (!staticEl) return;
+        if (isSmallViewport()) return;
+        staticHidden = false;
+        staticEl.classList.remove('cc-static-visible');
+        void staticEl.offsetWidth;
+        requestAnimationFrame(() => {
+          void staticEl.offsetWidth;
+          staticEl.classList.add('cc-static-visible');
+        });
+      };
+
+      const syncStaticToProgress = (p) => {
+        if (!staticEl) return;
+        if (isSmallViewport()) return;
+
+        const prev = lastProgress;
+        lastProgress = p;
+
+        // Hide once overlap risk: carousel progress past STATIC_HIDE_AT.
+        if (p >= STATIC_HIDE_AT) {
+          if (!staticHidden) hideStatic();
+          return;
+        }
+
+        // Reveal ONLY when coming back (progress decreasing) and near start (STATIC_REVEAL_AT).
+        const movingBack = typeof prev === 'number' ? p < prev : true;
+        if (staticHidden && movingBack && p <= STATIC_REVEAL_AT) {
+          revealStatic();
+          return;
+        }
+
+        // Keep visible if not hidden.
+        if (!staticHidden) {
+          staticEl.classList.add('cc-static-visible');
+        }
+      };
+
+      const updateProgressFromSwiper = (swiper) => {
+        if (!swiper) return;
+        const p = typeof swiper.progress === 'number'
+          ? swiper.progress
+          : (() => {
+              const count = swiper.slides?.length || 0;
+              const current = swiper.activeIndex || 0;
+              const denom = Math.max(1, count - 1);
+              return denom > 0 ? (current / denom) : 0;
+            })();
+        setProgress(p);
+        syncStaticToProgress(p);
+      };
+
+      const init = () => {
+        if (!swiperEl || !window.Swiper) return;
+        if (swiperEl.swiper) return;
+
+        const rootStyles = window.getComputedStyle(root);
+        const gapStr = (rootStyles && rootStyles.getPropertyValue('--cc-gap')) ? rootStyles.getPropertyValue('--cc-gap').trim() : '';
+        const gap = Math.max(8, parseInt(gapStr, 10) || 16);
+        const gapMobile = Math.max(8, Math.round(gap * 0.875));
+
+        const swiper = new window.Swiper(swiperEl, {
+          slidesPerView: 1.2,
+          speed: 340,
+          allowTouchMove: true,
+          resistanceRatio: 0.85,
+          spaceBetween: gap,
+          freeMode: { enabled: true, momentum: false },
+          threshold: 6,
+          touchReleaseOnEdges: true,
+          watchOverflow: true,
+          breakpoints: {
+            0: {
+              slidesPerView: 1.2,
+              spaceBetween: gapMobile,
+              resistanceRatio: 0.85,
+              speed: 480,
+              allowTouchMove: true,
+              followFinger: true,
+              touchAngle: 45,
+              threshold: 5,
+              touchStartPreventDefault: false,
+              touchReleaseOnEdges: true,
+              longSwipes: true,
+              longSwipesRatio: 0.4,
+              longSwipesMs: 300,
+              freeMode: {
+                enabled: true,
+                momentum: true,
+                momentumRatio: 0.72,
+                momentumVelocityRatio: 0.72,
+                momentumBounce: true,
+                momentumBounceRatio: 0.65,
+                sticky: false,
+                minimumVelocity: 0.02
+              },
+              mousewheel: false
+            },
+            990: {
+              slidesPerView: 1,
+              spaceBetween: gap,
+              speed: 340,
+              resistanceRatio: 0.85,
+              allowTouchMove: true,
+              mousewheel: false,
+              freeMode: { enabled: true, momentum: false }
+            }
+          }
+        });
+
+        updateProgressFromSwiper(swiper);
+        if (staticEl) staticEl.classList.add('cc-static-visible');
+
+        swiper.on('slideChange', () => {
+          updateProgressFromSwiper(swiper);
+        });
+        swiper.on('progress', () => updateProgressFromSwiper(swiper));
+        swiper.on('setTranslate', () => updateProgressFromSwiper(swiper));
+        swiper.on('activeIndexChange', () => updateProgressFromSwiper(swiper));
+
+        /*
+         * Mobile: horizontal swipe/wheel on slider moves slides.
+         * Vertical page scroll is ignored (touch-action: pan-y + touchAngle).
+         */
+        const WHEEL_LINE_SCALE = 20;
+        const WHEEL_PIXEL_SCALE = 0.44;
+        const WHEEL_MAX_STEP = 38;
+        const WHEEL_IMPULSE = 0.68;
+        const WHEEL_MAX_VELOCITY = 30;
+        const WHEEL_DECAY = 0.935;
+        const WHEEL_APPLY = 0.42;
+        const WHEEL_STOP = 0.1;
+        let wheelVelocity = 0;
+        let wheelRaf = null;
+
+        const updateMobileWheelTranslate = () => {
+          wheelRaf = null;
+          const sw = swiperEl.swiper;
+          if (!sw || !mqSmall.matches) {
+            wheelVelocity = 0;
+            return;
+          }
+
+          if (Math.abs(wheelVelocity) < WHEEL_STOP) {
+            wheelVelocity = 0;
+            return;
+          }
+
+          const a = sw.minTranslate();
+          const b = sw.maxTranslate();
+          const lo = Math.min(a, b);
+          const hi = Math.max(a, b);
+          const step = wheelVelocity * WHEEL_APPLY;
+          const translate = Math.max(lo, Math.min(hi, sw.translate - step));
+
+          sw.setTranslate(translate, 0);
+          sw.updateProgress();
+          sw.updateActiveIndex();
+          sw.updateSlidesClasses();
+          updateProgressFromSwiper(sw);
+
+          if ((translate <= lo + 0.75 && wheelVelocity > 0) || (translate >= hi - 0.75 && wheelVelocity < 0)) {
+            wheelVelocity = 0;
+          } else {
+            wheelVelocity *= WHEEL_DECAY;
+          }
+
+          if (Math.abs(wheelVelocity) >= WHEEL_STOP) {
+            wheelRaf = window.requestAnimationFrame(updateMobileWheelTranslate);
+          }
+        };
+
+        const onMobileWheel = (e) => {
+          if (!mqSmall.matches || !swiperEl.swiper) return;
+          const el = e.target;
+          if (!el || !el.closest || !root.contains(el)) return;
+          if (!el.closest('.cc-slider') && !el.closest('.cc-progress')) return;
+
+          let dy = e.deltaY;
+          let dx = e.deltaX;
+          if (e.deltaMode === 1) {
+            dy *= WHEEL_LINE_SCALE;
+            dx *= WHEEL_LINE_SCALE;
+          } else if (e.deltaMode === 2) {
+            dy *= window.innerHeight || 640;
+            dx *= window.innerWidth || 360;
+          }
+
+          // Vertical wheel = page scroll — do not move slides.
+          if (Math.abs(dy) >= Math.abs(dx)) return;
+
+          const raw = dx;
+          if (Math.abs(raw) < 0.35) return;
+
+          const sw = swiperEl.swiper;
+          const a = sw.minTranslate();
+          const b = sw.maxTranslate();
+          const lo = Math.min(a, b);
+          const hi = Math.max(a, b);
+          const t = sw.translate;
+          const atEnd = t <= lo + 0.75;
+          const atStart = t >= hi - 0.75;
+          if ((raw > 0 && atEnd) || (raw < 0 && atStart)) return;
+
+          const scale = e.deltaMode === 1 ? 1 : WHEEL_PIXEL_SCALE;
+          let stepPx = raw * scale;
+          if (Math.abs(stepPx) > WHEEL_MAX_STEP) {
+            stepPx = Math.sign(stepPx) * WHEEL_MAX_STEP;
+          }
+          if (Math.abs(stepPx) < 0.6) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          wheelVelocity = wheelVelocity * 0.62 + stepPx * WHEEL_IMPULSE;
+          wheelVelocity = Math.max(-WHEEL_MAX_VELOCITY, Math.min(WHEEL_MAX_VELOCITY, wheelVelocity));
+          if (!wheelRaf) {
+            wheelRaf = window.requestAnimationFrame(updateMobileWheelTranslate);
+          }
+        };
+
+        root.addEventListener('wheel', onMobileWheel, { passive: false, capture: true });
+        root.__ccMobileWheelTeardown = () => {
+          root.removeEventListener('wheel', onMobileWheel, { capture: true });
+          if (wheelRaf != null) window.cancelAnimationFrame(wheelRaf);
+          wheelRaf = null;
+          wheelVelocity = 0;
+          root.__ccMobileWheelTeardown = null;
+        };
+
+      // Mobile/tablet: don't use pinned scroll behavior (layout is stacked).
+      if (isSmallViewport()) {
+        const pin = root.querySelector('[data-cc-pin]');
+        if (pin) pin.style.height = '';
+        return;
+      }
+
+      // Pinned scroll behavior:
+      // Section gets extra height; sticky inner stays in view; scroll progress drives slick index.
+      const pin = root.querySelector('[data-cc-pin]');
+      const pinInner = root.querySelector('[data-cc-pin-inner]');
+      if (!pin || !pinInner) return;
+
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      const getPinnedHeight = () => {
+        // Use the actual sticky inner height to avoid viewport jitter on scroll.
+        return Math.max(1, pinInner.getBoundingClientRect().height || pinInner.offsetHeight || 1);
+      };
+
+      const resizePin = () => {
+          const count = swiper.slides?.length || 0;
+        const base = getPinnedHeight();
+        // One full viewport-scroll per slide step.
+        const extra = Math.max(0, count - 1) * base;
+        // total height = viewport + extra (sticky inner consumes viewport while scrolling)
+        pin.style.height = `${base + extra}px`;
+      };
+
+      let targetProgress = 0;
+      let currentProgress = 0;
+      let rafId = null;
+
+      const animateToTarget = () => {
+        rafId = null;
+        const diff = targetProgress - currentProgress;
+        const ad = Math.abs(diff);
+        // Adaptive lerp: faster catch-up when scroll is far (was 0.14 fixed — felt slow on desktop).
+        const k = ad > 0.38 ? 0.38 : ad > 0.14 ? 0.28 : 0.2;
+        currentProgress += diff * k;
+        if (ad < 0.0006) currentProgress = targetProgress;
+
+        // Fill bar + static visibility based on smoothed progress
+        setProgress(currentProgress);
+        syncStaticToProgress(currentProgress);
+
+        // Drive Swiper smoothly
+        if (swiperEl && swiperEl.swiper && typeof swiperEl.swiper.setProgress === 'function') {
+          swiperEl.swiper.setProgress(currentProgress, 0);
+        }
+
+        if (Math.abs(targetProgress - currentProgress) > 0.00015) {
+          rafId = window.requestAnimationFrame(animateToTarget);
+        }
+      };
+
+      const onScroll = () => {
+          const count = swiper.slides?.length || 0;
+        if (count <= 1) return;
+
+        const rect = pin.getBoundingClientRect();
+        const base = getPinnedHeight();
+        const total = pin.offsetHeight;
+        const scrollable = Math.max(1, total - base);
+
+        // progress from 0..1 as user scrolls through pinned height
+        const progressed = Math.min(1, Math.max(0, (-rect.top) / scrollable));
+
+        targetProgress = progressed;
+        if (!rafId) rafId = window.requestAnimationFrame(animateToTarget);
+      };
+
+      resizePin();
+      onScroll();
+
+      window.addEventListener('resize', () => {
+        resizePin();
+        onScroll();
+      }, { passive: true });
+
+      window.addEventListener('scroll', () => {
+        window.requestAnimationFrame(onScroll);
+      }, { passive: true });
+
+      // Avoid visualViewport listeners here to prevent scroll jitter.
+      };
+
+      // Wait for deferred scripts (swiper)
+      let tries = 0;
+      const timer = window.setInterval(() => {
+        tries += 1;
+        init();
+        if (window.Swiper || tries > 60) {
+          window.clearInterval(timer);
+        }
+      }, 100);
+
+      document.addEventListener('shopify:section:unload', (e) => {
+        if (!e.detail || e.detail.sectionId !== sectionId) return;
+        if (typeof root.__ccShopBtnClickTeardown === 'function') root.__ccShopBtnClickTeardown();
+        if (typeof root.__ccMobileWheelTeardown === 'function') root.__ccMobileWheelTeardown();
+        if (!swiperEl || !swiperEl.swiper) return;
+        swiperEl.swiper.destroy(true, true);
+      });
+    })();
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "GB carousel content",
+  "tag": "section",
+  "class": "hb-grillbot-collection-carousel-section",
+  "settings": [
+    { "type": "text", "id": "aria_label", "label": "ARIA label", "default": "Collection carousel" },
+    { "type": "text", "id": "list_aria_label", "label": "Carousel ARIA label", "default": "Carousel" },
+      {
+    "type": "header",
+    "content": "Heading & Description"
+  },
+  {
+    "type": "text",
+    "id": "cc_heading",
+    "label": "Heading"
+  },
+  {
+    "type": "richtext",
+    "id": "cc_desc",
+    "label": "Description"
+  },
+  {
+    "type": "header",
+    "content": "Button"
+  },
+  {
+    "type": "text",
+    "id": "button_label",
+    "label": "Button Label"
+  },
+  {
+    "type": "url",
+    "id": "button_href",
+    "label": "Button URL"
+  },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#000" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_text_color", "label": "Muted text", "default": "rgba(255,255,255,0.72)" },
+    { "type": "color", "id": "accent_color", "label": "Progress accent", "default": "#A6C328" },
+    { "type": "color", "id": "accent_track_color", "label": "Progress track", "default": "rgba(166,195,40,0.18)" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#B6D22F" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#080808" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "gap", "label": "Gap", "min": 8, "max": 48, "step": 2, "default": 24 },
+    { "type": "range", "id": "card_radius", "label": "Image radius", "min": 0, "max": 30, "step": 1, "default": 16 },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay opacity", "min": 0, "max": 60, "step": 5, "default": 0 },
+    { "type": "range", "id": "media_max_height", "label": "Image max height (desktop)", "min": 300, "max": 800, "step": 10, "default": 520 },
+    { "type": "checkbox", "id": "show_progress_bar", "label": "Show progress bar", "default": true },
+    { "type": "range", "id": "image_ratio", "label": "Media ratio (padding-bottom %)", "min": 40, "max": 100, "step": 1, "default": 68 },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 160, "step": 4, "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 160, "step": 4, "default": 40 }
+  ],
+  "blocks":[{
+    "type": "slide",
+    "name": "Slide",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Media"
+      },
+      {
+        "type": "image_picker",
+        "id": "slide_image",
+        "label": "Slide Image"
+      },
+      {
+        "type": "video",
+        "id": "slide_video",
+        "label": "Slide Video",
+        "info": "If a video is set, it takes priority over the image."
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "overlay_heading",
+        "label": "Overlay Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "slide_description",
+        "label": "Bottom Caption"
+      }
+    ]
+  }
+],
+  "presets": [
+    {
+      "name": "GB carousel content"
+    }
+  ]
+}
+{% endschema %}

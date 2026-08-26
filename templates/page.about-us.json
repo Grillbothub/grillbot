@@ -1,0 +1,219 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "show_page_content": true,
+        "page_width": "medium"
+      }
+    },
+    "81f62304-4a5d-4934-a021-0f5dad1c41c5": {
+      "type": "hero-banner",
+      "custom_css": [
+        ".effect-smoke-box {position: absolute; bottom: 0; max-width: 50%; width: 100%;}",
+        ".effect-smoke-box img {display: block; width: 100%; object-fit: cover; height: 100%;}",
+        ".effect-sparx-box img {display: block; width: 100%; object-fit: cover; height: 100%;}",
+        ".effect-sparx-box {position: absolute; right: 0; top: 0; max-width: 60%; width: 100%;}"
+      ],
+      "settings": {
+        "reveal_on_scroll": true,
+        "section_height": "small",
+        "media_type": "image",
+        "image": "shopify://shop_images/Rectangle_1_3.png",
+        "video": "",
+        "video_sizing": "cover",
+        "banner_badge": "",
+        "subheading": "",
+        "title": "",
+        "heading_two": "About Grillbot",
+        "content": "",
+        "button_text": "",
+        "button_link": "",
+        "ext_btn_link": "",
+        "link_style": "link",
+        "background_type": "full_width",
+        "text_width": "fill",
+        "text_position": "middle_center",
+        "text_align_desktop": "center",
+        "text_align_mobile": "center",
+        "animation_smoke": "shopify://shop_images/Smoke.png",
+        "animation_sparx": "shopify://shop_images/Smoke.png",
+        "text_color": "#ffffff",
+        "button_background": "#ffffff",
+        "button_text_color": "#000000",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30,
+        "custom_class": "about-grill-page"
+      }
+    },
+    "6a2dcb04-88f6-468f-b461-e7f12b68aa14": {
+      "type": "image-with-text-with-background-image",
+      "blocks": {
+        "template--14598212649023__6a2dcb04-88f6-468f-b461-e7f12b68aa14-168199475293d0fc60-0": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_24_2.png",
+            "tab_label": "Item",
+            "kicker": "What's New",
+            "subheading": "",
+            "title": "BBQ Grill Cleaning Made Easy",
+            "content": "<p>The Grillbot is the world's first automatic grill cleaning robot! Launched January 13, 2014, Grillbot is here to make your life easier.<br/>Our mission is to enrich your life, by simplifying it.<br/>We believe by taking the grunt work out of cleaning your grill, it will leave you with more time to enjoy your friends, family, and the party! Simply place the Grillbot on your grill, press a button and you're done!<br/>The Grillbot does all the grill cleaning for you.No more scrubbing!A Grillbot is easy-to-use and fun to watch — a fully-automated device that makes grill cleaning possible with just the push of a button.</p>",
+            "button_text": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--14598212649023__6a2dcb04-88f6-468f-b461-e7f12b68aa14-168199475293d0fc60-0"
+      ],
+      "custom_css": [],
+      "settings": {
+        "reveal_on_scroll": true,
+        "section_height": "medium",
+        "background_type": "full_width",
+        "background_overlap": "image",
+        "hide_mobile": true,
+        "image_position": "left",
+        "text_alignment": "left",
+        "bg_image": "shopify://shop_images/Group_127.png",
+        "cycle_speed": 8,
+        "accent_background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "2d9e33c2-b851-45e7-ba84-b7a2b0ff7665": {
+      "type": "image-with-pointers",
+      "blocks": {
+        "21940823-a0d0-4a6a-9126-033188f730f2": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>THREE STRONG ELECTRIC MOTORS:</strong></p><p>The Grillbot is equipped with three<br/>high-power electric motors.</p>"
+          }
+        },
+        "6c41319e-83c9-4e0f-a885-eef949a69b34": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>REPLACEABLE BRUSHES:</strong></p><p>Brushes pop right off for easy<br/>cleaning and are dishwasher safe.</p>"
+          }
+        },
+        "ff248397-585c-49ae-aaac-503b0e47c8bd": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>LCD ALARM & TIMER: </strong></p><p>Set it and forget it. Grillbot's smart <br/>and will notify you when finished.</p>"
+          }
+        },
+        "656780eb-a035-4c64-b7da-aaaff74eb5e3": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>SMART BRAIN: </strong></p><p>The Grillbot is driven by a sophisticated<br/>CPU chip that controls the movement, speed,<br/>and direction of the brushes.</p>"
+          }
+        },
+        "a2a64b1b-3b04-4f26-9afc-fe36377319cc": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>RECHARGEABLE BATTERY:</strong></p><p>Rechargeable Lithium Ion <br/>Battery (included).</p>"
+          }
+        },
+        "3fc57e90-d8b1-47fc-b033-3864aa4394ec": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>PUSH-BUTTON OPERATION: </strong></p><p>So simple, anyone can do it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "21940823-a0d0-4a6a-9126-033188f730f2",
+        "6c41319e-83c9-4e0f-a885-eef949a69b34",
+        "ff248397-585c-49ae-aaac-503b0e47c8bd",
+        "656780eb-a035-4c64-b7da-aaaff74eb5e3",
+        "a2a64b1b-3b04-4f26-9afc-fe36377319cc",
+        "3fc57e90-d8b1-47fc-b033-3864aa4394ec"
+      ],
+      "settings": {
+        "reveal_on_scroll": true,
+        "section_height": "auto",
+        "media_type": "image",
+        "image": "shopify://shop_images/Rectangle_3.jpg",
+        "image_mobile": "shopify://shop_images/Rectangle_3_1.jpg",
+        "video": "",
+        "video_sizing": "cover",
+        "subheading": "Six reasons grill  cleaning has  never been easier:",
+        "background_type": "full_width",
+        "text_width": "medium",
+        "text_position": "top_left",
+        "text_color": "#ffffff",
+        "button_background": "#ffffff",
+        "button_text_color": "#000000",
+        "overlay_color": "#000000",
+        "pointer_color": "#000000",
+        "pointer_bg": "#ffffff",
+        "overlay_opacity": 0,
+        "custom_section_class": ""
+      }
+    },
+    "0b2e73a6-4efc-4131-8a72-a06b5ccac19e": {
+      "type": "home-before-after-grilling",
+      "blocks": {
+        "template--14598212649023__0b2e73a6-4efc-4131-8a72-a06b5ccac19e-16819939240a6f54cd-0": {
+          "type": "start_grilling",
+          "settings": {
+            "bg_color": "#de2a2c",
+            "enable_left_sticks": true,
+            "left_sticks": "shopify://shop_images/Group_90_1.png",
+            "enable_right_sticks": true,
+            "right_sticks": "shopify://shop_images/Group_89_1.png",
+            "heading": "Why you shouldnt be <br> “that guy”",
+            "subheading": "Are you ready to get out there and start grilling? Before you do, learn how to clean your grill the easy way...",
+            "enable_block_icons": true,
+            "svg_icon_1": "shopify://shop_images/hand.svg",
+            "svg_text_1": "Hands-Free Grill  Cleaning",
+            "svg_icon_2": "shopify://shop_images/clock.svg",
+            "svg_text_2": "Saves Time and  Effort",
+            "svg_icon_3": "shopify://shop_images/Group_116_b983e662-b686-45b2-8fd9-a7b3daea20f0.svg",
+            "svg_text_3": "Don't Burn or  Cut Yourself",
+            "svg_text_4": "",
+            "button_position": "center",
+            "button_text_1": "Shop Grillbot",
+            "button_link_1": "shopify://collections/all",
+            "first_button_color": "#000000",
+            "first_button_bg": "#B6D22F",
+            "button_type1": false,
+            "button_text_2": "Buy Now at Amazon",
+            "button_link_2": "https://www.amazon.com/grillbot?maas=maas_adg_DC9E4F65889049B67E378E1CF2C3DD7C_afap_abs&ref_=aa_maas&tag=maas",
+            "second_button_color": "#ffffff",
+            "second_button_bg": "#ffffff",
+            "button_type2": true
+          }
+        }
+      },
+      "block_order": [
+        "template--14598212649023__0b2e73a6-4efc-4131-8a72-a06b5ccac19e-16819939240a6f54cd-0"
+      ],
+      "settings": {
+        "section_upper_overlap": false,
+        "overlap_color": "#ffffff",
+        "animation_smoke": "shopify://shop_images/Smoke.png"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "81f62304-4a5d-4934-a021-0f5dad1c41c5",
+    "6a2dcb04-88f6-468f-b461-e7f12b68aa14",
+    "2d9e33c2-b851-45e7-ba84-b7a2b0ff7665",
+    "0b2e73a6-4efc-4131-8a72-a06b5ccac19e"
+  ]
+}

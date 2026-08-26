@@ -1,0 +1,551 @@
+{%- comment -%}
+  Grillbot — FAQ (metaobject driven)
+
+  Product metafields (namespace: custom) you will create:
+  1) grillbot_faq_section_heading  (Metaobject - single)
+  2) grillbot_faqs                (List of metaobjects)
+
+  Metaobject: grillbot_faq_section_heading
+  - heading       (Multi-line text or Single line text)
+  - link          (Link) OR button_url (Link)
+
+  Metaobject: grillbot_faqs
+  - heading (Single line text)
+  - content (Rich text)
+  - default_open (True or false)
+{%- endcomment -%}
+
+{%- assign head_mo = product.metafields.custom.grillbot_faq_section_heading.value
+  | default: product.metafields.custom.grillbot_faq_section_heading
+-%}
+{%- assign faqs = product.metafields.custom.grillbot_faqs.value
+  | default: product.metafields.custom.grillbot_faqs
+-%}
+
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign faq_heading = '' -%}
+  {%- assign faq_button_text = '' -%}
+  {%- assign faq_button_url = blank -%}
+  {%- assign faq_link = blank -%}
+
+  {%- if head_mo != blank -%}
+    {%- assign faq_heading = head_mo.heading.value | default: head_mo.heading -%}
+    {%- assign faq_link = head_mo.link.value
+      | default: head_mo.link
+      | default: head_mo.button_url.value
+      | default: head_mo.button_url
+    -%}
+    {%- if faq_link != blank -%}
+      {%- assign faq_button_text = faq_link.title
+        | default: faq_link.text
+        | default: faq_link.label
+        | default: faq_link.name
+      -%}
+
+      {%- assign faq_button_url = faq_link.url
+        | default: faq_link.href
+      -%}
+
+      {%- if faq_button_url == blank -%}
+        {%- assign faq_button_url = faq_link -%}
+      {%- endif -%}
+
+      {%- if faq_button_text == blank -%}
+        {%- assign faq_button_text = section.settings.button_fallback_text -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- assign has_faqs = false -%}
+  {%- if faqs != blank and faqs.size > 0 -%}
+    {%- assign has_faqs = true -%}
+  {%- endif -%}
+
+  {%- if faq_heading != blank or faq_button_text != blank or has_faqs -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .hb-faq {
+        background: {{ section.settings.background }};
+        padding-top: {{ section.settings.padding_desktop_top }}px;
+        padding-bottom: {{ section.settings.padding_desktop_bottom }}px;
+        color: {{ section.settings.text_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 509px) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__title {
+        margin: 0 0 32px;
+        font-family: Anton, sans-serif !important;
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 60px;
+        text-transform: uppercase;
+        color: {{ section.settings.heading_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 32px;
+        border-radius: 100px;
+        text-decoration: none;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 700;
+        background: {{ section.settings.button_bg }};
+        color: {{ section.settings.button_text_color }};
+        width: 100%;
+        max-width: 349px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__items {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__item {
+        border: 1px solid {{ section.settings.faq_border }};
+        border-radius: 6px;
+        background: {{ section.settings.faq_bg }};
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 16px 16px 32px;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        text-align: left;
+        color: {{ section.settings.faq_heading_color }};
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 700;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__content {
+        padding: 0 32px 16px 32px;
+        color: {{ section.settings.faq_text_color }};
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__content p{margin: 0 0 4px;}
+      #shopify-section-{{ section.id }} .hb-faq__content a { color: #B6D22F; font-weight: 300; text-decoration: underline; }
+
+      #shopify-section-{{ section.id }} .hb-faq__icon {
+        flex: 0 0 auto;
+        width: 24px;
+        height: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: {{ section.settings.faq_heading_color }};
+        background: transparent;
+      }
+
+      #shopify-section-{{ section.id }} details[open] .hb-faq__icon svg {
+        transform: rotate(180deg);
+      }
+
+      @media screen and (max-width: 991px) {
+        #shopify-section-{{ section.id }} .hb-faq {
+          padding-top: {{ section.settings.padding_mobile_top }}px;
+          padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-faq__layout {
+          grid-template-columns: 1fr;
+          gap: 22px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-faq__title {
+          font-size: 36px;
+          line-height: 44px;
+        }
+        #shopify-section-{{ section.id }} .hb-faq__items{
+          gap: 8px;
+        }
+        #shopify-section-{{ section.id }} .hb-faq__toggle {
+          padding: 10px 16px;
+          line-height: 24px;
+        }
+      }
+    {% endstyle %}
+
+    <section class="hb-faq shopify-section--{{ section.id }}" aria-label="Frequently asked questions">
+      <div class="container">
+        <div class="hb-faq__layout">
+          <div class="hb-faq__left">
+            {%- if faq_heading != blank -%}
+              <h2 class="hb-faq__title">{{ faq_heading | escape | newline_to_br }}</h2>
+            {%- endif -%}
+
+            {%- if faq_link != blank and faq_button_url != blank -%}
+              <a class="hb-faq__btn" href="{{ faq_button_url }}" aria-label="{{ faq_button_text | escape }}">
+                {{ faq_button_text | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+
+          {%- if has_faqs -%}
+            <div class="hb-faq__items">
+              {%- for faq in faqs -%}
+                {%- assign q = faq.heading.value | default: faq.heading -%}
+                {%- assign a_mf = faq.content -%}
+                {%- assign a_val = faq.content.value | default: '' -%}
+                {%- assign faq_open = faq.default_open.value -%}
+                {%- if faq_open == nil -%}
+                  {%- assign faq_open = faq.default_open -%}
+                {%- endif -%}
+
+                {%- if q != blank and a_val != blank -%}
+                  <details class="hb-faq__item"{% if faq_open == true %} open{% endif %}>
+                    <summary class="hb-faq__toggle">
+                      <span>{{ q | escape | newline_to_br }}</span>
+                      <span class="hb-faq__icon" aria-hidden="true">
+                        {{ 'accordion-arrow.svg' | inline_asset_content }}
+                      </span>
+                    </summary>
+                    <div class="hb-faq__content">
+                      {{ a_mf | metafield_tag }}
+                    </div>
+                  </details>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+
+    {%- if section.settings.enable_faq_structured_data and has_faqs -%}
+      {%- capture faq_main_entity -%}
+        {%- assign faq_schema_first = true -%}
+        {%- for faq in faqs -%}
+          {%- assign q = faq.heading.value | default: faq.heading -%}
+          {%- assign a_mf = faq.content -%}
+          {%- assign a_val = faq.content.value | default: '' -%}
+          {%- if q != blank and a_val != blank -%}
+            {%- capture answer_plain -%}{{ a_mf | metafield_tag | strip_html | strip }}{%- endcapture -%}
+            {%- if answer_plain != blank -%}
+              {%- unless faq_schema_first -%},{%- endunless -%}
+              {%- assign faq_schema_first = false -%}
+              {
+                "@type": "Question",
+                "name": {{ q | strip_html | strip | json }},
+                "acceptedAnswer": { 
+                  "@type": "Answer",
+                  "text": {{ answer_plain | json }}
+                }
+              }
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%} 
+      {%- endcapture -%}
+
+      {%- if faq_main_entity != blank -%}
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{{ faq_main_entity }}]
+          }
+        </script>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- else -%}
+{%- liquid
+  assign faq_heading = section.settings.heading
+  assign faq_link = section.settings.button_text
+  assign faq_button_url = section.settings.button_url
+  assign faq_button_text = section.settings.button_text
+  assign faqs = section.blocks
+  assign has_faqs = false
+  if faqs.size > 0
+    assign has_faqs = true
+  endif
+-%}
+  {% style %}
+      #shopify-section-{{ section.id }} .hb-faq {
+        background: {{ section.settings.background }};
+        padding-top: {{ section.settings.padding_desktop_top }}px;
+        padding-bottom: {{ section.settings.padding_desktop_bottom }}px;
+        color: {{ section.settings.text_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 509px) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__title {
+        margin: 0 0 32px;
+        font-family: Anton, sans-serif !important;
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 60px;
+        text-transform: uppercase;
+        color: {{ section.settings.heading_color }};
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 32px;
+        border-radius: 100px;
+        text-decoration: none;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 700;
+        background: {{ section.settings.button_bg }};
+        color: {{ section.settings.button_text_color }};
+        width: 100%;
+        max-width: 349px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__items {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__item {
+        border: 1px solid {{ section.settings.faq_border }};
+        border-radius: 6px;
+        background: {{ section.settings.faq_bg }};
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 16px 16px 32px;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        text-align: left;
+        color: {{ section.settings.faq_heading_color }};
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 700;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__content {
+        padding: 0 32px 16px 32px;
+        color: {{ section.settings.faq_text_color }};
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-faq__content p{margin: 0 0 4px;}
+      #shopify-section-{{ section.id }} .hb-faq__content a { color: #B6D22F; font-weight: 300; text-decoration: underline; }
+
+      #shopify-section-{{ section.id }} .hb-faq__icon {
+        flex: 0 0 auto;
+        width: 24px;
+        height: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: {{ section.settings.faq_heading_color }};
+        background: transparent;
+      }
+
+      #shopify-section-{{ section.id }} details[open] .hb-faq__icon svg {
+        transform: rotate(180deg);
+      }
+
+      @media screen and (max-width: 991px) {
+        #shopify-section-{{ section.id }} .hb-faq {
+          padding-top: {{ section.settings.padding_mobile_top }}px;
+          padding-bottom: {{ section.settings.padding_mobile_bottom }}px;
+        }
+
+      
+
+        #shopify-section-{{ section.id }} .hb-faq__content {
+    padding: 0 16px 16px 16px;
+    
+}
+
+        #shopify-section-{{ section.id }} .hb-faq__layout {
+          grid-template-columns: 1fr;
+          gap: 22px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-faq__title {
+          font-size: 36px;
+          line-height: 44px;
+        }
+        #shopify-section-{{ section.id }} .hb-faq__items{
+          gap: 8px;
+        }
+        #shopify-section-{{ section.id }} .hb-faq__toggle {
+          padding: 10px 16px;
+          line-height: 24px;
+        }
+          .shopify-section-{{ section.id }}.hb-faq .container{
+          padding-left:16px!important;
+          padding-right:16px!important;
+        }
+      }
+    {% endstyle %}
+
+<section class="hb-faq shopify-section--{{ section.id }}" aria-label="Frequently asked questions">
+  <div class="container">
+    <div class="hb-faq__layout">
+      <div class="hb-faq__left">
+        {%- if faq_heading != blank -%}
+          <h2 class="hb-faq__title">{{ faq_heading | escape | newline_to_br }}</h2>
+        {%- endif -%}
+
+        {%- if faq_link != blank and faq_button_url != blank -%}
+          <a class="hb-faq__btn" href="{{ faq_button_url }}" aria-label="{{ faq_button_text | escape }}">
+            {{ faq_button_text | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if has_faqs -%}
+        <div class="hb-faq__items">
+          {%- for block in faqs -%}
+            {%- assign q = block.settings.question -%}
+            {%- assign a_val = block.settings.answer -%}
+            {%- assign faq_open = block.settings.default_open -%}
+
+            {%- if q != blank and a_val != blank -%}
+              <details class="hb-faq__item"{% if faq_open %} open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="hb-faq__toggle">
+                  <span>{{ q | escape | newline_to_br }}</span>
+                  <span class="hb-faq__icon" aria-hidden="true">
+                    {{ 'accordion-arrow.svg' | inline_asset_content }}
+                  </span>
+                </summary>
+                <div class="hb-faq__content">
+                  {{ a_val }}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% endif %}
+
+
+
+{% schema %}
+{
+  "name": "GB - FAQ",
+  "class": "shopify-section--grillbot-faq",
+  "disabled_on": { "templates": ["password"] },
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Base text color", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_fallback_text", "label": "Button text fallback", "default": "Ask Us Anything →", "info": "Used when the link field has no label/title." },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#B6D22F" },
+    { "type": "color", "id": "button_text_color", "label": "Button text color", "default": "#080808" },
+
+    { "type": "header", "content": "FAQs" },
+    { "type": "color", "id": "faq_bg", "label": "FAQ item background", "default": "#0d0d0d" },
+    { "type": "color", "id": "faq_border", "label": "FAQ border color", "default": "#2a2a2a" },
+    { "type": "color", "id": "faq_heading_color", "label": "FAQ heading color", "default": "#ffffff" },
+    { "type": "color", "id": "faq_text_color", "label": "FAQ content color", "default": "#d9d9d9" },
+
+    { "type": "header", "content": "SEO" },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_structured_data",
+      "label": "Enable FAQ structured data (JSON-LD)",
+      "default": true,
+      "info": "Hidden markup for Google and other search engines. Does not change how the section looks on the storefront."
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View all FAQs"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_desktop_top", "label": "Padding top (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_desktop_bottom", "label": "Padding bottom (desktop)", "min": 0, "max": 220, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_mobile_top", "label": "Padding top (mobile)", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_mobile_bottom", "label": "Padding bottom (mobile)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 }
+  ],
+   "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a 30-day return policy on all items.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "default_open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "GB - FAQ", "category": "Custom" }
+  ]
+}
+{% endschema %}
+

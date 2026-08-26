@@ -1,0 +1,131 @@
+<style>
+  .identifier__wrapper {
+    position: absolute;
+    min-width: 300px;
+    background: #333333;
+    color: #fff;
+}
+  .identifiers {
+    padding: 0 40px;
+}
+  .identifier {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    cursor: pointer;
+}
+.identifier.active:after {
+  position: absolute;
+  content: '';
+  width: 10px;
+  height: 35px;
+  background: red;
+  right: 0;
+}
+  .identifier__wrapper.fixed {
+    position:fixed;
+  }
+</style>
+
+<div class="identifier__wrapper">
+  <div class="identifiers">
+  {%- for block in section.blocks -%}
+    <div class="identifier" data-identifier="{{ block.settings.Identifier }}">
+      {{ block.settings.Identifier }}
+    </div>
+  {% endfor %}
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    var guide_tutorial_position = $(".products-guide-tutorials:first").position();
+    if (window.matchMedia("(max-width: 740px)").matches) {
+      $('.identifier__wrapper').css('top', guide_tutorial_position.top-100);
+    } else {
+      $('.identifier__wrapper').css('top', guide_tutorial_position.top);
+    }
+    $(".identifier:first").addClass('active');
+    $('.identifier').on('click', function(){
+      $(".identifier").removeClass('active');
+      $(this).addClass('active');
+      var identifier = $(this).data('identifier');
+      var identifier_position = $(".products-guide-tutorials[data-identifier='"+ identifier +"']").position();
+      $([document.documentElement, document.body]).animate({
+          scrollTop: identifier_position.top - 90
+      }, 1000);
+    })
+    $(function() {
+      var guide_tutorial_position = $(".products-guide-tutorials:first").position();
+      var top = $(".products-guide-tutorials:first").offset().top - parseFloat($(".products-guide-tutorials:first").css('marginTop').replace(/auto/, 0));
+      var footTop = $('.footer').offset().top - parseFloat($('.footer').css('marginTop').replace(/auto/, 0));
+    
+      var maxY = footTop - $('.identifier__wrapper').outerHeight();
+    
+      $(window).scroll(function(evt) {
+        var y = $(this).scrollTop();
+        if (y > top) {
+          if (y < maxY) {
+            $('.identifier__wrapper').addClass('fixed').css({
+              top: $('.header').height() + 'px'
+            });
+          } else {
+            if (window.matchMedia("(max-width: 740px)").matches) {
+              $('.identifier__wrapper').removeClass('fixed').css({
+                top: guide_tutorial_position.top - 120
+              });
+            }else{
+              $('.identifier__wrapper').removeClass('fixed').css({
+                top: guide_tutorial_position.top - 20
+              });
+            }
+          }
+        } else {
+          if (window.matchMedia("(max-width: 740px)").matches) {
+              $('.identifier__wrapper').removeClass('fixed').css({
+                top: guide_tutorial_position.top - 120
+              });
+            }else{
+              $('.identifier__wrapper').removeClass('fixed').css({
+                top: guide_tutorial_position.top - 20
+              });
+          }
+        }
+      });
+    });
+  });
+</script>
+{% schema %}
+  {
+    "name": "Identifiers",
+    "settings": [
+      
+    ],
+    "blocks": [
+      {
+        "type": "identifier",
+        "name": "Identifier",
+        "settings": [
+          {
+            "type": "text",
+            "id": "Identifier",
+            "label": "Identifier"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Identifiers"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

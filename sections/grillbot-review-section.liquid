@@ -1,0 +1,416 @@
+{%- comment -%}
+Grillbot - Review (metaobject driven)
+
+Expected metafields (pick the one your admin created):
+1) product.metafields.custom.grillbot_review_section.value
+2) product.metafields.custom.grillbot_review.value
+3) product.metafields.custom.main_review.value (fallback)
+
+Metaobject fields (based on your screenshot):
+- Image
+- Review (multi-line text)
+- Auth Name
+- Button Text
+{%- endcomment -%}
+
+{%- assign review_mo = product.metafields.custom.grillbot_review_section.value | default: product.metafields.custom.grillbot_review.value | default: product.metafields.custom.main_review.value -%}
+
+  {%- assign review_image = review_mo.image.value | default: review_mo.image -%}
+  {%- assign review_text = review_mo.review.value | default: review_mo.review | default: review_mo.content.value | default: review_mo.content -%}
+  {%- assign review_author = review_mo.auth_name.value | default: review_mo.auth_name | default: review_mo.name.value | default: review_mo.name -%}
+  {%- assign review_button_text = review_mo.button_text.value | default: review_mo.button_text | default: review_mo.button.value | default: review_mo.button -%}
+
+  {{ 'hb-grillbots-product.css' | asset_url | stylesheet_tag }}
+
+  {% style %}
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section {
+      background: {{ section.settings.background }};
+      padding-top: {{ section.settings.padding-desktop-top }}px;
+      padding-bottom: {{ section.settings.padding-desktop-bottom }}px;
+      color: {{ section.settings.text_color }};
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__wrap .container {
+      background: {{ section.settings.wrap_background }};
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 28px;
+      padding-top: {{ section.settings.wrap-padding-desktop-top }}px;
+      padding-bottom: {{ section.settings.wrap-padding-desktop-bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__left {
+      display: flex;
+      gap: 27px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 999px;
+      overflow: hidden;
+      flex: 0 0 100px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__quote {
+      font-size: 16px;
+      line-height: 26px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__author {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 26px;
+      font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__cta {
+      flex: 0 1 238px;
+      flex-shrink: 0;
+    }
+
+    #shopify-section-{{ section.id }} .hb-grillbot-review-section__scroll-top {
+      border: 0;
+      border-radius: 999px;
+      padding: 17px 32px;
+      background: #B6D22F;
+      color: #080808;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+    justify-content: center;
+    }
+
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section {
+        padding-top: {{ section.settings.padding-mobile-top }}px;
+        padding-bottom: {{ section.settings.padding-mobile-bottom }}px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__bar {
+        padding-top: {{ section.settings.wrap-padding-mobile-top }}px;
+        padding-bottom: {{ section.settings.wrap-padding-mobile-bottom }}px;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding-inline: 0;
+      }
+
+      .hb-grillbot-review-section__wrap .container {
+          padding:0px 16px!important;
+      }
+       #shopify-section-{{ section.id }} .hb-grillbot-review-section__left {
+        gap: 9px;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__avatar {
+        width: 66px;
+        height: 66px;
+        flex: 0 0 66px;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__quote {
+        font-size: 14px;
+        line-height: 22px;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__quote br{
+        display: none;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__author {
+        margin-top: 8px;
+        font-size: 15px;
+        line-height: 22px;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__cta {
+        display: flex;
+        justify-content: center;
+        flex: 0 0 100%;
+      }
+      #shopify-section-{{ section.id }} .hb-grillbot-review-section__scroll-top {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  {% endstyle %}
+{%- if request.page_type == 'product' and product != blank and review_mo != blank -%}
+
+  <section class="hb-grillbot-review-section shopify-section--{{ section.id }}" aria-label="Grillbot Review">
+    <div class="hb-grillbot-review-section__wrap">
+      <div class="container">
+        {%- if review_text != blank or review_author != blank or review_button_text != blank or review_image != blank -%}
+          <div class="hb-grillbot-review-section__bar">
+            <div class="hb-grillbot-review-section__left">
+              {%- if review_image != blank -%}
+                <div class="hb-grillbot-review-section__avatar" aria-hidden="true">
+                  {{ review_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,90,120', sizes: '100px' , alt: 'Avator' }}
+                </div>
+              {%- endif -%}
+
+              <div class="hb-grillbot-review-section__copy">
+                {%- if review_text != blank -%}
+                  <p class="hb-grillbot-review-section__quote">{{ review_text | escape | newline_to_br }}</p>
+                {%- endif -%}
+                {%- if review_author != blank -%}
+                  <div class="hb-grillbot-review-section__author">{{ review_author | escape }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- if review_button_text != blank -%}
+              <div class="hb-grillbot-review-section__cta">
+                <button class="hb-grillbot-review-section__scroll-top" type="button" data-hb-scroll-top aria-label="Scroll to top">
+                  <span>{{ review_button_text | escape }}</span>
+                </button>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+  {% else %}
+
+  <section class="hb-grillbot-review-section shopify-section--{{ section.id }}" aria-label="Grillbot Review">
+    <div class="hb-grillbot-review-section__wrap">
+      <div class="container">
+        {%- if section.settings.review_text != blank or section.settings.review_author != blank or section.settings.review_button_text != blank or section.settings.review_image != blank -%}
+          <div class="hb-grillbot-review-section__bar">
+            <div class="hb-grillbot-review-section__left">
+              {%- if section.settings.review_image != blank -%}
+                <div class="hb-grillbot-review-section__avatar" aria-hidden="true">
+                  {{ section.settings.review_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '60,90,120', sizes: '100px', alt: 'Avatar' }}
+                </div>
+              {%- endif -%}
+
+              <div class="hb-grillbot-review-section__copy">
+                {%- if section.settings.review_text != blank -%}
+                  <p class="hb-grillbot-review-section__quote">{{ section.settings.review_text | escape | newline_to_br }}</p>
+                {%- endif -%}
+                {%- if section.settings.review_author != blank -%}
+                  <div class="hb-grillbot-review-section__author">{{ section.settings.review_author | escape }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- if section.settings.review_button_text != blank -%}
+              <div class="hb-grillbot-review-section__cta">
+                <a href="{{ section.settings.review_button_link }}" class="hb-grillbot-review-section__scroll-top" type="button" data-hb-scroll-top aria-label="Scroll to top">
+                  <span>{{ section.settings.review_button_text | escape }}</span>
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+
+  {% endif %}
+
+  {% comment %} <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+
+      var btn = root.querySelector('[data-hb-scroll-top]');
+      if (!btn) return;
+
+      btn.addEventListener('click', function () {
+        try {
+          var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+        } catch (e) {
+          window.scrollTo(0, 0);
+        }
+      });
+    })();
+  </script> {% endcomment %}
+
+
+{% schema %}
+{
+  "name": "Grillbot - Review",
+  "class": "shopify-section--grillbot-review",
+  "disabled_on": {
+    "templates": ["password"]
+  },
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#181513"
+    },
+    {
+      "type": "color",
+      "id": "wrap_background",
+      "label": "Container background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#080808"
+    },
+     {
+      "type": "header",
+      "content": "Review Content"
+    },
+    {
+      "type": "textarea",
+      "id": "review_text",
+      "label": "Review Text",
+      "default": "This is the best grill cleaner I've ever used!"
+    },
+    {
+      "type": "text",
+      "id": "review_author",
+      "label": "Author Name",
+      "default": "Jane D."
+    },
+    {
+      "type": "header",
+      "content": "Avatar"
+    },
+    {
+      "type": "image_picker",
+      "id": "review_image",
+      "label": "Author Avatar"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "review_button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "review_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "padding-desktop-top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-desktop-bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-mobile-top",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-mobile-bottom",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Container padding"
+    },
+    {
+      "type": "range",
+      "id": "wrap-padding-desktop-top",
+      "label": "Container Padding Top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "wrap-padding-desktop-bottom",
+      "label": "Container Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "wrap-padding-mobile-top",
+      "label": "Container Padding Top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "wrap-padding-mobile-bottom",
+      "label": "Container Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grillbot - Review",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+

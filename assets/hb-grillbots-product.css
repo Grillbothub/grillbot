@@ -1,0 +1,895 @@
+/* Dedicated styles for grillbots product template */
+.hb-grillbot {
+  overflow-x: hidden;
+}
+.hb-grillbot .container{
+  max-width: 1440px !important;
+  padding: 0 32px !important;
+
+}
+.hb-grillbot .product-meta__reviews-badge .rating__caption{
+  font-size: 14px;
+  color: #525252;
+  line-height: 26px;
+}
+.hb-grillbot .shopify-section--header{
+  position:  relative !important;
+}
+.hb-grillbot cart-notification.cart-notification {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+/* @media screen and (min-width: 999px){
+section.custom-product-template--wrapper.custom-grillbot-product{
+  padding-top: 110px;
+}
+} */
+/* .hb-grillbot .anouncement-tabs .inner-tab{
+  background-color: #B6D22F !important;
+}
+.hb-grillbot .anouncement-tabs .inner-tab p{
+  color: #080808 !important;
+  font-size: 14px !important;
+  line-height: 31px;
+  font-weight: 400;
+} */
+  /* .hb-grillbot .header{background-color: #fff; color: #080808 ;} */
+
+
+.custom-grillbot-product{
+  padding-bottom: 80px;
+}
+.custom-grillbot-product.custom-product-template--wrapper .product__media-list-wrapper{
+  border-radius: 8px;
+}
+.custom-grillbot-product .product__thumbnail-list-inner .product__thumbnail{
+  border: 0;
+  border-radius: 8px;
+}
+.custom-grillbot-product .custom-product-thumbs button.product__thumbnail-item{
+  padding: 2px;
+}
+.custom-grillbot-product .product__media-nav{
+  margin-top: 2px;
+}
+.custom-grillbot-product.custom-product-template--wrapper .product__media-list button.flickity-button{
+  display: none;
+
+}
+.custom-grillbot-product .product__thumbnail-list-inner{
+  position: relative;
+}
+.custom-grillbot-product .product__thumbnail-list-inner .owl-nav{
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   z-index: 2;
+   display: flex;
+   justify-content: space-between;
+   left: 8px;
+   right: 8px;
+  
+}
+.custom-grillbot-product .product__thumbnail-list-inner .owl-nav button span{
+  width: 24px;
+  height: 24px;
+  background: url('https://cdn.shopify.com/s/files/1/0337/8629/files/Frame_3_1.svg?v=1778513532') no-repeat center center;
+  background-size: 100% 100%;
+  font-size: 0;
+  display: block;
+}
+.custom-grillbot-product .product__thumbnail-list-inner .owl-nav button.owl-prev{
+  transform: rotate(180deg);
+}
+@media only screen and (min-width: 1000px) {
+  section.custom-product-template--wrapper.custom-grillbot-product .product-template-block,section.custom-product-template--wrapper.custom-grillbot-product .product .product__info{
+    max-width: 48.7%;
+    position: sticky;
+    top: 10px;
+  }
+  section.custom-product-template--wrapper.custom-grillbot-product .product .product__info{
+    padding: 24px 16px 0 0;
+  }
+
+}
+.custom-product-template--wrapper.custom-grillbot-product h1.product-meta__title.heading.h3{
+  font-size: 52px;
+  line-height: 60px;
+  margin-bottom: 4px;
+  font-weight: 400;
+  color: #080808;
+}
+.custom-grillbot-product .product-meta__reference,.custom-grillbot-product .product-meta-description{
+  margin: 0;
+}
+.custom-grillbot-product .product-meta-description *{
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  margin: 0;
+  color: #080808;
+}
+.custom-grillbot-product .product-meta-description h2{
+  font-weight: 550;
+  margin: 0 0 8px;
+}
+.custom-grillbot-product .custom-product-information .product-form{
+  gap: 0;
+}
+.custom-grillbot-product .custom-price-wrapper{
+  padding: 24px 0 12px 0;
+  gap: 12px;
+}
+.custom-grillbot-product .price-list{
+  align-items: center;
+  gap: 12px;
+}
+.custom-grillbot-product .custom-product-information .product-meta__price-list-container span.price{
+  font-size: 24px;
+  line-height: 22px;
+  font-weight: 700;
+  color: #080808;
+  margin-right: 0 !important;
+}
+.custom-grillbot-product .custom-product-information .product-meta__price-list-container span.price.price--compare{
+  font-size: 16px;
+  color: #525252;
+  line-height: 20px;
+  order: -1;
+  font-weight: 400;
+}
+.custom-grillbot-product .custom-price-wrapper .label-list{
+ margin-left: 0;
+
+}
+.custom-grillbot-product .custom-price-wrapper .label-list .label--highlight{
+  background-color: #A10505;
+  font-size: 16px;
+  line-height: 22px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  height: 24px;
+}
+.custom-grillbot-product .custom-price-wrapper .product-sale-notice{
+ font-size: 12px;
+ font-style: italic;
+ color: #a10505;
+}
+.custom-grillbot-product .custom-price-wrapper .product-sale-notice__label{
+  font-weight: 500;
+}
+.custom-grillbot-product .custom-price-wrapper .product-sale-notice__text{
+  font-weight: 400;
+}
+.custom-grillbot-product .hb-main-icon-list {
+  padding: 12px 0 12px;
+}
+
+.custom-grillbot-product .hb-main-icon-list--desktop {
+  display: block;
+}
+
+.custom-grillbot-product .hb-main-icon-list--mobile {
+  display: none;
+}
+
+.custom-grillbot-product .hb-main-icon-list__heading {
+  margin: 0 0 10px;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.custom-grillbot-product .hb-main-icon-list__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 24px;
+}
+
+.custom-grillbot-product .hb-main-icon-list__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-grillbot-product .hb-main-icon-list__icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+}
+
+.custom-grillbot-product .hb-main-icon-list__icon img,
+.custom-grillbot-product .hb-main-icon-list__icon svg {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.custom-grillbot-product .hb-main-icon-list__text {
+  font-size: 16px;
+  line-height: 26px;
+  color: #080808;
+}
+.custom-grillbot-product .product-form__variants{
+  padding: 12px 0;
+}
+.custom-grillbot-product .product-form__option-info, .custom-grillbot-product .product-form__quantity-label{
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  color: #080808;
+}
+.custom-grillbot-product .product-form__option-selector.main-pick-your-setup-block .product-form__option-name{
+  font-size: 20px;
+  font-weight: 600;
+}
+.custom-grillbot-product .product-form__option-info .product-form__option-name{
+  font-weight: 700;
+}
+.custom-grillbot-product .product-form__option-info .product-form__option-value{
+  color: #525252;
+}
+.custom-grillbot-product .variant-swatch__image{
+  width: 56px;
+  padding: 5px;
+}
+.custom-grillbot-product .variant-swatch__item, .custom-grillbot-product  .variant-swatch__image{
+  border-radius: 2px;
+}
+.custom-grillbot-product .variant-swatch__item{
+ border: 0;
+}
+.custom-grillbot-product .product-form__option-selector+.product-form__option-selector{
+  margin-top: 24px;
+}
+
+@media only screen and (max-width: 767px) {
+  .custom-grillbot-product .hb-main-icon-list--desktop {
+    display: none;
+  }
+
+  .custom-grillbot-product .hb-main-icon-list--mobile {
+    display: block;
+  }
+  .custom-grillbot-product .hb-main-icon-list__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-grillbot-product .hb-main-icon-list__text {
+    font-size: 16px;
+  }
+}
+
+/* Pick your setup cards (variant option) */
+.custom-grillbot-product .main-pick-your-setup-block .product-form__option-info{
+  margin-bottom: 12px;
+}
+.custom-grillbot-product .pick-your-setup-block {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  align-items: center;
+}
+
+@media only screen and (max-width: 767px) {
+  .custom-grillbot-product .pick-your-setup-block{
+    gap: 0;
+    padding-top: 10px;
+  }
+
+}
+
+.custom-grillbot-product .pick-your-setup-block .block-swatch {
+  margin: 0;
+}
+
+.custom-grillbot-product .pick-your-setup-block .block-swatch__item {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 1px solid #DCDCDC;
+  border-radius: 4px;
+  background: #fff;
+  min-height: 212px;
+  height: 100%;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch__item.most-popular{
+ border: 1px solid rgba(182, 210, 47, 0.50);
+
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .block-swatch__item{
+  padding-top: 4px;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch__item:after{
+  border-radius: 5px;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 212px;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__badge{
+  position: absolute;
+  top: -12px;
+  left: 23px;
+  right: 23px;
+  padding: 6px;
+  text-transform: uppercase;
+  z-index: 2;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+  border-radius: 100px;
+  background: #5C9410;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__badge::after{
+  content: '';
+  position: absolute;
+  background-image: url('https://cdn.shopify.com/s/files/1/0337/8629/files/Group_1000002752.svg?v=1778102044');
+  background-repeat: no-repeat;
+  background-position: center center;
+  top: -10px;
+  left: 97%;
+  width: 15px;
+  height: 14px;
+  background-size: 100% 100%;
+}
+
+.custom-grillbot-product .pick-your-setup-block span{
+  display: block;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-discount-badge{
+  position: absolute;
+  top: 10px;
+  right: 4px;
+  background: #A10505;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 5px 10px;
+  border-radius: 999px;
+  z-index: 2;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__image img {
+  width: 56px;
+  height: 56px;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .hb-setup-card__image img{
+  width: 68px;
+  height: 68px;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .hb-setup-card__image{
+  padding-bottom: 6px;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__content{
+  flex-grow: 1;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .hb-setup-card__content{
+  padding-bottom: 16px;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__title {
+  background-color: #F2F2F2;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 550;
+  padding: 4px;
+  display: block;
+  color: #080808;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch__radio:checked+.block-swatch__item .hb-setup-card__title{
+  background-color: #080808;
+  color: #fff;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch__item.most-popular .hb-setup-card__title{
+  font-size: 14px;
+  color: #080808;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(92, 148, 16, 0.00) 0%, rgba(92, 148, 16, 0.30) 100%);}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__design {
+  display: block;
+  font-size: 12px;
+  line-height: 1.25;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0 0 10px;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__features {
+  padding: 8px 6px 5px;
+  text-align: left;
+  display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__feature {
+  display: block;
+  font-size: 12px;
+  line-height: 14px;
+  color: #525252;
+  letter-spacing: -0.36px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__feature svg{
+  flex: 0 0 16px;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__prices {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 2px 6px 4px;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.20) 100%), #F2F2F2;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .hb-setup-card__prices{
+  padding: 4px 6px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(92, 148, 16, 0.00) 0%, rgba(92, 148, 16, 0.15) 100%);
+}
+
+.custom-grillbot-product .pick-your-setup-block .block-swatch:nth-child(2) .hb-setup-card__price{
+  color: #080808;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__price {
+  font-weight: 550;
+  font-size: 12px;
+  color: #A10505;
+}
+.custom-grillbot-product .pick-your-setup-block .block-swatch__radio:checked+.block-swatch__item .hb-setup-card__price {
+  color: #080808;
+}
+
+.custom-grillbot-product .pick-your-setup-block .hb-setup-card__compare {
+  font-weight: 300;
+  font-size: 10px;
+  color: #525252;
+  text-decoration: line-through;
+}
+
+/* ATC button price that won't disappear on re-render */
+.custom-grillbot-product .product-form__add-button.hb-atc-with-price:not([data-hb-atc-price=""])::after{
+  content: " | " attr(data-hb-atc-price);
+  font-size: 16px;
+  font-weight: 400;
+}
+.custom-grillbot-product .product-form__buy-buttons{
+  padding: 12px 0;
+}
+.custom-grillbot-product .custom-product-information .product-form .product-form__payment-container button.product-form__add-button{
+  display: flex;
+  justify-content: center;
+  font-size: 16px !important;
+  font-weight: 700;
+  gap: 8px;
+  text-transform: inherit !important;
+  background: rgb(var(--button-background));
+    color: rgb(var(--button-text-color));
+    height: 48px;
+}
+.custom-grillbot-product .hb-guarantee-box{
+  padding: 0 10px 10px;
+  max-width: 510px;
+  margin: 0 auto;
+}
+.custom-grillbot-product .hb-guarantee-list{
+  display: flex;
+  column-gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  line-height: 26px;
+  font-weight: 400;
+  color: #080808;
+}
+.custom-grillbot-product .hb-guarantee-list__item{
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.custom-grillbot-product .hb-guarantee-list__item .hb-guarantee-list__icon{
+  flex: 0 0 20px;
+  display: flex;
+}
+
+/* Gift box (metaobject-driven) */
+.custom-grillbot-product .hb-gift-box{
+ background-color: #F2F2F2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 4px;
+  padding: 0 16px;
+  margin: 12px auto 0;
+  width: 100%;
+}
+.custom-grillbot-product .hb-gift-box__badge{
+  max-width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+}
+.custom-grillbot-product .hb-gift-box__content{
+  font-size: 16px;
+  line-height: 22px;
+  color: #080808;
+}
+.custom-grillbot-product .hb-gift-box__title{
+  font-weight: 550;
+  margin-bottom: 4px;
+}
+.custom-grillbot-product .hb-gift-box__subtitle{
+ font-weight: 300;
+}
+
+/* Review box */
+.custom-grillbot-product .hb-review-box{
+  background: #F2F2F2;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 24px auto 0;
+  max-width: 100%;
+  width: 100%;
+}
+.custom-grillbot-product .hb-review-box__stars img{
+  display: block;
+  height: 14px;
+  width: auto;
+  margin: 6px 0;
+}
+.custom-grillbot-product .hb-review-box__title{
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 22px;
+  color: #080808;
+}
+.custom-grillbot-product .hb-review-box__text{
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #080808;
+}
+.custom-grillbot-product .hb-review-box__author{
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 22px;
+  color: #525252;
+}
+
+/* Trusted strip */
+.custom-grillbot-product .hb-trusted-strip{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #F2F2F2;
+  border-radius: 8px;
+  padding: 0 8px 0 20px;
+  margin: 24px auto 4px;
+  max-width: 100%;
+  width: 100%;
+}
+.custom-grillbot-product .hb-trusted-strip__text{
+  font-size: 18px;
+  line-height: 26px;
+  color: #080808;
+  font-weight: 400;
+}
+.custom-grillbot-product .hb-trusted-strip__badge{
+  flex: 0 0 74px;
+}
+.custom-grillbot-product .hb-trusted-strip__badge img{
+  display: block;
+  max-width: 100%;
+}
+
+
+.custom-grillbot-product .hb-accordion{
+ padding: 20px 0;
+ border-bottom: 1px dashed #D6D8D4;
+}
+.custom-grillbot-product .hb-accordion + .hb-accordion{
+  margin-top: 8px;
+}
+.custom-grillbot-product .hb-accordion[open] .hb-accordion__summary svg{
+  transform: rotate(180deg);
+}
+.custom-grillbot-product .hb-accordion__summary{
+  cursor: pointer;
+  font-weight: 550;
+  font-size: 18px;
+  line-height: 22px;
+  color: #080808;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+.custom-grillbot-product .hb-accordion__content{
+  margin-top: 16px;
+  color: #080808;
+  font-size: 16px;
+  line-height: 26px;
+}
+.custom-grillbot-product .hb-accordion__content p{
+  margin: 0 !important;
+  padding: 8px 0 0 !important;
+}
+.custom-grillbot-product .hb-accordion__content ul{
+  margin-block: 8px 0 !important;
+}
+.custom-grillbot-product .hb-accordion__content ul li{
+  list-style: disc;
+  padding: 0;
+}
+.custom-grillbot-product .hb-hot-picks{
+  margin: 24px 0 0;
+}
+.custom-grillbot-product .hb-hot-picks__heading{
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 550;
+  color: #080808;
+  margin: 0 0 16px;
+}
+.custom-grillbot-product .hb-hot-picks__list{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.custom-grillbot-product .hb-hot-picks__item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px 8px 8px;
+  border-radius: 4px;
+  background: #F2F2F2;
+}
+.custom-grillbot-product .hb-hot-picks__item .bss_pl_img .bss_parent_text {
+  display: none !important;
+}
+.custom-grillbot-product .hb-hot-picks__media{
+ flex: 0 0 80px;
+  display: block;
+  overflow: hidden;
+  background: #fff;
+}
+.custom-grillbot-product .hb-hot-picks__info{
+  flex-grow: 1;
+}
+.custom-grillbot-product .hb-hot-picks__title{
+  display: block;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 550;
+  color: #080808;
+  text-decoration: none;
+}
+.custom-grillbot-product .hb-hot-picks__prices{
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin-top: 10px;
+}
+.custom-grillbot-product .hb-hot-picks__compare{
+  font-size: 14px;
+  line-height: 22px;
+  color: #525252;
+  text-decoration: line-through;
+}
+.custom-grillbot-product .hb-hot-picks__price{
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+  color: #080808;
+}
+.custom-grillbot-product .hb-hot-picks__cta{
+  width: 100%;
+  max-width: 120px;
+}
+.custom-grillbot-product .hb-hot-picks__add.button{
+  background: #B6D22F;
+  color: #080808;
+  border-radius: 999px;
+  padding: 9px 18px;
+  min-height: 40px;
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+  line-height: 22px;
+  font-weight: 700;
+  text-transform: none;
+  width: 100%;
+}
+.custom-grillbot-product .hb-hot-picks__add.button[disabled]{
+  opacity: 0.55;
+}
+
+/* Gift badge on product gallery */
+.custom-grillbot-product .product-template-block{
+  position: relative;
+}
+.custom-grillbot-product .hb-gift-badge{
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  pointer-events: none;
+  background-color: #08080899;
+  border-radius: 50%;
+}
+.custom-grillbot-product .hb-gift-badge img{
+  display: block;
+  width: 132px;
+  height: auto;
+}
+.custom-grillbot-product #redo-checkbox{
+  display: none;
+}
+@media screen and (max-width: 1199px){
+  .hb-grillbot .container{
+    padding: 0 16px !important;
+  }
+  .custom-grillbot-product .hb-gift-badge{
+    max-width: 116px;
+    left: 10px;
+    top: 10px;
+  }
+  .custom-grillbot-product{
+    padding-bottom: 50px;
+  }
+}
+@media screen and (min-width: 991px) {
+  .custom-grillbot-product .custom-product-thumbs button.product__thumbnail-item, .custom-grillbot-product .custom-product-thumbs .owl-item{
+    width: 168px !important;
+  }
+  .custom-product-template--wrapper.custom-grillbot-product .owl-item{
+    width: 168px !important;
+  }
+}
+
+@media screen and (max-width: 999px){
+  .custom-grillbot-product .product__thumbnail-list-inner .owl-nav{
+    left: 42px;
+    right: 42px;
+  }
+  .custom-grillbot-product .product .product__info{
+    padding-top: 16px;
+  }
+}
+
+@media screen and (max-width: 767px){
+
+  .custom-grillbot-product .product__thumbnail-list-inner .owl-nav{
+    left: 28px;
+    right: 26px;
+  }
+  section.custom-product-template--wrapper.custom-grillbot-product .product .product__info{
+    margin-top: 0 !important;
+  }
+  .custom-product-template--wrapper.custom-grillbot-product h1.product-meta__title.heading.h3{
+    font-size: 35px;
+    line-height: 40px;
+    height: 40px;
+    overflow: hidden;
+  }
+  .custom-grillbot-product .custom-product-information .product-form .product-spec.product-meta-description,.custom-grillbot-product .custom-product-information .product-form .product-form__buy-buttons,.custom-product-template--wrapper.custom-grillbot-product .product-meta__price-list-container.custom-price-wrapper .product-meta__label-list.label-list,.custom-product-template--wrapper.custom-grillbot-product .product-meta__price-list-container.custom-price-wrapper .price-list{
+    order: 0;
+  }
+  .custom-product-template--wrapper.custom-grillbot-product .product-meta__price-list-container.custom-price-wrapper{
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    padding: 8px 0 8px;
+  }
+  .custom-grillbot-product .hb-main-icon-list{
+    padding: 8px 0 8px;
+  }
+  .custom-grillbot-product .pick-your-setup-block .hb-setup-card__image{
+    padding: 6px;
+  }
+  .custom-grillbot-product .pick-your-setup-block .hb-setup-card__badge{
+    padding: 4px;
+    font-size: 11px;
+    left: 3%;
+    right: 3%;
+  }
+  .custom-grillbot-product .hb-guarantee-box{
+    padding-inline: 0;
+  }
+  .custom-grillbot-product .hb-gift-box{
+    margin-top: 10px;
+    gap: 8px;
+  }
+  .custom-grillbot-product .hb-gift-box__title{
+    margin-bottom: 0;
+  }
+  .custom-grillbot-product .hb-gift-box .hb-gift-box__subtitle{
+    font-size: 14px;
+  }
+  .custom-grillbot-product .hb-trusted-strip__text{
+    font-size: 16px;
+  }
+  .custom-grillbot-product .hb-hot-picks__price{
+    font-size: 16px;
+  }
+  .custom-grillbot-product .hb-hot-picks__cta{
+    max-width: 108px;
+  }
+  .custom-grillbot-product{
+    padding-bottom: 36px;
+  }
+  .custom-grillbot-product .pick-your-setup-block .hb-discount-badge{
+    top: -12px;
+        right: auto;
+        left: 24%;
+  }
+}
+.custom-grillbot-product .htusb-ui-prod-boost-under-form-wrapper,.custom-grillbot-product .custom-product-information .mobile-show{
+  display: none;
+}
+
+section.section.review-section-header {
+  padding-bottom: 0;
+  border: 0;
+}
+
+.review-section-header .heading {
+  font-size: 52px;
+  font-weight: 400;
+  font-family: Anton !important;
+  line-height: 60px;
+  color: #080808;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 767px){
+  .review-section-header .heading {
+    font-size: 38px;
+    line-height: 44px;
+    letter-spacing: -0.8px;
+  }
+
+  section.section.review-section-header {
+    padding-top: 40px;
+  }
+  .custom-grillbot-product .hb-hot-picks__prices{
+    flex-wrap: wrap;
+    gap: 0 8px;
+  }
+  .custom-grillbot-product .hb-hot-picks__item{
+    gap: 6px;
+  }
+  .custom-grillbot-product .custom-product-information .product-form .product-spec.product-meta-description{
+    display: none;
+  }
+}
+@media screen and (max-width: 425px){
+  .custom-grillbot-product .pick-your-setup-block .hb-setup-card__prices{
+    flex-wrap: wrap;
+    gap: 0 2px;
+  }
+}

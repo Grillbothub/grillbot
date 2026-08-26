@@ -1,0 +1,171 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message_rUtwmn": {
+          "type": "message",
+          "settings": {
+            "text": "20% OFF Grillbots, FlipTray and HeatShields + FREE Basting Brush! NO CODE NEEDED",
+            "learn_more_text": "Learn more",
+            "title": "",
+            "content": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "message_3RkciG": {
+          "type": "message",
+          "disabled": true,
+          "settings": {
+            "text": "Announce something here",
+            "learn_more_text": "Learn more",
+            "title": "",
+            "content": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "message_6YHdFD": {
+          "type": "message",
+          "disabled": true,
+          "settings": {
+            "text": "Get $20 Off Grillbots & a FREE Patriot Skin | Use Code 'AMERICA20' at Checkout!",
+            "learn_more_text": "Learn more",
+            "title": "",
+            "content": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "message_mUDA7g": {
+          "type": "message",
+          "disabled": true,
+          "settings": {
+            "text": "Celebrate Mom: Get 15% Off Grillbots & a FREE Basting Brush | Use Code 'DEARMOM15' at Checkout!",
+            "learn_more_text": "Learn more",
+            "title": "",
+            "content": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "message_rUtwmn",
+        "message_3RkciG",
+        "message_6YHdFD",
+        "message_mUDA7g"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "announcement-bar-item {font-weight: 900;}",
+        "announcement-bar-item {font-family: unbounded }",
+        "announcement-bar{background-image: url(\"https://cdn.shopify.com/s/files/1/0337/8629/files/ezgif-1-92d732dbf0.gif?v=1717277118\");"
+      ],
+      "settings": {
+        "announcement_bar_position": "sticky_desktop",
+        "announcement_text_size": "large",
+        "autoplay": true,
+        "cycle_speed": 5,
+        "background": "#ffffff",
+        "text_color": "#ffffff",
+        "button_background": "#de2a2a",
+        "button_text_color": "#ffffff"
+      }
+    },
+    "bc678a79-37a2-47e2-8b10-131c12c79d09": {
+      "type": "announcement-tabs",
+      "blocks": {
+        "235046b0-f5aa-443e-858b-15e83a456139": {
+          "type": "block",
+          "settings": {
+            "svg_icon": "",
+            "slide_text": "FATHER'S DAY SALE! 20% OFF sitewide + Father's Day bundle is 25% OFF | No Code Needed",
+            "url_link": "shopify://collections/the-new-bundle-collection",
+            "bg_color_tab": "#b6d22f",
+            "bg_color_text": "#000000"
+          }
+        },
+        "9d8199f8-a63b-4295-b42f-0e858f503c2e": {
+          "type": "block",
+          "settings": {
+            "svg_icon": "",
+            "slide_text": "FATHER'S DAY BUNDLE IS 25% OFF",
+            "url_link": "shopify://collections/all",
+            "bg_color_tab": "#b7d22e",
+            "bg_color_text": "#282828"
+          }
+        },
+        "7c1d29f6-b4eb-4f18-b7ef-85cb348a2af0": {
+          "type": "block",
+          "disabled": true,
+          "settings": {
+            "svg_icon": "",
+            "slide_text": "Hurry, your pot of gold awaits! 🍀 Use Code: \"GREEN24\" at Checkout!",
+            "url_link": "shopify://collections/all",
+            "bg_color_tab": "#187001",
+            "bg_color_text": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "235046b0-f5aa-443e-858b-15e83a456139",
+        "9d8199f8-a63b-4295-b42f-0e858f503c2e",
+        "7c1d29f6-b4eb-4f18-b7ef-85cb348a2af0"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "p {font-size: 14px; font-weight: 400; text-transform: capitalize;}",
+        "p b {font-weight: 700;}",
+        "@media screen and (max-width: 767px) {p {font-size: 12px; }}"
+      ],
+      "settings": {
+        "sticky_on_contact": true,
+        "enable_slider": true,
+        "autoplay": true,
+        "slide_show": 1,
+        "speed": 5
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "enable_sticky_header": true,
+        "logo": "shopify://shop_images/logo_bcb999fa-4629-4891-9bda-0554c1dfb577.png",
+        "logo_max_width": 200,
+        "mobile_logo_max_width": 145,
+        "navigation_menu": "new-left-menu-copy",
+        "navigation_menu_left": "",
+        "sidebar_navigation_menu": "mobile-menu",
+        "header_layout": "logo_left_navigation_center",
+        "show_icons": false,
+        "reduce_desktop_padding": false,
+        "show_locale_selector": false,
+        "show_country_selector": false,
+        "enable_transparent_header": false,
+        "transparent_header_text_color": "#ffffff",
+        "transparent_logo": "shopify://shop_images/logo_bcb999fa-4629-4891-9bda-0554c1dfb577.png",
+        "show_newsletter": false,
+        "search_menu": "",
+        "sticky_on_contact": false
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "bc678a79-37a2-47e2-8b10-131c12c79d09",
+    "header"
+  ]
+}

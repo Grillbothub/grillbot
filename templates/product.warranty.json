@@ -1,0 +1,328 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "contentSize": 16,
+            "pattern": "",
+            "hideText": false,
+            "alignment": "",
+            "textColor": "",
+            "starColor": "",
+            "showAllReviews": false,
+            "looxOpenFloatingWidget": false,
+            "emptyRatingWidget": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "selector_mode": "block",
+            "color_mode": "color",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": true,
+            "show_quantity": true,
+            "show_description": false
+          }
+        },
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343": {
+          "type": "warranty_products",
+          "disabled": true,
+          "settings": {
+            "heading": "Add Warranty",
+            "warranty_products_list": "{{ product.metafields.custom.warranty_card.value }}"
+          }
+        },
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16": {
+          "type": "additional_bundles",
+          "disabled": true,
+          "settings": {
+            "heading": "Additional Bundles",
+            "additional_bundles_list": "{{ product.metafields.custom.additional_bundles.value }}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": false,
+            "atc_button_background": "#de2a2a",
+            "atc_button_text_color": "#ffffff",
+            "buy_now_button_background": "rgba(0,0,0,0)",
+            "buy_now_button_text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": false,
+            "show_quantity": false,
+            "show_description": true
+          }
+        },
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7": {
+          "type": "buy_prime",
+          "settings": {
+            "show_prime_btn": false
+          }
+        },
+        "3091ed18-4ed2-4bae-892f-ef2d8733c971": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0",
+        "variant_picker",
+        "quantity_selector",
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343",
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16",
+        "buy_buttons",
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824",
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7",
+        "3091ed18-4ed2-4bae-892f-ef2d8733c971"
+      ],
+      "settings": {
+        "show_vendor": false,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "show_product_rating": false,
+        "show_sticky_add_to_cart": false,
+        "show_share_buttons": false,
+        "help_page": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "show_thumbnails_on_mobile": true,
+        "desktop_thumbnails_position": "bottom",
+        "transition_effect": "slide"
+      }
+    },
+    "judgeme_section_review_widget_0700": {
+      "type": "apps",
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
+    "70326c79-5721-4f5c-851a-ff4b9da90f06": {
+      "type": "product-image-with-text",
+      "blocks": {
+        "fdc47278-6498-403d-b3f3-b44c9d0e342e": {
+          "type": "content_with_image",
+          "settings": {
+            "position": "left",
+            "image": "shopify://shop_images/1few_2_2222b853-7f7a-47f0-8007-3c7e672d4e64.png",
+            "heading": "C'MON, YOU KNOW <br>YOU WANT ONE",
+            "subheading": "Grillbot is powerful, convenient, and better than other methods.",
+            "svg_icon_1": "shopify://shop_images/battery-charging.svg",
+            "svg_text_1": "Rechargeable and replaceable  li-ion battery",
+            "svg_icon_2": "shopify://shop_images/Group_50.svg",
+            "svg_text_2": "Three powerful motors",
+            "svg_icon_3": "shopify://shop_images/Group_51.svg",
+            "svg_text_3": "Plug n’-play replacement parts",
+            "svg_icon_4": "shopify://shop_images/Group_52.svg",
+            "svg_text_4": "Great gift idea for birthdays,  holidays, housewarming parties",
+            "svg_icon_5": "shopify://shop_images/Group_54.svg",
+            "svg_text_5": "Super easy to clean with dishwasher safe quick-release brushes",
+            "svg_icon_6": "shopify://shop_images/Group.svg",
+            "svg_text_6": "Great solution for tailgating  parties, backyard BBQ’s, and more...",
+            "button_text_1": "",
+            "button_link_1": "",
+            "first_button_color": "#ffffff",
+            "first_button_bg": "#ffffff",
+            "button_type1": false,
+            "button_text_2": "",
+            "button_link_2": "",
+            "second_button_color": "#ffffff",
+            "second_button_bg": "#ffffff",
+            "button_type2": false
+          }
+        }
+      },
+      "block_order": [
+        "fdc47278-6498-403d-b3f3-b44c9d0e342e"
+      ],
+      "settings": {
+        "section_upper_overlap": false,
+        "overlap_color": "#ffffff",
+        "reveal_on_scroll": true
+      }
+    },
+    "44f03b59-6acd-4a2c-a293-03c12d0ebe69": {
+      "type": "image-with-pointers",
+      "blocks": {
+        "b8046ec0-cfbe-4621-bcc5-4a082ebfe6d8": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>THREE STRONG ELECTRIC MOTORS:</strong></p><p>The Grillbot is equipped with three<br/>high-power electric motors.</p>"
+          }
+        },
+        "4ac2f737-9bd8-41cf-8186-5d03260192d8": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>REPLACEABLE BRUSHES:</strong></p><p>Brushes pop right off for easy<br/>cleaning and are dishwasher safe.</p>"
+          }
+        },
+        "a34fc1b5-98b3-42b1-9b2e-e772f5331b2a": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>LCD ALARM & TIMER: </strong></p><p>Set it and forget it. Grillbot's smart <br/>and will notify you when finished.</p>"
+          }
+        },
+        "5aeb18cf-b0bb-4ea7-8cdd-d6d7db4f3314": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>SMART BRAIN: </strong></p><p>The Grillbot is driven by a sophisticated<br/>CPU chip that controls the movement, speed,<br/>and direction of the brushes.</p>"
+          }
+        },
+        "48a3bf0d-b626-4b05-9ab5-e1c22f09cff7": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>RECHARGEABLE BATTERY:</strong></p><p>Rechargeable Lithium Ion <br/>Battery (included).</p>"
+          }
+        },
+        "464ccfcd-8e5f-49d7-bc36-3977ec90625f": {
+          "type": "block",
+          "settings": {
+            "pointer_text": "<p><strong>PUSH-BUTTON OPERATION: </strong></p><p>So simple, anyone can do it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b8046ec0-cfbe-4621-bcc5-4a082ebfe6d8",
+        "4ac2f737-9bd8-41cf-8186-5d03260192d8",
+        "a34fc1b5-98b3-42b1-9b2e-e772f5331b2a",
+        "5aeb18cf-b0bb-4ea7-8cdd-d6d7db4f3314",
+        "48a3bf0d-b626-4b05-9ab5-e1c22f09cff7",
+        "464ccfcd-8e5f-49d7-bc36-3977ec90625f"
+      ],
+      "settings": {
+        "reveal_on_scroll": true,
+        "section_height": "auto",
+        "media_type": "image",
+        "image": "shopify://shop_images/Rectangle_3.jpg",
+        "image_mobile": "shopify://shop_images/Rectangle_3_1.jpg",
+        "video": "",
+        "video_sizing": "cover",
+        "subheading": "Six reasons grill  cleaning has  never been easier:",
+        "background_type": "full_width",
+        "text_width": "medium",
+        "text_position": "top_left",
+        "text_color": "#ffffff",
+        "button_background": "#ffffff",
+        "button_text_color": "#000000",
+        "overlay_color": "#000000",
+        "pointer_color": "#000000",
+        "pointer_bg": "#ffffff",
+        "overlay_opacity": 0,
+        "custom_section_class": ""
+      }
+    },
+    "product-content": {
+      "type": "product-content",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "description"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "8db931f5-896c-4534-a0a6-151cb5f3c60f": {
+      "type": "featured-collections",
+      "blocks": {
+        "template--14590306353215__8db931f5-896c-4534-a0a6-151cb5f3c60f-168302975745bd90e9-0": {
+          "type": "collection",
+          "settings": {
+            "collection": "brushes-accessories",
+            "label": "",
+            "button_text": "",
+            "button_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--14590306353215__8db931f5-896c-4534-a0a6-151cb5f3c60f-168302975745bd90e9-0"
+      ],
+      "settings": {
+        "subheading": "Shop Grillbot Accessories ",
+        "title": "",
+        "content": "",
+        "heading_align": "left",
+        "products_count": 4,
+        "products_per_row": 4,
+        "stack_products": true,
+        "show_cta": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "subheading": "Similar items",
+        "title": "",
+        "text_alignment": "left",
+        "recommendations_count": 4,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "loox-product-reviews-app-section": {
+      "type": "apps",
+      "blocks": {
+        "loox-product-reviews": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "loox-product-reviews"
+      ],
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "judgeme_section_review_widget_0700",
+    "70326c79-5721-4f5c-851a-ff4b9da90f06",
+    "44f03b59-6acd-4a2c-a293-03c12d0ebe69",
+    "product-content",
+    "8db931f5-896c-4534-a0a6-151cb5f3c60f",
+    "product-recommendations",
+    "loox-product-reviews-app-section"
+  ]
+}

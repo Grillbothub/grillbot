@@ -1,0 +1,799 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "grillbot-product",
+      "blocks": {
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
+          "settings": {
+            "contentSize": 16,
+            "pattern": "",
+            "hideText": false,
+            "alignment": "",
+            "layout": "",
+            "textColor": "",
+            "starColor": "",
+            "showAllReviews": false,
+            "looxOpenFloatingWidget": false,
+            "emptyRatingWidget": false
+          }
+        },
+        "short_desc_WCmjRF": {
+          "type": "short_desc",
+          "settings": {
+            "short_desc": ""
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "selector_mode": "block",
+            "color_mode": "block",
+            "size_chart_page": ""
+          }
+        },
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343": {
+          "type": "warranty_products",
+          "settings": {
+            "heading": "Add Warranty",
+            "warranty_products_list": "{{ product.metafields.custom.warranty_card.value }}"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": true,
+            "show_quantity": true,
+            "show_description": false
+          }
+        },
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16": {
+          "type": "additional_bundles",
+          "settings": {
+            "heading": "Choose Free Gift (Apply Code at Checkout)",
+            "additional_bundles_list": "{{ product.metafields.custom.additional_bundles.value }}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": false,
+            "atc_button_background": "#de2a2a",
+            "atc_button_text_color": "#ffffff",
+            "buy_now_button_background": "rgba(0,0,0,0)",
+            "buy_now_button_text_color": "rgba(0,0,0,0)"
+          }
+        },
+        "liquid_iDRXrL": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "<div class=\"shipping-line\">Order in time for spring grilling season!</div>"
+          }
+        },
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824": {
+          "type": "quantity_selector",
+          "settings": {
+            "show_price": false,
+            "show_quantity": false,
+            "show_description": true
+          }
+        },
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7": {
+          "type": "buy_prime",
+          "settings": {
+            "show_prime_btn": false
+          }
+        }
+      },
+      "block_order": [
+        "3c423801-4a43-4da1-a0b5-c9c81fb2a5c0",
+        "short_desc_WCmjRF",
+        "variant_picker",
+        "2cd84bfa-76f6-4308-8769-ae0b7a7a0343",
+        "quantity_selector",
+        "7ab618e7-3cd9-4b07-b2e3-46bb762a2b16",
+        "buy_buttons",
+        "liquid_iDRXrL",
+        "84e92bb4-3c41-4369-a7e8-65c01d39a824",
+        "82b95dd9-3a05-4101-a9b2-b2a5cb383ce7"
+      ],
+      "settings": {
+        "show_vendor": false,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "show_product_rating": false,
+        "show_sticky_add_to_cart": false,
+        "show_share_buttons": false,
+        "help_page": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "show_thumbnails_on_mobile": true,
+        "desktop_thumbnails_position": "bottom",
+        "transition_effect": "slide"
+      }
+    },
+    "judgeme_section_review_widget_0700": {
+      "type": "apps",
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
+    "product-content": {
+      "type": "product-content",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "description"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "explore_products_UPRag9": {
+      "type": "explore-products",
+      "disabled": true,
+      "name": "Explore Products",
+      "settings": {
+        "css_class": "",
+        "subheading": "Explore",
+        "title": "Grillbot Best Sellers",
+        "content": "",
+        "heading_align": "left",
+        "products_count": 8,
+        "products_per_row": 4,
+        "stack_products": false,
+        "show_cta": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "custom_liquid_xV8BJY": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "subheading": "",
+        "title": "",
+        "liquid": "<p style=\"text-align: center\">{% if product %}\n<script>\nwindow.addEventListener('load', function() {\nvar _learnq = window._learnq || [];\nfunction addedToCart() {\n  fetch(`${window.location.origin}/cart.js`)\n  .then(res => res.clone().json().then(data => {\n    var cart = {\n      total_price: data.total_price/100,\n      $value: data.total_price/100,\n      total_discount: data.total_discount,\n      original_total_price: data.original_total_price/100,\n      items: data.items\n    }\n    if (item !== 'undefined') {\n      cart = Object.assign(cart, item)\n    }\n    if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', cart]);\n        klAjax = false;\n      }\n  }))\n};\n(function (ns, fetch) {\n  ns.fetch = function() {\n    const response = fetch.apply(this, arguments);\n    response.then(res => {\n      if (`${window.location.origin}/cart/add.js`\n      \t.includes(res.url)) {\n        \taddedToCart()\n      }\n    });\n    return response\n  }\n}(window, window.fetch));\nvar klAjax = true;\nvar atcButtons = document.querySelectorAll(\"form[action*='/cart/add'] button[type='submit']\");\nfor (var i = 0; i < atcButtons.length; i++) {\n    atcButtons[i].addEventListener(\"click\", function() {\n      if (klAjax) {\n        _learnq.push(['track', 'Added to Cart', item]);\n        klAjax = false;\n      }\n    })\n}\n});\n</script>{% endif %}</p>",
+        "add_vertical_spacing": true,
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "pdp_how_to_use_MajNBg": {
+      "type": "pdp-how-to-use",
+      "name": "PDP How To Use",
+      "settings": {
+        "css_class": "home-how-to-use-section",
+        "reveal_on_scroll": true,
+        "stack_items": true,
+        "subheading": "Subheading",
+        "title": "Multi-column",
+        "content": "",
+        "button_text": "",
+        "button_url": "#",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "large",
+        "spacing": "tight",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "multi_column_ybU4Dz": {
+      "type": "multi-column",
+      "blocks": {
+        "item_yrJQH4": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "<p>Grillbot comes with Nylon brushes that work on any grate type.</p>",
+            "html_content": "<div class=\"box-number\">1</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_YnELEP": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_1.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Press the Button",
+            "content": "<p>Grillbot comes with set run cycles, choose length and run it.</p>",
+            "html_content": "<div class=\"box-number\">2</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_WkXQeU": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_209_2.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Walk Away",
+            "content": "<p>Auto shutoff when it’s done.  That’s it!</p>",
+            "html_content": "<div class=\"box-number\">3</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_yrJQH4",
+        "item_YnELEP",
+        "item_WkXQeU"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "home-how-to-use-section",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "how to use",
+        "title": "Push Button Operation",
+        "content": "",
+        "button_text": "See How it Works",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "large",
+        "spacing": "tight",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "video_qbEpgA": {
+      "type": "video",
+      "name": "Video",
+      "settings": {
+        "css_class": "grillbot-prouct-video",
+        "subheading": "{{ product.metafields.custom.video_section.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.video_section.value.title.value }}",
+        "video": "{{ product.metafields.custom.video_section.value.video.value }}",
+        "video_url": "",
+        "background_type": "full_width",
+        "video_size": "auto",
+        "autoplay": true,
+        "show_video_controls": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": "https://cdn.shopify.com/videos/c/o/v/bea9a00f237f46db965f4d92b993d5ae.webm"
+      }
+    },
+    "pdp_image_with_points_8ymA4c": {
+      "type": "pdp-image-with-points",
+      "name": "PDP Image With Points",
+      "settings": {
+        "css_class": "home-scrubbing-section grillbot-product",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "{{ product.metafields.custom.image_with_points.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.image_with_points.value.title.value }}",
+        "content": "<p>     </p>",
+        "button_text": "",
+        "button_url": "#",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "tight",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": "https://cdn.shopify.com/videos/c/o/v/b1780016e1eb414298e7f7ffb34d96c6.webm"
+      }
+    },
+    "multi_column_YMUUAd": {
+      "type": "multi-column",
+      "blocks": {
+        "item_yhnwFy": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Video-Grill_bot_6.png",
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "",
+            "html_content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_cUH8F7": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "",
+            "content": "",
+            "html_content": "<div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n          <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"white\"></circle>\n<mask id=\"mask0_808_4240\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_808_4240)\">\n<path d=\"M28.9355 19.5176C28.9355 19.5176 29.7607 19.5176 29.9355 19.5176H33.9355C34.2189 19.5176 34.4568 19.613 34.6484 19.8047C34.8401 19.9964 34.9355 20.2342 34.9355 20.5176C34.9355 20.8009 34.8401 21.0388 34.6484 21.2305C34.4568 21.4221 34.2189 21.5176 33.9355 21.5176H30.9355V23.5176H33.9355C34.2189 23.5176 34.4568 23.613 34.6484 23.8047C34.8401 23.9964 34.9355 24.2342 34.9355 24.5176C34.9355 24.8009 34.8401 25.0388 34.6484 25.2305C34.4568 25.4221 34.2189 25.5176 33.9355 25.5176H30.9355V27.5176H33.9355C34.2189 27.5176 34.4568 27.613 34.6484 27.8047C34.8401 27.9964 34.9355 28.2342 34.9355 28.5176C34.9355 28.8009 34.8401 29.0388 34.6484 29.2305C34.4568 29.4221 34.2189 29.5176 33.9355 29.5176H30.9355V31.5176H33.9355C34.2189 31.5176 34.4568 31.613 34.6484 31.8047C34.8401 31.9964 34.9355 32.2342 34.9355 32.5176C34.9355 32.8009 34.8401 33.0388 34.6484 33.2305C34.4568 33.4221 34.2189 33.5176 33.9355 33.5176H30.9355V35.5176H33.9355C34.2189 35.5176 34.4568 35.613 34.6484 35.8047C34.8401 35.9964 34.9355 36.2342 34.9355 36.5176C34.9355 36.8009 34.8401 37.0388 34.6484 37.2305C34.4568 37.4221 34.2189 37.5176 33.9355 37.5176H29.9355C29.9355 37.5176 29.1105 37.5176 28.9355 37.5176H24.9355C24.6522 37.5176 24.4143 37.4221 24.2227 37.2305C24.031 37.0388 23.9355 36.8009 23.9355 36.5176C23.9355 36.2342 24.031 35.9964 24.2227 35.8047C24.4143 35.613 24.6522 35.5176 24.9355 35.5176H27.9355V33.5176H24.9355C24.6522 33.5176 24.4143 33.4221 24.2227 33.2305C24.031 33.0388 23.9355 32.8009 23.9355 32.5176C23.9355 32.2342 24.031 31.9964 24.2227 31.8047C24.4143 31.613 24.6522 31.5176 24.9355 31.5176H27.9355V29.5176H24.9355C24.6522 29.5176 24.4143 29.4221 24.2227 29.2305C24.031 29.0388 23.9355 28.8009 23.9355 28.5176C23.9355 28.2342 24.031 27.9964 24.2227 27.8047C24.4143 27.613 24.6522 27.5176 24.9355 27.5176H27.9355V25.5176H24.9355C24.6522 25.5176 24.4143 25.4221 24.2227 25.2305C24.031 25.0388 23.9355 24.8009 23.9355 24.5176C23.9355 24.2342 24.031 23.9964 24.2227 23.8047C24.4143 23.613 24.6522 23.5176 24.9355 23.5176H27.9355V21.5176H24.9355C24.6522 21.5176 24.4143 21.4221 24.2227 21.2305C24.031 21.0388 23.9355 20.8009 23.9355 20.5176C23.9355 20.2342 24.031 19.9964 24.2227 19.8047C24.4143 19.613 24.6522 19.5176 24.9355 19.5176H28.9355Z\" fill=\"#DE2A2C\"></path>\n</g>\n</svg>\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>Dishwasher safe brushes:</strong> Just pop in dishwasher after use.</p>\n          <p class=\"subtitle\"> </p>\n        </div>\n      </div>\n\n      <div class=\"divider\" role=\"separator\"></div>\n\n      <div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n          <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"white\"></circle>\n<mask id=\"mask0_808_2894\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_808_2894)\">\n<path d=\"M20.5 40.3332C19.3194 40.3332 18.316 39.92 17.4896 39.0936C16.6632 38.2672 16.25 37.2637 16.25 36.0832C16.25 34.9026 16.6632 33.8991 17.4896 33.0728C18.316 32.2464 19.3194 31.8332 20.5 31.8332C21.6806 31.8332 22.684 32.2464 23.5104 33.0728C24.3368 33.8991 24.75 34.9026 24.75 36.0832C24.75 37.2637 24.3368 38.2672 23.5104 39.0936C22.684 39.92 21.6806 40.3332 20.5 40.3332ZM37.5 40.3332C36.3194 40.3332 35.316 39.92 34.4896 39.0936C33.6632 38.2672 33.25 37.2637 33.25 36.0832C33.25 34.9026 33.6632 33.8991 34.4896 33.0728C35.316 32.2464 36.3194 31.8332 37.5 31.8332C38.6806 31.8332 39.684 32.2464 40.5104 33.0728C41.3368 33.8991 41.75 34.9026 41.75 36.0832C41.75 37.2637 41.3368 38.2672 40.5104 39.0936C39.684 39.92 38.6806 40.3332 37.5 40.3332ZM29 26.1665C27.8194 26.1665 26.816 25.7533 25.9896 24.9269C25.1632 24.1005 24.75 23.0971 24.75 21.9165C24.75 20.7359 25.1632 19.7325 25.9896 18.9061C26.816 18.0797 27.8194 17.6665 29 17.6665C30.1806 17.6665 31.184 18.0797 32.0104 18.9061C32.8368 19.7325 33.25 20.7359 33.25 21.9165C33.25 23.0971 32.8368 24.1005 32.0104 24.9269C31.184 25.7533 30.1806 26.1665 29 26.1665Z\" fill=\"#DE2A2C\"></path>\n</g>\n</svg>\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>Replaceable parts:</strong> Always ready for action.</p>\n        </div>\n      </div>\n\n      <div class=\"divider\" role=\"separator\"></div>\n\n      <div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n           <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"white\"></circle>\n<mask id=\"mask0_808_2924\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_808_2924)\">\n<path d=\"M18.9416 41.7502L18.7291 39.9439L18.4458 39.8022C18.3513 39.755 18.2215 39.6724 18.0562 39.5543L16.3562 40.2627L14.7979 37.571L16.2499 36.4731V35.7293L14.7979 34.596L16.3562 31.9043L18.0562 32.6127C18.1742 32.5418 18.2864 32.471 18.3926 32.4002C18.4989 32.3293 18.611 32.2703 18.7291 32.2231L18.9416 30.4168H22.0583L22.2708 32.2231L22.5541 32.3647C22.6013 32.3884 22.6604 32.4238 22.7312 32.471L22.9437 32.6127L24.6437 31.9043L26.202 34.596L24.7499 35.6939V36.4731L32.5062 31.9752L30.9124 34.7731L31.3374 35.0918L25.7416 38.3502L24.6437 40.2627L22.9437 39.5543C22.8256 39.6252 22.7135 39.696 22.6072 39.7668C22.501 39.8377 22.3888 39.8967 22.2708 39.9439L22.0583 41.7502H18.9416ZM20.4999 33.9585C19.9097 33.9585 19.4079 34.1651 18.9947 34.5783C18.5815 34.9915 18.3749 35.4932 18.3749 36.0835C18.3749 36.6738 18.5815 37.1755 18.9947 37.5887C19.4079 38.0019 19.9097 38.2085 20.4999 38.2085C21.0902 38.2085 21.5919 38.0019 22.0051 37.5887C22.4183 37.1755 22.6249 36.6738 22.6249 36.0835C22.6249 35.4932 22.4183 34.9915 22.0051 34.5783C21.5919 34.1651 21.0902 33.9585 20.4999 33.9585ZM26.0249 26.1668L25.8124 24.3606C25.7652 24.3134 25.7062 24.2779 25.6354 24.2543C25.5645 24.2307 25.5055 24.1953 25.4583 24.1481V31.9397L24.927 31.0189L23.3333 31.6918V24.4668L21.9166 21.9877L23.3333 20.8897V20.146L21.8812 19.0127L23.4395 16.321L25.1395 17.0293C25.2576 16.9585 25.3697 16.8877 25.476 16.8168C25.5822 16.746 25.6944 16.687 25.8124 16.6397L26.0249 14.8335H29.1416L29.3541 16.6397L29.6374 16.7814C29.7319 16.8286 29.8617 16.9113 30.027 17.0293L31.727 16.321L33.2854 19.0127L31.8333 20.1106V20.8543L33.2854 21.9877L31.727 24.6793L30.027 23.971C29.909 24.0418 29.7968 24.1127 29.6906 24.1835C29.5843 24.2543 29.4722 24.3134 29.3541 24.3606L29.1416 26.1668H26.0249ZM27.5833 18.3752C26.993 18.3752 26.4913 18.5818 26.0781 18.995C25.6649 19.4081 25.4583 19.9099 25.4583 20.5002C25.4583 21.0904 25.6649 21.5922 26.0781 22.0054C26.4913 22.4186 26.993 22.6252 27.5833 22.6252C28.1735 22.6252 28.6753 22.4186 29.0885 22.0054C29.5017 21.5922 29.7083 21.0904 29.7083 20.5002C29.7083 19.9099 29.5017 19.4081 29.0885 18.995C28.6753 18.5818 28.1735 18.3752 27.5833 18.3752ZM35.9416 41.7502L35.7291 39.9439L35.4458 39.8022C35.3513 39.755 35.2215 39.6724 35.0562 39.5543L33.3562 40.2627L31.7979 37.571L33.2499 36.4731V35.7293L31.7979 34.6314L33.3562 31.9043L35.0562 32.6127C35.127 32.5654 35.1742 32.5359 35.1979 32.5241L35.7291 32.2585L28.0791 26.8752H29.7791L29.9208 25.6002L36.827 30.4168H39.0583L39.2708 32.2231L39.5541 32.3647C39.6013 32.3884 39.6604 32.4238 39.7312 32.471L39.9437 32.6127L41.6437 31.9043L43.202 34.596L41.7499 35.6939V36.4377L43.202 37.571L41.6437 40.2627L39.9437 39.5543C39.8256 39.6252 39.7135 39.696 39.6072 39.7668C39.501 39.8377 39.3888 39.8967 39.2708 39.9439L39.0583 41.7502H35.9416ZM37.4999 33.9585C36.9097 33.9585 36.4079 34.1651 35.9947 34.5783C35.5815 34.9915 35.3749 35.4932 35.3749 36.0835C35.3749 36.6738 35.5815 37.1755 35.9947 37.5887C36.4079 38.0019 36.9097 38.2085 37.4999 38.2085C38.0902 38.2085 38.592 38.0019 39.0051 37.5887C39.4183 37.1755 39.6249 36.6738 39.6249 36.0835C39.6249 35.4932 39.4183 34.9915 39.0051 34.5783C38.592 34.1651 38.0902 33.9585 37.4999 33.9585Z\" fill=\"#DE2A2C\"></path>\n</g>\n</svg>\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>3 powerful motors:</strong> Deep-cleaning power for any grill.</p>\n        </div>\n      </div>\n\n      <div class=\"divider\" role=\"separator\"></div>\n\n      <div class=\"feature\">\n        <div class=\"icon\" aria-hidden=\"true\">\n            <svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"white\"></circle>\n<mask id=\"mask0_808_4644\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_808_4644)\">\n<path d=\"M28.9997 43.1668C27.04 43.1668 25.1983 42.795 23.4747 42.0512C21.7511 41.3075 20.2518 40.2981 18.9768 39.0231C17.7018 37.7481 16.6924 36.2488 15.9486 34.5252C15.2049 32.8016 14.833 30.9599 14.833 29.0002C14.833 27.0404 15.2049 25.1988 15.9486 23.4752C16.6924 21.7516 17.7018 20.2522 18.9768 18.9772C20.2518 17.7022 21.7511 16.6929 23.4747 15.9491C25.1983 15.2054 27.04 14.8335 28.9997 14.8335C30.9594 14.8335 32.8011 15.2054 34.5247 15.9491C36.2483 16.6929 37.7476 17.7022 39.0226 18.9772C40.2976 20.2522 41.307 21.7516 42.0507 23.4752C42.7945 25.1988 43.1663 27.0404 43.1663 29.0002C43.1663 30.9599 42.7945 32.8016 42.0507 34.5252C41.307 36.2488 40.2976 37.7481 39.0226 39.0231C37.7476 40.2981 36.2483 41.3075 34.5247 42.0512C32.8011 42.795 30.9594 43.1668 28.9997 43.1668ZM28.9997 40.3335C32.1636 40.3335 34.8434 39.2356 37.0393 37.0397C39.2351 34.8439 40.333 32.1641 40.333 29.0002C40.333 25.8363 39.2351 23.1564 37.0393 20.9606C34.8434 18.7647 32.1636 17.6668 28.9997 17.6668C25.8358 17.6668 23.1559 18.7647 20.9601 20.9606C18.7643 23.1564 17.6663 25.8363 17.6663 29.0002C17.6663 32.1641 18.7643 34.8439 20.9601 37.0397C23.1559 39.2356 25.8358 40.3335 28.9997 40.3335ZM28.9997 37.5002C31.3608 37.5002 33.3677 36.6738 35.0205 35.021C36.6733 33.3682 37.4997 31.3613 37.4997 29.0002C37.4997 27.796 37.2754 26.6804 36.8268 25.6533C36.3781 24.6262 35.7761 23.7349 35.0205 22.9793L33.0018 24.9981C33.5212 25.5175 33.9285 26.1196 34.2236 26.8043C34.5188 27.4891 34.6663 28.221 34.6663 29.0002C34.6663 30.5585 34.1115 31.8925 33.0018 33.0022C31.892 34.112 30.558 34.6668 28.9997 34.6668C27.4413 34.6668 26.1073 34.112 24.9976 33.0022C23.8879 31.8925 23.333 30.5585 23.333 29.0002C23.333 28.221 23.4806 27.4891 23.7757 26.8043C24.0709 26.1196 24.4781 25.5175 24.9976 24.9981L22.9788 22.9793C22.2233 23.7349 21.6212 24.6262 21.1726 25.6533C20.724 26.6804 20.4997 27.796 20.4997 29.0002C20.4997 31.3613 21.3261 33.3682 22.9788 35.021C24.6316 36.6738 26.6386 37.5002 28.9997 37.5002ZM27.583 29.0002H30.4163V20.5002H27.583V29.0002Z\" fill=\"#DE2A2C\"></path>\n</g>\n</svg>\n\n\n        </div>\n        <div class=\"text\">\n          <p class=\"title\"><strong>Auto shutoff: </strong> Set & forget operation.</p>\n        </div>\n      </div>",
+            "link_text": "SHOP NOW",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_yhnwFy",
+        "item_cUH8F7"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "home-scrubbing-section grillbot-product",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "Grillbot",
+        "title": "a powerful robot  that cleans your grill",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "large",
+        "spacing": "tight",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "pdp_key_points_mHRY6T": {
+      "type": "pdp-key-points",
+      "name": "PDP Key Points",
+      "settings": {
+        "css_class": "grillbot-productmaster-love",
+        "reveal_on_scroll": true,
+        "stack_items": false,
+        "subheading": "{{ product.metafields.custom.key_points_heading.value.sub_title.value }}",
+        "title": "{{ product.metafields.custom.key_points_heading.value.title.value }}",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "normal",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "multi_column_BYFgVP": {
+      "type": "multi-column",
+      "blocks": {
+        "item_HqaM94": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Push-button cleaning",
+            "content": "<p>Start a cleaning cycle in seconds</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<mask id=\"mask0_817_2765\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_817_2765)\">\n<path d=\"M28.9997 43.1668C27.04 43.1668 25.1983 42.795 23.4747 42.0512C21.7511 41.3075 20.2518 40.2981 18.9768 39.0231C17.7018 37.7481 16.6924 36.2488 15.9486 34.5252C15.2049 32.8016 14.833 30.9599 14.833 29.0002C14.833 27.0404 15.2049 25.1988 15.9486 23.4752C16.6924 21.7516 17.7018 20.2522 18.9768 18.9772C20.2518 17.7022 21.7511 16.6929 23.4747 15.9491C25.1983 15.2054 27.04 14.8335 28.9997 14.8335C30.9594 14.8335 32.8011 15.2054 34.5247 15.9491C36.2483 16.6929 37.7476 17.7022 39.0226 18.9772C40.2976 20.2522 41.307 21.7516 42.0507 23.4752C42.7945 25.1988 43.1663 27.0404 43.1663 29.0002C43.1663 30.9599 42.7945 32.8016 42.0507 34.5252C41.307 36.2488 40.2976 37.7481 39.0226 39.0231C37.7476 40.2981 36.2483 41.3075 34.5247 42.0512C32.8011 42.795 30.9594 43.1668 28.9997 43.1668ZM28.9997 40.3335C32.1636 40.3335 34.8434 39.2356 37.0393 37.0397C39.2351 34.8439 40.333 32.1641 40.333 29.0002C40.333 25.8363 39.2351 23.1564 37.0393 20.9606C34.8434 18.7647 32.1636 17.6668 28.9997 17.6668C25.8358 17.6668 23.1559 18.7647 20.9601 20.9606C18.7643 23.1564 17.6663 25.8363 17.6663 29.0002C17.6663 32.1641 18.7643 34.8439 20.9601 37.0397C23.1559 39.2356 25.8358 40.3335 28.9997 40.3335ZM28.9997 37.5002C31.3608 37.5002 33.3677 36.6738 35.0205 35.021C36.6733 33.3682 37.4997 31.3613 37.4997 29.0002C37.4997 27.796 37.2754 26.6804 36.8268 25.6533C36.3781 24.6262 35.7761 23.7349 35.0205 22.9793L33.0018 24.9981C33.5212 25.5175 33.9285 26.1196 34.2236 26.8043C34.5188 27.4891 34.6663 28.221 34.6663 29.0002C34.6663 30.5585 34.1115 31.8925 33.0018 33.0022C31.892 34.112 30.558 34.6668 28.9997 34.6668C27.4413 34.6668 26.1073 34.112 24.9976 33.0022C23.8879 31.8925 23.333 30.5585 23.333 29.0002C23.333 28.221 23.4806 27.4891 23.7757 26.8043C24.0709 26.1196 24.4781 25.5175 24.9976 24.9981L22.9788 22.9793C22.2233 23.7349 21.6212 24.6262 21.1726 25.6533C20.724 26.6804 20.4997 27.796 20.4997 29.0002C20.4997 31.3613 21.3261 33.3682 22.9788 35.021C24.6316 36.6738 26.6386 37.5002 28.9997 37.5002ZM27.583 29.0002H30.4163V20.5002H27.583V29.0002Z\" fill=\"white\"></path>\n</g>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_kdhxib": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Built-in LCD timer",
+            "content": "<p>Set cleaning sessions with alarm control.</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M33.25 13.4165H24.75V16.2498H33.25V13.4165ZM27.5833 31.8332H30.4167V23.3332H27.5833V31.8332ZM38.9592 22.469L40.9708 20.4573C40.3617 19.7348 39.6958 19.0548 38.9733 18.4598L36.9617 20.4715C34.7055 18.6556 31.8962 17.6658 29 17.6665C21.9592 17.6665 16.25 23.3757 16.25 30.4165C16.25 37.4573 21.945 43.1665 29 43.1665C31.4003 43.1678 33.7521 42.4911 35.7846 41.2143C37.8171 39.9375 39.4476 38.1125 40.4884 35.9496C41.5291 33.7867 41.9377 31.3738 41.6672 28.9889C41.3966 26.6039 40.4579 24.3438 38.9592 22.469ZM29 40.3332C23.5175 40.3332 19.0833 35.899 19.0833 30.4165C19.0833 24.934 23.5175 20.4998 29 20.4998C34.4825 20.4998 38.9167 24.934 38.9167 30.4165C38.9167 35.899 34.4825 40.3332 29 40.3332Z\" fill=\"white\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_3bDQmW": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Smart navigation system",
+            "content": "<p>djusts speed & direction for full coverage</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<path d=\"M37.7148 20.2856V37.7144H20.2861V20.2856H37.7148Z\" stroke=\"white\" stroke-width=\"2\"></path>\n<path d=\"M31.6436 26.3569V31.6431H26.3574V26.3569H31.6436Z\" stroke=\"white\" stroke-width=\"2\"></path>\n<path d=\"M19.2857 24.1429H16.25M24.1429 19.2857V16.25M33.8571 19.2857V16.25M38.7143 33.8571H41.75M38.7143 24.1429H41.75M24.1429 38.7143V41.75M33.8571 38.7143V41.75M19.2857 33.8571H16.25M19.2857 19.2857H38.7143V38.7143H19.2857V19.2857Z\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"square\"></path>\n<path d=\"M25.3574 25.3569H32.6431V32.6426H25.3574V25.3569Z\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"square\"></path>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_jpczbe": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Rechargeable & ready",
+            "content": "<p>Long-life battery with AC adapter included</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<mask id=\"mask0_817_2789\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_817_2789)\">\n<path d=\"M23.3337 43.1668C22.9323 43.1668 22.5958 43.0311 22.3243 42.7595C22.0528 42.488 21.917 42.1516 21.917 41.7502V19.0835C21.917 18.6821 22.0528 18.3456 22.3243 18.0741C22.5958 17.8026 22.9323 17.6668 23.3337 17.6668H26.167V14.8335H31.8337V17.6668H34.667C35.0684 17.6668 35.4048 17.8026 35.6764 18.0741C35.9479 18.3456 36.0837 18.6821 36.0837 19.0835V29.0002C33.7225 29.0238 31.7156 29.8561 30.0628 31.497C28.41 33.138 27.5837 35.1391 27.5837 37.5002C27.5837 38.5863 27.7725 39.6134 28.1503 40.5814C28.5281 41.5495 29.0594 42.4113 29.7441 43.1668H23.3337ZM24.7503 23.3335H33.2503V20.5002H24.7503V23.3335ZM35.3753 43.1668V38.9168H31.8337L36.792 31.8335V36.0835H40.3337L35.3753 43.1668Z\" fill=\"white\"></path>\n</g>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_JfMztT": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "No more scrubbing",
+            "content": "<p>Takes the mess & hassle out of cleaning</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<mask id=\"mask0_817_2796\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_817_2796)\">\n<path d=\"M24.75 41.7502V34.6668C23.2861 34.5488 21.8517 34.3835 20.4469 34.171C19.042 33.9585 17.6431 33.6516 16.25 33.2502L16.9583 30.4168C18.9181 30.9599 20.9014 31.3318 22.9083 31.5325C24.9153 31.7331 26.9458 31.8335 29 31.8335C31.0306 31.8335 33.0493 31.7331 35.0563 31.5325C37.0632 31.3318 39.0583 30.9599 41.0417 30.4168L41.75 33.2502C40.3333 33.6516 38.9226 33.9585 37.5177 34.171C36.1128 34.3835 34.6903 34.5488 33.25 34.6668V41.7502H24.75ZM29 30.4168C28.1972 30.4168 27.5243 30.1453 26.9813 29.6022C26.4382 29.0592 26.1667 28.3863 26.1667 27.5835C26.1667 26.8043 26.4382 26.1373 26.9813 25.5825C27.5243 25.0276 28.1972 24.7502 29 24.7502C29.7792 24.7502 30.4462 25.0276 31.001 25.5825C31.5559 26.1373 31.8333 26.8043 31.8333 27.5835C31.8333 28.3863 31.5559 29.0592 31.001 29.6022C30.4462 30.1453 29.7792 30.4168 29 30.4168ZM18.375 26.1668C17.7611 26.1668 17.2535 25.9661 16.8521 25.5647C16.4507 25.1634 16.25 24.6557 16.25 24.0418C16.25 23.4516 16.4507 22.9498 16.8521 22.5366C17.2535 22.1234 17.7611 21.9168 18.375 21.9168C18.9653 21.9168 19.467 22.1234 19.8802 22.5366C20.2934 22.9498 20.5 23.4516 20.5 24.0418C20.5 24.6557 20.2934 25.1634 19.8802 25.5647C19.467 25.9661 18.9653 26.1668 18.375 26.1668ZM39.625 26.1668C39.0111 26.1668 38.5035 25.9661 38.1021 25.5647C37.7007 25.1634 37.5 24.6557 37.5 24.0418C37.5 23.4516 37.7007 22.9498 38.1021 22.5366C38.5035 22.1234 39.0111 21.9168 39.625 21.9168C40.2153 21.9168 40.717 22.1234 41.1302 22.5366C41.5434 22.9498 41.75 23.4516 41.75 24.0418C41.75 24.6557 41.5434 25.1634 41.1302 25.5647C40.717 25.9661 40.2153 26.1668 39.625 26.1668ZM22.2708 20.8543C21.6569 20.8543 21.1493 20.6536 20.7479 20.2522C20.3465 19.8509 20.1458 19.3432 20.1458 18.7293C20.1458 18.1391 20.3465 17.6373 20.7479 17.2241C21.1493 16.8109 21.6569 16.6043 22.2708 16.6043C22.8611 16.6043 23.3628 16.8109 23.776 17.2241C24.1892 17.6373 24.3958 18.1391 24.3958 18.7293C24.3958 19.3432 24.1892 19.8509 23.776 20.2522C23.3628 20.6536 22.8611 20.8543 22.2708 20.8543ZM35.7292 20.8543C35.1153 20.8543 34.6076 20.6536 34.2062 20.2522C33.8049 19.8509 33.6042 19.3432 33.6042 18.7293C33.6042 18.1391 33.8049 17.6373 34.2062 17.2241C34.6076 16.8109 35.1153 16.6043 35.7292 16.6043C36.3194 16.6043 36.8212 16.8109 37.2344 17.2241C37.6476 17.6373 37.8542 18.1391 37.8542 18.7293C37.8542 19.3432 37.6476 19.8509 37.2344 20.2522C36.8212 20.6536 36.3194 20.8543 35.7292 20.8543ZM29 19.0835C28.3861 19.0835 27.8785 18.8828 27.4771 18.4814C27.0757 18.08 26.875 17.5724 26.875 16.9585C26.875 16.3682 27.0757 15.8665 27.4771 15.4533C27.8785 15.0401 28.3861 14.8335 29 14.8335C29.5903 14.8335 30.092 15.0401 30.5052 15.4533C30.9184 15.8665 31.125 16.3682 31.125 16.9585C31.125 17.5724 30.9184 18.08 30.5052 18.4814C30.092 18.8828 29.5903 19.0835 29 19.0835Z\" fill=\"white\"></path>\n</g>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        },
+        "item_LHYAwG": {
+          "type": "item",
+          "settings": {
+            "video_url": "",
+            "image_width": 100,
+            "image_border": "rgba(0,0,0,0)",
+            "title": "Nylon brushes included",
+            "content": "<p>Comes with three durable, dishwasher-safe brushes</p>",
+            "html_content": "<div class=\"column-icon\">\n<svg width=\"58\" height=\"58\" viewbox=\"0 0 58 58\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<circle cx=\"29\" cy=\"29\" r=\"29\" fill=\"#DE2A2C\"></circle>\n<mask id=\"mask0_817_2803\" style=\"mask-type:alpha\" maskunits=\"userSpaceOnUse\" x=\"12\" y=\"12\" width=\"34\" height=\"34\">\n<rect x=\"12\" y=\"12\" width=\"34\" height=\"34\" fill=\"#D9D9D9\"></rect>\n</mask>\n<g mask=\"url(#mask0_817_2803)\">\n<path d=\"M28.9355 19.5176C28.9355 19.5176 29.7607 19.5176 29.9355 19.5176H33.9355C34.2189 19.5176 34.4568 19.613 34.6484 19.8047C34.8401 19.9964 34.9355 20.2342 34.9355 20.5176C34.9355 20.8009 34.8401 21.0388 34.6484 21.2305C34.4568 21.4221 34.2189 21.5176 33.9355 21.5176H30.9355V23.5176H33.9355C34.2189 23.5176 34.4568 23.613 34.6484 23.8047C34.8401 23.9964 34.9355 24.2342 34.9355 24.5176C34.9355 24.8009 34.8401 25.0388 34.6484 25.2305C34.4568 25.4221 34.2189 25.5176 33.9355 25.5176H30.9355V27.5176H33.9355C34.2189 27.5176 34.4568 27.613 34.6484 27.8047C34.8401 27.9964 34.9355 28.2342 34.9355 28.5176C34.9355 28.8009 34.8401 29.0388 34.6484 29.2305C34.4568 29.4221 34.2189 29.5176 33.9355 29.5176H30.9355V31.5176H33.9355C34.2189 31.5176 34.4568 31.613 34.6484 31.8047C34.8401 31.9964 34.9355 32.2342 34.9355 32.5176C34.9355 32.8009 34.8401 33.0388 34.6484 33.2305C34.4568 33.4221 34.2189 33.5176 33.9355 33.5176H30.9355V35.5176H33.9355C34.2189 35.5176 34.4568 35.613 34.6484 35.8047C34.8401 35.9964 34.9355 36.2342 34.9355 36.5176C34.9355 36.8009 34.8401 37.0388 34.6484 37.2305C34.4568 37.4221 34.2189 37.5176 33.9355 37.5176H29.9355C29.9355 37.5176 29.1105 37.5176 28.9355 37.5176H24.9355C24.6522 37.5176 24.4143 37.4221 24.2227 37.2305C24.031 37.0388 23.9355 36.8009 23.9355 36.5176C23.9355 36.2342 24.031 35.9964 24.2227 35.8047C24.4143 35.613 24.6522 35.5176 24.9355 35.5176H27.9355V33.5176H24.9355C24.6522 33.5176 24.4143 33.4221 24.2227 33.2305C24.031 33.0388 23.9355 32.8009 23.9355 32.5176C23.9355 32.2342 24.031 31.9964 24.2227 31.8047C24.4143 31.613 24.6522 31.5176 24.9355 31.5176H27.9355V29.5176H24.9355C24.6522 29.5176 24.4143 29.4221 24.2227 29.2305C24.031 29.0388 23.9355 28.8009 23.9355 28.5176C23.9355 28.2342 24.031 27.9964 24.2227 27.8047C24.4143 27.613 24.6522 27.5176 24.9355 27.5176H27.9355V25.5176H24.9355C24.6522 25.5176 24.4143 25.4221 24.2227 25.2305C24.031 25.0388 23.9355 24.8009 23.9355 24.5176C23.9355 24.2342 24.031 23.9964 24.2227 23.8047C24.4143 23.613 24.6522 23.5176 24.9355 23.5176H27.9355V21.5176H24.9355C24.6522 21.5176 24.4143 21.4221 24.2227 21.2305C24.031 21.0388 23.9355 20.8009 23.9355 20.5176C23.9355 20.2342 24.031 19.9964 24.2227 19.8047C24.4143 19.613 24.6522 19.5176 24.9355 19.5176H28.9355Z\" fill=\"white\"></path>\n</g>\n</svg>\n</div>",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_alignment": "center",
+            "vertical_alignment": "start"
+          }
+        }
+      },
+      "block_order": [
+        "item_HqaM94",
+        "item_kdhxib",
+        "item_3bDQmW",
+        "item_jpczbe",
+        "item_JfMztT",
+        "item_LHYAwG"
+      ],
+      "disabled": true,
+      "name": "Multi-column",
+      "settings": {
+        "css_class": "grillbot-productmaster-love",
+        "reveal_on_scroll": true,
+        "stack_items": true,
+        "subheading": "Grillbot",
+        "title": "Why Grill Masters Love  the Grillbot",
+        "content": "",
+        "button_text": "",
+        "button_url": "",
+        "button_text_2": "",
+        "button_url_2": "",
+        "column_alignment": "center",
+        "mobile_item_size": "medium",
+        "desktop_item_size": "medium",
+        "spacing": "normal",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "css_class": "grillbot-related-products",
+        "subheading": "Products",
+        "title": "Featured Hot Picks",
+        "text_alignment": "left",
+        "recommendations_count": 4,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "hot_picks_products_iPb9tW": {
+      "type": "hot-picks-products",
+      "name": "Hot Picks Products",
+      "settings": {
+        "css_class": "grillbot-related-products",
+        "subheading": "Products",
+        "title": "Featured Hot Picks",
+        "content": "",
+        "heading_align": "center",
+        "products_count": 8,
+        "products_per_row": 4,
+        "stack_products": false,
+        "show_cta": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "masonary_blocks_ed6FgE": {
+      "type": "masonary-blocks",
+      "blocks": {
+        "reviews_n9DwBr": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/C_R_8810.jpg",
+            "name": "Amanda P.",
+            "heading": "Why didn’t I buy this sooner?",
+            "content": ""
+          }
+        },
+        "reviews_3kAEKy": {
+          "type": "reviews",
+          "settings": {
+            "name": "Jason R., Texas BBQ Dad",
+            "heading": "No more grill glove juggling!",
+            "content": "It slides right onto my spatula."
+          }
+        },
+        "reviews_gHz3Yi": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/C_R_9479.jpg",
+            "name": "Emily S., Griller Support Crew",
+            "heading": "Perfect Dad gift",
+            "content": "My husband called it genius."
+          }
+        },
+        "reviews_WVPW47": {
+          "type": "reviews",
+          "settings": {
+            "name": "Terry B., Backyard Grill Collector",
+            "heading": "It fits all my tools — and I have a lot of tools.",
+            "content": "I have at least 4 different brands of grilling utensils, and this shield fits them all."
+          }
+        },
+        "reviews_7NwK4d": {
+          "type": "reviews",
+          "settings": {
+            "name": "Matt D., Minimalist Griller",
+            "heading": "Took 5 seconds to put on. Works like a charm.",
+            "content": "I appreciate when things just work. This did. I slid it onto my tongs, grilled a bunch of ribs, and didn’t feel a thing. Dishwasher safe is a big bonus."
+          }
+        },
+        "reviews_BxxKNt": {
+          "type": "reviews",
+          "settings": {
+            "name": "Chris L., Dad + Weekend Warrior",
+            "heading": "Safe grilling!",
+            "content": "My 11-year-old can flip hot dogs without me hovering."
+          }
+        },
+        "reviews_rzF9tm": {
+          "type": "reviews",
+          "settings": {
+            "name": "Henrietta Brink",
+            "heading": "It really gets the job done",
+            "content": "I was pleased when I saw the job the Grillbot did the first time I opened my grill lid."
+          }
+        },
+        "reviews_m6kaEm": {
+          "type": "reviews",
+          "settings": {
+            "name": "Kevin H., Charcoal Purist",
+            "heading": "Goodbye burn blisters 👋",
+            "content": "Used to get minor burns near my thumb all the time. Haven’t had one since using this shield. It’s low-key genius."
+          }
+        },
+        "reviews_tTfMXk": {
+          "type": "reviews",
+          "settings": {
+            "review_image": "shopify://shop_images/attachment.jpg",
+            "name": "Ryan J., Simple Solutions Guy",
+            "heading": "It does exactly what it says",
+            "content": "Protects hands, easy to clean, fits my tools. That’s all I wanted. And it delivers."
+          }
+        }
+      },
+      "block_order": [
+        "reviews_n9DwBr",
+        "reviews_3kAEKy",
+        "reviews_gHz3Yi",
+        "reviews_WVPW47",
+        "reviews_7NwK4d",
+        "reviews_BxxKNt",
+        "reviews_rzF9tm",
+        "reviews_m6kaEm",
+        "reviews_tTfMXk"
+      ],
+      "disabled": true,
+      "name": "Masonary Blocks",
+      "settings": {
+        "css_class": "grillbot-product",
+        "heading": "Loved By Grill Masters <span>Everywhere</span>",
+        "sub_heading": "Let Our Customers<span> Speak For Us</span>",
+        "subheading": "",
+        "total_review_image": "shopify://shop_images/Frame_63.png"
+      }
+    },
+    "1762453981bb382731": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_loox_dynamic_section_eMXUKG": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "reviews_to_display": "",
+            "default_tab": "automatic",
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 20,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_dynamic_section_eMXUKG"
+      ],
+      "settings": {
+        "include_horizontal_margins": true,
+        "include_vertical_margins": true
+      }
+    },
+    "custom_faq_Jbae84": {
+      "type": "custom-faq",
+      "blocks": {
+        "question_DDMJC4": {
+          "type": "question",
+          "settings": {
+            "title": "What exactly is a Grillbot and how does it work?",
+            "answer": "<p><strong>The Grillbot is your grill-cleaning sidekick.</strong></p><p>Just place it on your grill, press a button, and let it go to work, no scrubbing, no mess.</p><p>Grillbot's motorized brushes clean your grates (hot or cold, up to 250°F), and a built-in alarm sound if your grill gets too hot. </p><p>Effortless, automated, and oddly satisfying to watch.</p>"
+          }
+        },
+        "question_nGi9YH": {
+          "type": "question",
+          "settings": {
+            "title": "Will Grillbot work on my grill (gas, charcoal, infrared, Green Egg,Blackstone, etc.)?",
+            "answer": "<p><strong>Yes, Grillbot works on all major grill types, with a lid!</strong></p><p>Whether it’s gas, charcoal, ceramic, infrared, or something in between, Grillbot is designed to handle them all.</p><p>If you can grill on it, Grillbot can clean it.</p>"
+          }
+        },
+        "question_pqcTmC": {
+          "type": "question",
+          "settings": {
+            "title": "Will Grillbot scratch or damage my grill?",
+            "answer": "<p>Only if you're using the wrong brush but we've got you covered.</p><p>To protect your grill, choose the brush that matches your grate:</p><ul><li><strong>Brass:</strong> Great for porcelain or stainless steel (gentle and effective)</li><li><strong>Nylon:</strong> All-purpose and safe for all grill types</li><li><strong>Stainless Steel:</strong> Best for cast iron and expanded steel (heavy-duty)</li></ul><p>Using a degreaser before cleaning and avoiding overuse can further reduce wear over time.</p>"
+          }
+        },
+        "question_jQLhLX": {
+          "type": "question",
+          "settings": {
+            "title": "Will this make my dirty grill look brand new?",
+            "answer": "<p><strong>Not overnight but with regular use, Grillbot keeps your grill in top shape.</strong></p><p>Grillbot is built for maintenance, not restoration. Over time, it removes grease and buildup, helping your grill cook better and last longer.</p><p><em>The more you use it, the better it gets.</em></p>"
+          }
+        },
+        "question_4XPybY": {
+          "type": "question",
+          "settings": {
+            "title": "How do I know which brush is right for my grill?",
+            "answer": "<p>Here’s a quick brush guide:</p><ul><li><strong>Nylon:</strong> Softest and longest-lasting. Safe for all grills.</li><li><strong>Brass:</strong> Best for porcelain/stainless steel. Prevents scratches.</li><li><strong>Stainless Steel:</strong> Deep-cleaning for cast iron or expanded steel. </li></ul><p><em>Not sure? Start with Nylon - it’s the safest bet for most users.</em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_DDMJC4",
+        "question_nGi9YH",
+        "question_pqcTmC",
+        "question_jQLhLX",
+        "question_4XPybY"
+      ],
+      "name": "Custom Faq",
+      "settings": {
+        "css_class": "home-faq-section",
+        "show_navigation": false,
+        "title": "Answers to",
+        "content": "<p>frequently Asked <strong>Questions</strong></p>",
+        "image": "shopify://shop_images/Video-Grill_bot_7_1.png",
+        "button_text": "View All",
+        "button_url": "shopify://pages/grillbot-faq",
+        "text_alignment": "left",
+        "content_width": "small",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "pdp_faq_ARd7kb": {
+      "type": "pdp-faq",
+      "disabled": true,
+      "name": "PDP Faq",
+      "settings": {
+        "css_class": "home-faq-section",
+        "show_navigation": false,
+        "title": "Answers to",
+        "content": "<p>frequently Asked <strong>Questions</strong></p>",
+        "image": "{{ product.metafields.custom.faq_image.value }}",
+        "button_text": "View All",
+        "button_url": "https://grillbots-help-center.gorgias.help/en-US",
+        "text_alignment": "left",
+        "content_width": "small",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "judgeme_section_review_widget_0700",
+    "product-content",
+    "explore_products_UPRag9",
+    "custom_liquid_xV8BJY",
+    "pdp_how_to_use_MajNBg",
+    "multi_column_ybU4Dz",
+    "video_qbEpgA",
+    "pdp_image_with_points_8ymA4c",
+    "multi_column_YMUUAd",
+    "pdp_key_points_mHRY6T",
+    "multi_column_BYFgVP",
+    "product-recommendations",
+    "hot_picks_products_iPb9tW",
+    "masonary_blocks_ed6FgE",
+    "1762453981bb382731",
+    "custom_faq_Jbae84",
+    "pdp_faq_ARd7kb"
+  ]
+}

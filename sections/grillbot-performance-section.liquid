@@ -1,0 +1,1458 @@
+{%- comment -%}
+Grillbot - Performance (metaobject driven)
+
+Expected metafields (pick the one your admin created):
+1) product.metafields.custom.grillbot_performance_section.value
+2) product.metafields.custom.grillbot_performance.value
+
+Metaobject fields (as per your plan):
+- heading
+- content
+- icon, text
+- icon_2, text_2
+- icon_3, text_3
+- icon_4, text_4
+- icon_5, text_5
+- icon_6, text_6
+{%- endcomment -%}
+
+{%- assign perf_mo = product.metafields.custom.grillbot_performance_section.value | default: product.metafields.custom.grillbot_performance.value -%}
+
+{%- if request.page_type == 'product' and product != blank and perf_mo != blank -%}
+  {%- assign perf_heading = perf_mo.heading.value | default: perf_mo.heading -%}
+  {%- assign perf_content = perf_mo.content.value | default: perf_mo.content -%}
+
+  {%- assign perf_main_image = perf_mo.main_image.value | default: perf_mo.main_image -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.mainImage.value | default: perf_mo.mainImage -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.mainimage.value | default: perf_mo.mainimage -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.main_image_1.value | default: perf_mo.main_image_1 -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.center_image.value | default: perf_mo.center_image -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.centerImage.value | default: perf_mo.centerImage -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = perf_mo.image.value | default: perf_mo.image -%}
+  {%- endif -%}
+  {%- if perf_main_image == blank -%}
+    {%- assign perf_main_image = section.settings.main_image -%}
+  {%- endif -%}
+
+  {%- assign perf_mobile_image = perf_mo.mobile_image.value | default: perf_mo.mobile_image -%}
+  {%- if perf_mobile_image == blank -%}
+    {%- assign perf_mobile_image = perf_mo.mobileImage.value | default: perf_mo.mobileImage -%}
+  {%- endif -%}
+  {%- if perf_mobile_image == blank -%}
+    {%- assign perf_mobile_image = perf_mo.mobileimage.value | default: perf_mo.mobileimage -%}
+  {%- endif -%}
+  {%- if perf_mobile_image == blank -%}
+    {%- assign perf_mobile_image = perf_mo.mobile_image_1.value | default: perf_mo.mobile_image_1 -%}
+  {%- endif -%}
+  {%- if perf_mobile_image == blank -%}
+    {%- assign perf_mobile_image = perf_main_image -%}
+  {%- endif -%}
+
+  {%- assign perf_main_image_render = perf_main_image -%}
+  {%- if perf_main_image != blank and perf_main_image.preview_image != blank -%}
+    {%- assign perf_main_image_render = perf_main_image.preview_image -%}
+  {%- endif -%}
+
+  {%- assign perf_mobile_image_render = perf_mobile_image -%}
+  {%- if perf_mobile_image != blank and perf_mobile_image.preview_image != blank -%}
+    {%- assign perf_mobile_image_render = perf_mobile_image.preview_image -%}
+  {%- endif -%}
+
+  {%- assign perf_icon_1 = perf_mo.icon.value | default: perf_mo.icon -%}
+  {%- assign perf_text_1 = perf_mo.text.value | default: perf_mo.text -%}
+
+  {%- assign perf_icon_2 = perf_mo.icon_2.value | default: perf_mo.icon_2 -%}
+  {%- assign perf_text_2 = perf_mo.text_2.value | default: perf_mo.text_2 -%}
+
+  {%- assign perf_icon_3 = perf_mo.icon_3.value | default: perf_mo.icon_3 -%}
+  {%- assign perf_text_3 = perf_mo.text_3.value | default: perf_mo.text_3 -%}
+
+  {%- assign perf_icon_4 = perf_mo.icon_4.value | default: perf_mo.icon_4 -%}
+  {%- assign perf_text_4 = perf_mo.text_4.value | default: perf_mo.text_4 -%}
+
+  {%- assign perf_icon_5 = perf_mo.icon_5.value | default: perf_mo.icon_5 -%}
+  {%- assign perf_text_5 = perf_mo.text_5.value | default: perf_mo.text_5 -%}
+
+  {%- assign perf_icon_6 = perf_mo.icon_6.value | default: perf_mo.icon_6 -%}
+  {%- assign perf_text_6 = perf_mo.text_6.value | default: perf_mo.text_6 -%}
+
+  {%- assign has_any_item = false -%}
+  {%- if perf_icon_1 != blank or perf_text_1 != blank or perf_icon_2 != blank or perf_text_2 != blank or perf_icon_3 != blank or perf_text_3 != blank or perf_icon_4 != blank or perf_text_4 != blank or perf_icon_5 != blank or perf_text_5 != blank or perf_icon_6 != blank or perf_text_6 != blank -%}
+    {%- assign has_any_item = true -%}
+  {%- endif -%}
+
+  {%- if perf_heading != blank or perf_content != blank or has_any_item -%}
+    {% style %}
+      #shopify-section-{{ section.id }} .hb-grillbot-performance {
+        background: {{ section.settings.background }};
+        padding-top: {{ section.settings.padding-desktop-top }}px;
+        padding-bottom: {{ section.settings.padding-desktop-bottom }}px;
+        color: {{ section.settings.text_color }};
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__head {
+        text-align: center;
+        margin: 0 0 32px;
+        padding-left: 32px;
+        padding-right: 32px;
+        max-width: 1440px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__title {
+        margin: 0 0 16px;
+        font-family: Anton !important;
+        font-size: 52px;
+        line-height: 60px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: -0.8px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__sub {
+        margin: 0 auto;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__stage {
+        position: relative;
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      /* Main image: 1440×508 frame, centered, no stretch */
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__image {
+        position: relative;
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        aspect-ratio: 1440 / 508;
+        height: 508px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__image img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 508px;
+        object-fit: cover;
+        object-position: center center;
+        display: block;
+      }
+
+      /* Overlay wrapper (absolute) on top of the image */
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 120px;
+        pointer-events: none;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay > * {
+        pointer-events: auto;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay-gap {
+        flex: 1 1 auto;
+        height: 1px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__list {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__icon img {
+        object-fit: contain;
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+        max-width: 285px;
+      }
+      @media screen and (min-width: 999px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+        min-width: 285px;
+      }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+          position: absolute;
+          top: 0;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item .hb-grillbot-performance__icon{
+          position: relative;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item .hb-grillbot-performance__icon::after{
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 8px;
+          height: 8px;
+          background: #B6D22F;
+          border-radius: 50%;
+          left: 55px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item .hb-grillbot-performance__icon::after{
+          left: auto;
+          right: 55px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 177px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2){
+          left: 97px;
+          top: 220px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+          left: 340px;
+          top: 100%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1){
+          right: 177px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2){
+          right: 67px;
+          top: 279px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3){
+          right: 243px;
+          top: 100%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1)::after{
+          width: 292px;
+          height: 87px;
+          border-width: 1px 1px 0 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          top: 20px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1)::before{
+          bottom: -20px;
+          right: -79px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1)::after{
+          width: 263px;
+          height: 50px;
+          border-width: 1px 0 0 1px;
+          border-style: solid;
+          border-color: #B6D22F;
+          top: 20px;
+          right: calc(100% + 20px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1)::before{
+          bottom: 16px;
+          left: -295px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2)::after{
+          width: 434px;
+          height: 0;
+          border-width: 1px 0 0 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          top: 20px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2)::before{
+          right: -232px;
+          top: 7px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2) .hb-grillbot-performance__icon::after{
+          top: -20px;
+          right: 50%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+          width: 476px;
+        height: 76px;
+        border-width: 1px 1px 0 0;
+        border-style: solid;
+        border-color: #B6D22F;
+        bottom: calc(100% + 23px);
+        right: calc(100% - 16px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before{
+          top: -109px;
+        left: calc(-100% + -198px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3)::after{
+          width: 285px;
+          height: 310px;
+          border-width: 0 1px 1px 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          bottom: calc(100% - 20px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3)::before{
+          top: -314px;
+          right: -71px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3)::after{
+          width: 40px;
+        height: 202px;
+        border-width: 0px 0px 1px 1px;
+        border-style: solid;
+        border-color: #B6D22F;
+        bottom: calc(100% + -20px);
+        right: calc(100% - -15px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3)::before{
+          left: -67px;
+          top: -206px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::after{
+          position: absolute;
+          content: '';          
+
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::before{
+          content: '';
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          background: url('https://cdn.shopify.com/s/files/1/0337/8629/files/Group_1000002751.svg?v=1777891843') no-repeat center center;
+          background-size: 100%;
+
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__stage{
+          margin-bottom: 170px;
+        }
+      }
+      @media screen and (max-width: 1440px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3) {
+        right: 183px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+          left: 22%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1){
+          right: 12%;
+        }
+      }
+      @media screen and (max-width: 1300px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 9%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2) {
+        left: 3%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+      left: 20%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+      width: 405px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before {
+        left: calc(-100% + -128px);
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3) {
+      right: 12%;
+    }
+      }
+      @media screen and (max-width: 1150px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 2%;
+          top: 29px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+        top: 35px;
+    }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2) {
+        left: 3%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+      width: 343px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before {
+        left: calc(-100% + -65px);
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+        top: 35px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+      left: 16%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3){
+      right: 8%;
+    }
+      }
+
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance {
+          padding-top: {{ section.settings.padding-mobile-top }}px;
+          padding-bottom: {{ section.settings.padding-mobile-bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__title {
+          font-size: 36px;
+          line-height: 44px;
+          margin-bottom: 12px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__sub {
+          font-size: 16px;
+          line-height: 26px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__stage {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__head {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay {
+          position: relative;
+          inset: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__image {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay-gap {
+          display: none;
+        }
+
+        /* Force order: top items, mobile image, bottom items */
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left { order: 1; }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image { order: 2; }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right { order: 3; }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          justify-content: flex-start;
+          gap: 15px;
+          min-width: 0;
+          position: static;
+          flex: 0 0 calc((100% - 24px) / 3);
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item {
+          justify-content: center;
+          text-align: center;
+        }
+
+        /* No connector lines on mobile layout */
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::after,
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::before {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+          max-width: none;
+          font-weight: 600;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+          display: block;
+          width: 100%;
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+      }
+
+      @media screen and (max-width: 767px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+          font-size: 14px;
+          line-height: 22px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__icon{
+          flex: 0 0 24px;
+          width: 24px;
+          height: 24px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__icon img{
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      /* 1000px+ : desktop hero image keeps 1440:508 ratio (scales with container, same proportions) */
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+          display: none;
+        }
+      }
+    {% endstyle %}
+
+    <section class="hb-grillbot-performance shopify-section--{{ section.id }}" aria-label="Grillbot Performance">
+      {%- if perf_heading != blank or perf_content != blank -%}
+        <div class="hb-grillbot-performance__head">
+          {%- if perf_heading != blank -%}
+            <h2 class="hb-grillbot-performance__title">{{ perf_heading | escape }}</h2>
+          {%- endif -%}
+          {%- if perf_content != blank -%}
+            <p class="hb-grillbot-performance__sub">{{ perf_content | escape | newline_to_br }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="hb-grillbot-performance__stage">
+        <div class="hb-grillbot-performance__image" aria-hidden="true">
+          {%- if perf_main_image_render != blank -%}
+            {{ perf_main_image_render | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '900,1000,1200,1440,1600,2000', sizes: '(min-width: 1440px) 1440px, (min-width: 1000px) 100vw, 100vw', alt: 'Product Image' }}
+          {%- endif -%}
+        </div>
+
+        <div class="hb-grillbot-performance__overlay">
+          <div class="hb-grillbot-performance__list hb-grillbot-performance__list--left" aria-label="Performance features (1-3)">
+            {%- if perf_icon_1 != blank or perf_text_1 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_1 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_1 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_1 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_1 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if perf_icon_2 != blank or perf_text_2 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_2 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_2 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_2 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_2 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if perf_icon_3 != blank or perf_text_3 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_3 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_3 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_3 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_3 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="hb-grillbot-performance__overlay-gap" aria-hidden="true"></div>
+
+          <div class="hb-grillbot-performance__list hb-grillbot-performance__list--right" aria-label="Performance features (4-6)">
+            {%- if perf_icon_4 != blank or perf_text_4 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_4 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_4 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_4 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_4 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if perf_icon_5 != blank or perf_text_5 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_5 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_5 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_5 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_5 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if perf_icon_6 != blank or perf_text_6 != blank -%}
+              <div class="hb-grillbot-performance__item">
+                {%- if perf_icon_6 != blank -%}
+                  <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                    {{ perf_icon_6 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+                  </span>
+                {%- endif -%}
+                {%- if perf_text_6 != blank -%}
+                  <div class="hb-grillbot-performance__text">{{ perf_text_6 | escape | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="hb-grillbot-performance__mobile-image" aria-hidden="true">
+            {%- if perf_mobile_image_render != blank -%}
+              {{ perf_mobile_image_render | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '90vw', alt: '' }}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+{%- else -%}
+
+{% liquid
+  assign perf_heading = section.settings.perf_heading
+  assign perf_content = section.settings.perf_content
+  assign perf_main_image_render = section.settings.perf_main_image
+  assign perf_mobile_image_render = section.settings.perf_mobile_image
+
+  assign perf_icon_1 = section.settings.perf_icon_1
+  assign perf_text_1 = section.settings.perf_text_1
+  assign perf_icon_2 = section.settings.perf_icon_2
+  assign perf_text_2 = section.settings.perf_text_2
+  assign perf_icon_3 = section.settings.perf_icon_3
+  assign perf_text_3 = section.settings.perf_text_3
+  assign perf_icon_4 = section.settings.perf_icon_4
+  assign perf_text_4 = section.settings.perf_text_4
+  assign perf_icon_5 = section.settings.perf_icon_5
+  assign perf_text_5 = section.settings.perf_text_5
+  assign perf_icon_6 = section.settings.perf_icon_6
+  assign perf_text_6 = section.settings.perf_text_6
+
+  assign has_any_item = false
+  if perf_icon_1 != blank or perf_text_1 != blank or perf_icon_2 != blank or perf_text_2 != blank or perf_icon_3 != blank or perf_text_3 != blank or perf_icon_4 != blank or perf_text_4 != blank or perf_icon_5 != blank or perf_text_5 != blank or perf_icon_6 != blank or perf_text_6 != blank
+    assign has_any_item = true
+  endif
+%}
+
+{%- if perf_heading != blank or perf_content != blank or has_any_item or perf_main_image_render != blank or perf_mobile_image_render != blank -%}
+
+ {% style %}
+      #shopify-section-{{ section.id }} .hb-grillbot-performance {
+        background: {{ section.settings.background }};
+        padding-top: {{ section.settings.padding-desktop-top }}px;
+        padding-bottom: {{ section.settings.padding-desktop-bottom }}px;
+        color: {{ section.settings.text_color }};
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__head {
+        text-align: center;
+        margin: 0 0 32px;
+        padding-left: 32px;
+        padding-right: 32px;
+        max-width: 1440px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__title {
+        margin: 0 0 16px;
+        font-family: Anton !important;
+        font-size: 52px;
+        line-height: 60px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: -0.8px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__sub {
+        margin: 0 auto;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__stage {
+        position: relative;
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      /* Main image: 1440×508 frame, centered, no stretch */
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__image {
+        position: relative;
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        aspect-ratio: 1440 / 508;
+        height: 508px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__image img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 508px;
+        object-fit: cover;
+        object-position: center center;
+        display: block;
+      }
+
+      /* Overlay wrapper (absolute) on top of the image */
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 120px;
+        pointer-events: none;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay > * {
+        pointer-events: auto;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay-gap {
+        flex: 1 1 auto;
+        height: 1px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__list {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__icon img {
+        object-fit: contain;
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+        max-width: 285px;
+      }
+      @media screen and (min-width: 999px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+        min-width: 285px;
+      }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+          position: absolute;
+          top: 0;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item .hb-grillbot-performance__icon{
+          position: relative;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item .hb-grillbot-performance__icon::after{
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 8px;
+          height: 8px;
+          background: #B6D22F;
+          border-radius: 50%;
+          left: 55px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item .hb-grillbot-performance__icon::after{
+          left: auto;
+          right: 55px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 177px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2){
+          left: 97px;
+          top: 220px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+          left: 340px;
+          top: 100%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1){
+          right: 177px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2){
+          right: 67px;
+          top: 279px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3){
+          right: 243px;
+          top: 100%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1)::after{
+          width: 292px;
+          height: 87px;
+          border-width: 1px 1px 0 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          top: 20px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1)::before{
+          bottom: -20px;
+          right: -79px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1)::after{
+          width: 263px;
+          height: 50px;
+          border-width: 1px 0 0 1px;
+          border-style: solid;
+          border-color: #B6D22F;
+          top: 20px;
+          right: calc(100% + 20px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1)::before{
+          bottom: 16px;
+          left: -295px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2)::after{
+          width: 434px;
+          height: 0;
+          border-width: 1px 0 0 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          top: 20px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2)::before{
+          right: -232px;
+          top: 7px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2) .hb-grillbot-performance__icon::after{
+          top: -20px;
+          right: 50%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+          width: 476px;
+        height: 76px;
+        border-width: 1px 1px 0 0;
+        border-style: solid;
+        border-color: #B6D22F;
+        bottom: calc(100% + 23px);
+        right: calc(100% - 16px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before{
+          top: -109px;
+        left: calc(-100% + -198px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3)::after{
+          width: 285px;
+          height: 310px;
+          border-width: 0 1px 1px 0;
+          border-style: solid;
+          border-color: #B6D22F;
+          left: 60px;
+          bottom: calc(100% - 20px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3)::before{
+          top: -314px;
+          right: -71px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3)::after{
+          width: 40px;
+        height: 202px;
+        border-width: 0px 0px 1px 1px;
+        border-style: solid;
+        border-color: #B6D22F;
+        bottom: calc(100% + -20px);
+        right: calc(100% - -15px);
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3)::before{
+          left: -67px;
+          top: -206px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::after{
+          position: absolute;
+          content: '';          
+
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::before{
+          content: '';
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          background: url('https://cdn.shopify.com/s/files/1/0337/8629/files/Group_1000002751.svg?v=1777891843') no-repeat center center;
+          background-size: 100%;
+
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__stage{
+          margin-bottom: 170px;
+        }
+      }
+      @media screen and (max-width: 1440px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3) {
+        right: 183px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+          left: 22%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1){
+          right: 12%;
+        }
+      }
+      @media screen and (max-width: 1300px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 9%;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2) {
+        left: 3%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+      left: 20%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+      width: 405px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before {
+        left: calc(-100% + -128px);
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3) {
+      right: 12%;
+    }
+      }
+      @media screen and (max-width: 1150px){
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(1){
+          left: 2%;
+          top: 29px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+        top: 35px;
+    }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(2) {
+        left: 3%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::after{
+      width: 343px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(2)::before {
+        left: calc(-100% + -65px);
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(1) {
+        right: 2%;
+        top: 35px;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left .hb-grillbot-performance__item:nth-child(3){
+      left: 16%;
+    }
+    #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item:nth-child(3){
+      right: 8%;
+    }
+      }
+
+      @media screen and (max-width: 999px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance {
+          padding-top: {{ section.settings.padding-mobile-top }}px;
+          padding-bottom: {{ section.settings.padding-mobile-bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__title {
+          font-size: 36px;
+          line-height: 44px;
+          margin-bottom: 12px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__sub {
+          font-size: 16px;
+          line-height: 26px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__stage {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__head {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay {
+          position: relative;
+          inset: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__image {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__overlay-gap {
+          display: none;
+        }
+
+        /* Force order: top items, mobile image, bottom items */
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--left { order: 1; }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image { order: 2; }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right { order: 3; }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          justify-content: flex-start;
+          gap: 15px;
+          min-width: 0;
+          position: static;
+          flex: 0 0 calc((100% - 24px) / 3);
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__list--right .hb-grillbot-performance__item {
+          justify-content: center;
+          text-align: center;
+        }
+
+        /* No connector lines on mobile layout */
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::after,
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__item::before {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+          max-width: none;
+          font-weight: 600;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+          display: block;
+          width: 100%;
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+      }
+
+      @media screen and (max-width: 767px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__text {
+          font-size: 14px;
+          line-height: 22px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__icon{
+          flex: 0 0 24px;
+          width: 24px;
+          height: 24px;
+        }
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__icon img{
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      /* 1000px+ : desktop hero image keeps 1440:508 ratio (scales with container, same proportions) */
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .hb-grillbot-performance__mobile-image {
+          display: none;
+        }
+      }
+    {% endstyle %}
+
+<section class="hb-grillbot-performance shopify-section--{{ section.id }}" aria-label="Grillbot Performance">
+  {%- if perf_heading != blank or perf_content != blank -%}
+    <div class="hb-grillbot-performance__head">
+      {%- if perf_heading != blank -%}
+        <h2 class="hb-grillbot-performance__title">{{ perf_heading | escape }}</h2>
+      {%- endif -%}
+      {%- if perf_content != blank -%}
+        <p class="hb-grillbot-performance__sub">{{ perf_content | escape | newline_to_br }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="hb-grillbot-performance__stage">
+    <div class="hb-grillbot-performance__image" aria-hidden="true">
+      {%- if perf_main_image_render != blank -%}
+        {{ perf_main_image_render | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '900,1000,1200,1440,1600,2000', sizes: '(min-width: 1440px) 1440px, (min-width: 1000px) 100vw, 100vw', alt: 'Product Image' }}
+      {%- endif -%}
+    </div>
+
+    <div class="hb-grillbot-performance__overlay">
+      <div class="hb-grillbot-performance__list hb-grillbot-performance__list--left" aria-label="Performance features (1-3)">
+        {%- if perf_icon_1 != blank or perf_text_1 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_1 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_1 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_1 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_1 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if perf_icon_2 != blank or perf_text_2 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_2 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_2 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_2 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_2 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if perf_icon_3 != blank or perf_text_3 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_3 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_3 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_3 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_3 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hb-grillbot-performance__overlay-gap" aria-hidden="true"></div>
+
+      <div class="hb-grillbot-performance__list hb-grillbot-performance__list--right" aria-label="Performance features (4-6)">
+        {%- if perf_icon_4 != blank or perf_text_4 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_4 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_4 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_4 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_4 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if perf_icon_5 != blank or perf_text_5 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_5 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_5 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_5 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_5 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if perf_icon_6 != blank or perf_text_6 != blank -%}
+          <div class="hb-grillbot-performance__item">
+            {%- if perf_icon_6 != blank -%}
+              <span class="hb-grillbot-performance__icon" aria-hidden="true">
+                {{ perf_icon_6 | image_url: width: 64 | image_tag: loading: 'lazy', widths: '32,48,64', sizes: '22px', alt: '' }}
+              </span>
+            {%- endif -%}
+            {%- if perf_text_6 != blank -%}
+              <div class="hb-grillbot-performance__text">{{ perf_text_6 | escape | newline_to_br }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hb-grillbot-performance__mobile-image" aria-hidden="true">
+        {%- if perf_mobile_image_render != blank -%}
+          {{ perf_mobile_image_render | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400,600,800,1000,1200', sizes: '90vw', alt: '' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Grillbot - Performance",
+  "class": "shopify-section--grillbot-performance",
+  "disabled_on": {
+    "templates": ["password"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image fallback (only if metaobject empty)"
+    },
+    {
+      "type": "text",
+      "id": "main_image_alt",
+      "label": "Main image alt text",
+      "default": "Grillbot product"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+     {
+      "type": "header",
+      "content": "Heading & Content"
+    },
+    {
+      "type": "text",
+      "id": "perf_heading",
+      "label": "Section Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_content",
+      "label": "Section Subtext"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_main_image",
+      "label": "Main (Desktop) Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "header",
+      "content": "Feature 1 (Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_1",
+      "label": "Icon 1"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_1",
+      "label": "Text 1"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2 (Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_2",
+      "label": "Icon 2"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_2",
+      "label": "Text 2"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3 (Left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_3",
+      "label": "Icon 3"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_3",
+      "label": "Text 3"
+    },
+    {
+      "type": "header",
+      "content": "Feature 4 (Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_4",
+      "label": "Icon 4"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_4",
+      "label": "Text 4"
+    },
+    {
+      "type": "header",
+      "content": "Feature 5 (Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_5",
+      "label": "Icon 5"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_5",
+      "label": "Text 5"
+    },
+    {
+      "type": "header",
+      "content": "Feature 6 (Right)"
+    },
+    {
+      "type": "image_picker",
+      "id": "perf_icon_6",
+      "label": "Icon 6"
+    },
+    {
+      "type": "textarea",
+      "id": "perf_text_6",
+      "label": "Text 6"
+    },
+    {
+      "type": "range",
+      "id": "padding-desktop-top",
+      "label": "Padding top (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding-desktop-bottom",
+      "label": "Padding bottom (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding-mobile-top",
+      "label": "Padding top (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-mobile-bottom",
+      "label": "Padding bottom (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grillbot - Performance",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+

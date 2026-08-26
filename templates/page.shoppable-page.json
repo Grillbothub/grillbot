@@ -1,0 +1,115 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_title": true,
+        "show_page_content": true,
+        "page_width": "medium"
+      }
+    },
+    "custom_html_9FkYJy": {
+      "type": "custom-html",
+      "name": "Custom HTML",
+      "settings": {
+        "subheading": "",
+        "title": "",
+        "html": "<div style=\"padding-top: 100px; text-align: center;\">\n  <h2>The Grill Glow Up</h2>\n</div>",
+        "add_vertical_spacing": true,
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "video_XKLVLN": {
+      "type": "video",
+      "custom_css": [
+        "#player-control-overlay {padding-top: 40px;}"
+      ],
+      "name": "Video",
+      "settings": {
+        "css_class": "",
+        "subheading": "",
+        "title": "",
+        "video_url": "https://www.youtube.com/watch?v=l8pX-Z4a278",
+        "image": "shopify://shop_images/Grillbot_Being_Used_5.png",
+        "background_type": "boxed",
+        "video_size": "auto",
+        "autoplay": false,
+        "show_video_controls": false,
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)",
+        "video_url_bg": ""
+      }
+    },
+    "featured_product_NyexJA": {
+      "type": "featured-product",
+      "blocks": {
+        "variant_picker_kK3VrE": {
+          "type": "variant_picker",
+          "settings": {
+            "hide_sold_out_variants": false,
+            "selector_mode": "block",
+            "color_mode": "block",
+            "size_chart_page": ""
+          }
+        },
+        "quantity_selector_rnxwPM": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_FYQTTT": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true,
+            "atc_button_background": "rgba(0,0,0,0)",
+            "atc_button_text_color": "rgba(0,0,0,0)",
+            "buy_now_button_background": "rgba(0,0,0,0)",
+            "buy_now_button_text_color": "rgba(0,0,0,0)"
+          }
+        }
+      },
+      "block_order": [
+        "variant_picker_kK3VrE",
+        "quantity_selector_rnxwPM",
+        "buy_buttons_FYQTTT"
+      ],
+      "name": "Featured product",
+      "settings": {
+        "product": "grillbot-grill-cleaning-robot",
+        "subheading": "",
+        "title": "SHOP THE GRILLBOT",
+        "show_vendor": true,
+        "show_sku": false,
+        "show_taxes_included": false,
+        "show_product_rating": false,
+        "show_share_buttons": true,
+        "help_page": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "show_thumbnails_on_mobile": false,
+        "desktop_thumbnails_position": "bottom",
+        "transition_effect": "slide",
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_html_9FkYJy",
+    "video_XKLVLN",
+    "featured_product_NyexJA"
+  ]
+}

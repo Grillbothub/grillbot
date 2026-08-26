@@ -1,0 +1,829 @@
+{% comment %}
+  Hero Banner Section with Spinning Object Image
+  Section: hero-banner-spinning.liquid
+{% endcomment %}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --desktop-pt: {{ section.settings.desktop_padding_top }}px;
+    --desktop-pb: {{ section.settings.desktop_padding_bottom }}px;
+    --mobile-pt: {{ section.settings.mobile_padding_top }}px;
+    --mobile-pb: {{ section.settings.mobile_padding_bottom }}px;
+    margin-top:76px;
+  }
+
+  .hero-banner-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding-top: var(--mobile-pt);
+    padding-bottom: var(--mobile-pb);
+    min-height: 420px;
+  }
+
+  .hero-banner-{{ section.id }} .hero-bg,
+  .hero-banner-{{ section.id }} video.hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-banner-{{ section.id }} .hero-bg-desktop {
+    display: none;
+  }
+
+  .hero-banner-{{ section.id }} .hero-bg-mobile {
+    display: block;
+  }
+
+  .hero-banner-{{ section.id }} .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    z-index: 1;
+  }
+
+  .hero-banner-{{ section.id }} .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Star Rating */
+  .hero-banner-{{ section.id }} .hero-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .hero-banner-{{ section.id }} .hero-stars {
+    color: #f5c518;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .hero-banner-{{ section.id }} .hero-rating-text {
+     margin: 0;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+  }
+
+  /* Headlines */
+  .hero-banner-{{ section.id }} .hero-headline-1 {
+    color: #ffffff;
+    font-family: Anton !important;
+    font-size: 92px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100px;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+     margin:0px;
+  }
+
+  .hero-banner-{{ section.id }} .hero-headline-2 {
+    color: var(--green, #B6D22F);
+    font-family: Anton!important;
+    font-size: 92px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100px;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    margin:0px;
+}
+  
+
+  .hero-banner-{{ section.id }} .hero-subheadline {
+ 
+    color: #ffffff;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400;
+    margin: 0 0 24px 0;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+  /* Buttons */
+  .hero-banner-{{ section.id }} .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #6b7c2e;
+    color: #ffffff;
+    border: 2px solid #6b7c2e;
+    padding: 13px 26px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    border-radius: 100px;
+background: #B6D22F;
+display: flex;
+width: 238px;
+height: 56px;
+padding: 16px 32px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+color: var(--Black, #080808);
+text-align: center;
+font-family: Rubik;
+font-size: 16px;
+font-style: normal;
+font-weight: 700;
+line-height: 22px; /* 137.5% */
+
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-primary:hover {
+    background-color: #7d9135;
+    border-color: #7d9135;
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-secondary {
+   display: flex;
+width: 238px;
+height: 56px;
+padding: 16px 32px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 100px;
+border: 1px solid var(--green, #B6D22F);
+background: rgba(0, 0, 0, 0.20);
+color: var(--green, #B6D22F);
+text-align: center;
+font-family: Rubik;
+font-size: 16px;
+font-style: normal;
+font-weight: 700;
+line-height: 22px; /* 137.5% */
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-secondary:hover {
+    background-color: rgba(40, 40, 40, 0.9);
+    border-color: rgba(255,255,255,0.6);
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-play-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #a8e000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hero-banner-{{ section.id }} .hero-btn-play-icon svg {
+    width: 10px;
+    height: 10px;
+    fill: #1a1a1a;
+    margin-left: 2px;
+  }
+
+  /* Trust Badges */
+  .hero-banner-{{ section.id }} .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    width:100%
+    
+  }
+
+  .hero-banner-{{ section.id }} .hero-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .hero-banner-{{ section.id }} .hero-trust-item img {
+    width: 20px;
+    height: 20px;
+    
+  }
+
+  .hero-banner-{{ section.id }} .hero-trust-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255,255,255,0.35);
+  }
+
+  /* Object / Product Image */
+  .hero-banner-{{ section.id }} .hero-object-wrap {
+    position: absolute;
+    z-index: 3;
+    right: 4%;
+    bottom: -10%;
+    width: 38%;
+    max-width: 420px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    display:none;
+  }
+
+  .hero-banner-{{ section.id }} .hero-object-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .hero-banner-{{ section.id }} .hero-object-desktop {
+    display: none;
+  }
+
+  .hero-banner-{{ section.id }} .hero-object-mobile {
+    display: block;
+  }
+
+  /* Spinning Animation */
+  @keyframes hero-spin-{{ section.id }} {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .hero-banner-{{ section.id }} .hero-object-spin {
+    animation: hero-spin-{{ section.id }} 8s linear infinite;
+    transform-origin: center center;
+  }
+
+  /* ── Desktop ── */
+  @media screen and (min-width: 750px) {
+    .hero-banner-{{ section.id }} {
+      padding-top: var(--desktop-pt);
+      padding-bottom: var(--desktop-pb);
+      min-height: 520px;
+    }
+
+    .hero-banner-{{ section.id }} .hero-bg-desktop {
+      display: block;
+    }
+
+    .hero-banner-{{ section.id }} .hero-bg-mobile {
+      display: none;
+    }
+
+    .hero-banner-{{ section.id }} .hero-object-desktop {
+      display: block;
+    }
+
+    .hero-banner-{{ section.id }} .hero-object-mobile {
+      display: none;
+    }
+
+    .hero-banner-{{ section.id }} .hero-inner {
+      padding: 0 48px;
+      max-width: 56%;
+      margin-left:0px;
+    }
+
+    .hero-banner-{{ section.id }} .hero-object-wrap {
+      width: 34%;
+      right: 3%;
+      bottom: -8%;
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    .hero-banner-{{ section.id }} .hero-inner {
+      max-width: 56%;
+      padding: 0 64px;
+    }
+
+    .hero-banner-{{ section.id }} .hero-object-wrap {
+      width: 30%;
+      right: 5%;
+    }
+  }
+
+  @media screen and (max-width:768px){
+    .hero-banner-{{section.id}} .hero-headline-1 {
+    color: #ffffff;
+    font-family: Anton !important;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    margin: 0px;
+}
+.hero-banner-{{ section.id }} .hero-trust-divider {
+  display:none;
+  }
+ .hero-banner-{{section.id}} .hero-headline-2 {
+   
+    font-family: Anton !important;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    margin: 0px;
+}
+
+ .hero-banner-{{section.id}} .hero-subheadline {
+    color: #ffffff;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400;
+    margin: 0 0 24px 0;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    color: var(--white, #FFF);
+    font-family: Rubik;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    margin-top:12px;
+}
+
+.hero-btn-primary{
+    width:100%!important;
+    height:48px!important;
+}
+.hero-btn-secondary{
+    width:100%!important;
+    height:48px!important;
+}
+.hero-banner-{{section.id}} .hero-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    justify-content:space-between!important;
+    width:100%;
+}
+.hero-banner-{{section.id}} .hero-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+.hero-banner-{{section.id}} {
+  
+    align-items: flex-start;
+    min-height: 633px;
+}
+.hero-object-wrap{
+    display:none!important;
+}
+  }
+{%- endstyle -%}
+
+<div class="hero-banner-{{ section.id }}">
+
+  {%- comment -%} Background Media {%- endcomment -%}
+  {%- if section.settings.bg_media_type == 'video' -%}
+    {%- if section.settings.bg_video_mobile != blank -%}
+      {{
+        section.settings.bg_video_mobile
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          preload: 'auto',
+          class: 'hero-bg hero-bg-mobile'
+      }}
+    {%- endif -%}
+
+    {%- if section.settings.bg_video_desktop != blank -%}
+      {{
+        section.settings.bg_video_desktop
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          preload: 'auto',
+          class: 'hero-bg hero-bg-desktop'
+      }}
+    {%- endif -%}
+  {%- else -%}
+    {%- if section.settings.bg_image_mobile != blank -%}
+      <img
+        class="hero-bg hero-bg-mobile"
+        src="{{ section.settings.bg_image_mobile | image_url: width: 800 }}"
+        srcset="
+          {{ section.settings.bg_image_mobile | image_url: width: 400 }} 400w,
+          {{ section.settings.bg_image_mobile | image_url: width: 800 }} 800w
+        "
+        sizes="100vw"
+        alt="{{ section.settings.bg_image_mobile.alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+
+    {%- if section.settings.bg_image_desktop != blank -%}
+      <img
+        class="hero-bg hero-bg-desktop"
+        src="{{ section.settings.bg_image_desktop | image_url: width: 1600 }}"
+        srcset="
+          {{ section.settings.bg_image_desktop | image_url: width: 800 }}  800w,
+          {{ section.settings.bg_image_desktop | image_url: width: 1200 }} 1200w,
+          {{ section.settings.bg_image_desktop | image_url: width: 1600 }} 1600w,
+          {{ section.settings.bg_image_desktop | image_url: width: 2000 }} 2000w
+        "
+        sizes="100vw"
+        alt="{{ section.settings.bg_image_desktop.alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="hero-overlay"></div>
+
+  {%- comment -%} Content {%- endcomment -%}
+  <div class="hero-inner">
+
+    {%- comment -%} Star Rating {%- endcomment -%}
+    {%- if section.settings.rating_text != blank -%}
+      <div class="hero-rating">
+        <span class="hero-stars" aria-hidden="true">★★★★★</span>
+        <p class="hero-rating-text">{{ section.settings.rating_text }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Headlines {%- endcomment -%}
+    {%- if section.settings.headline_1 != blank -%}
+      <h1 class="hero-headline-1">{{ section.settings.headline_1 }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.headline_2 != blank -%}
+      <h2 class="hero-headline-2">{{ section.settings.headline_2 }}</h2>
+    {%- endif -%}
+
+    {%- comment -%} Subheadline {%- endcomment -%}
+    {%- if section.settings.subheadline != blank -%}
+      <p class="hero-subheadline">{{ section.settings.subheadline }}</p>
+    {%- endif -%}
+
+    {%- comment -%} Buttons {%- endcomment -%}
+    <div class="hero-buttons">
+      {%- if section.settings.btn1_label != blank -%}
+        <a
+          href="{{ section.settings.btn1_url | default: '#' }}"
+          class="hero-btn-primary"
+        >
+          {{ section.settings.btn1_label }}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.btn2_label != blank -%}
+        <a
+          href="{{ section.settings.btn2_url | default: '#' }}"
+          class="hero-btn-secondary"
+        >
+          <span class="hero-btn-play-icon" aria-hidden="true">
+            <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="2,1 9,5 2,9"/>
+            </svg>
+          </span>
+          {{ section.settings.btn2_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Trust Badges {%- endcomment -%}
+    <div class="hero-trust">
+      {%- if section.settings.badge1_text != blank -%}
+        <div class="hero-trust-item">
+          {%- if section.settings.badge1_icon != blank -%}
+            <img
+              src="{{ section.settings.badge1_icon | image_url: width: 40 }}"
+              alt="{{ section.settings.badge1_icon.alt | default: '' | escape }}"
+              width="20"
+              height="20"
+            >
+          {%- else -%}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          {%- endif -%}
+          {{ section.settings.badge1_text }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.badge1_text != blank and section.settings.badge2_text != blank -%}
+        <div class="hero-trust-divider" aria-hidden="true"></div>
+      {%- endif -%}
+
+      {%- if section.settings.badge2_text != blank -%}
+        <div class="hero-trust-item">
+          {%- if section.settings.badge2_icon != blank -%}
+            <img
+              src="{{ section.settings.badge2_icon | image_url: width: 40 }}"
+              alt="{{ section.settings.badge2_icon.alt | default: '' | escape }}"
+              width="20"
+              height="20"
+            >
+          {%- else -%}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          {%- endif -%}
+          {{ section.settings.badge2_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+
+  {%- comment -%} Spinning Object Image {%- endcomment -%}
+  {%- if section.settings.object_image_desktop != blank or section.settings.object_image_mobile != blank -%}
+    <div class="hero-object-wrap">
+
+      {%- if section.settings.object_image_mobile != blank -%}
+        <img
+          class="hero-object-mobile hero-object-spin"
+          src="{{ section.settings.object_image_mobile | image_url: width: 500 }}"
+          srcset="
+            {{ section.settings.object_image_mobile | image_url: width: 300 }} 300w,
+            {{ section.settings.object_image_mobile | image_url: width: 500 }} 500w
+          "
+          sizes="(max-width: 749px) 50vw, 0vw"
+          alt="{{ section.settings.object_image_mobile.alt | default: 'Product' | escape }}"
+          width="500"
+          height="500"
+          loading="eager"
+        >
+      {%- endif -%}
+
+      {%- if section.settings.object_image_desktop != blank -%}
+        <img
+          class="hero-object-desktop hero-object-spin"
+          src="{{ section.settings.object_image_desktop | image_url: width: 700 }}"
+          srcset="
+            {{ section.settings.object_image_desktop | image_url: width: 400 }} 400w,
+            {{ section.settings.object_image_desktop | image_url: width: 700 }} 700w
+          "
+          sizes="(min-width: 750px) 35vw, 0vw"
+          alt="{{ section.settings.object_image_desktop.alt | default: 'Product' | escape }}"
+          width="700"
+          height="700"
+          loading="eager"
+        >
+      {%- endif -%}
+
+    </div>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner v2",
+  "tag": "section",
+  "class": "hero-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Rating"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating text",
+      "default": "4.9/5 from 1,700+ grill owners"
+    },
+    {
+      "type": "header",
+      "content": "Headlines"
+    },
+    {
+      "type": "text",
+      "id": "headline_1",
+      "label": "Headline line 1 (white)",
+      "default": "ENJOY THE MOMENT."
+    },
+    {
+      "type": "text",
+      "id": "headline_2",
+      "label": "Headline line 2 (green)",
+      "default": "SKIP THE CLEANUP."
+    },
+    {
+      "type": "text",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Grillbot cleans your grill while you relax."
+    },
+    {
+      "type": "header",
+      "content": "Button 1"
+    },
+    {
+      "type": "text",
+      "id": "btn1_label",
+      "label": "Button 1 label",
+      "default": "Try It Now →"
+    },
+    {
+      "type": "url",
+      "id": "btn1_url",
+      "label": "Button 1 URL"
+    },
+    {
+      "type": "header",
+      "content": "Button 2"
+    },
+    {
+      "type": "text",
+      "id": "btn2_label",
+      "label": "Button 2 label",
+      "default": "Watch It Work"
+    },
+    {
+      "type": "url",
+      "id": "btn2_url",
+      "label": "Button 2 URL"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badge 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge1_icon",
+      "label": "Badge 1 icon"
+    },
+    {
+      "type": "text",
+      "id": "badge1_text",
+      "label": "Badge 1 text",
+      "default": "60-Day Risk-Free Trial"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badge 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "badge2_icon",
+      "label": "Badge 2 icon"
+    },
+    {
+      "type": "text",
+      "id": "badge2_text",
+      "label": "Badge 2 text",
+      "default": "Perfect gift for BBQ lovers"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "select",
+      "id": "bg_media_type",
+      "label": "Background type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_desktop",
+      "label": "Background image — Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background image — Mobile"
+    },
+    {
+      "type": "video",
+      "id": "bg_video_desktop",
+      "label": "Background video — Desktop"
+    },
+    {
+      "type": "video",
+      "id": "bg_video_mobile",
+      "label": "Background video — Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Object / Product Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "object_image_desktop",
+      "label": "Object image — Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "object_image_mobile",
+      "label": "Object image — Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "label": "Desktop padding top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "label": "Desktop padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Mobile padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Mobile padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner v2"
+    }
+  ]
+}
+{% endschema %}
